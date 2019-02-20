@@ -1,4 +1,4 @@
-From da6b6b1553a4167c0910b123a975b7f35962d7df Mon Sep 17 00:00:00 2001
+From 1d3ca48aa1a2f07996ccf226a65c5eb4a553d972 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Fri, 25 Jan 2019 22:54:57 +0000
 Subject: [PATCH 20/20] Add CondaEcosystemModifyDllSearchPath()
@@ -8,12 +8,12 @@ get searched in before entries in PATH.
 
 Now with more directories.
 ---
- Modules/main.c       | 321 +++++++++++++++++++++++++++++++++++++++++++
+ Modules/main.c       | 340 +++++++++++++++++++++++++++++++++++++++++++
  Python/dynload_win.c |   5 +
- 2 files changed, 326 insertions(+)
+ 2 files changed, 345 insertions(+)
 
 diff --git a/Modules/main.c b/Modules/main.c
-index 5076d5442c..4ac8b6d542 100644
+index 5076d5442c..3759581c27 100644
 --- a/Modules/main.c
 +++ b/Modules/main.c
 @@ -13,6 +13,10 @@
@@ -27,7 +27,7 @@ index 5076d5442c..4ac8b6d542 100644
  #endif
  
  #ifdef _MSC_VER
-@@ -343,6 +347,318 @@ run_file(FILE *fp, const wchar_t *filename, PyCompilerFlags *p_cf)
+@@ -343,6 +347,337 @@ run_file(FILE *fp, const wchar_t *filename, PyCompilerFlags *p_cf)
  }
  
  
@@ -47,10 +47,10 @@ index 5076d5442c..4ac8b6d542 100644
 +        FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
 +            NULL, err_code, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 +            err_msg, (sizeof(err_msg) / sizeof(wchar_t)), NULL);
-+        wprintf(L"LoadAndUnloadTestDLL() :: ERROR :: Failed to load %ls, error is: %ls\n", &test_dll[0], &err_msg[0]);
++        fwprintf(stderr, L"LoadAndUnloadTestDLL() :: ERROR :: Failed to load %ls, error is: %ls\n", &test_dll[0], &err_msg[0]);
 +    }
 +    GetModuleFileNameW(hDLL, &test_path[0], MAX_PATH);
-+    wprintf(L"LoadAndUnloadTestDLL() :: %ls loaded from %ls\n", &test_dll[0], &test_path[0]);
++    fwprintf(stderr, L"LoadAndUnloadTestDLL() :: %ls loaded from %ls\n", &test_dll[0], &test_path[0]);
 +    if (FreeLibrary(hDLL) == 0)
 +    {
 +        wchar_t err_msg[256];
@@ -58,7 +58,7 @@ index 5076d5442c..4ac8b6d542 100644
 +        FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
 +            NULL, err_code, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 +            err_msg, (sizeof(err_msg) / sizeof(wchar_t)), NULL);
-+        wprintf(L"LoadAndUnloadTestDLL() :: ERROR :: Failed to free %ls, error is: %ls\n", &test_dll[0], &err_msg[0]);
++        fwprintf(stderr, L"LoadAndUnloadTestDLL() :: ERROR :: Failed to free %ls, error is: %ls\n", &test_dll[0], &err_msg[0]);
 +    }
 +}
 +*/
@@ -140,14 +140,13 @@ index 5076d5442c..4ac8b6d542 100644
 +    int SetDllDirectoryValue = LOAD_LIBRARY_SEARCH_DEFAULT_DIRS;
 +    if (failed_to_find_dll_fns)
 +        return 1;
-+    if (_wgetenv(L"CONDA_DLL_SEARCH_MODIFICATION_DISABLE"))
-+        return 0;
-+    if (_wgetenv(L"CONDA_DLL_SEARCH_MODIFICATION_NEVER_ADD_WINDOWS_DIRECTORY"))
-+        add_windows_directory = 0;
-+    if (_wgetenv(L"CONDA_DLL_SEARCH_MODIFICATION_NEVER_ADD_CWD"))
-+        add_cwd = 0;
++
 +    if (pSetDefaultDllDirectories == NULL)  /* Really we mean 'have we not inited yet?' */
 +    {
++        wchar_t *conda_prefix = _wgetenv(L"CONDA_PREFIX");
++        wchar_t *build_prefix = _wgetenv(L"BUILD_PREFIX");
++        wchar_t *build_prefix = _wgetenv(L"PREFIX");
++        int found = 0;
 +        pSetDefaultDllDirectories = (SDDD)GetProcAddress(GetModuleHandle(TEXT("kernel32.dll")), "SetDefaultDllDirectories");
 +        pSetDllDirectory = (SDD)GetProcAddress(GetModuleHandle(TEXT("kernel32.dll")), "SetDllDirectoryW");
 +        pAddDllDirectory = (ADD)GetProcAddress(GetModuleHandle(TEXT("kernel32.dll")), "AddDllDirectory");
@@ -178,7 +177,27 @@ index 5076d5442c..4ac8b6d542 100644
 +            mbstowcs_s(&convertedChars, sv_windows_directory, strlen(tmp_ascii)+1, tmp_ascii, _TRUNCATE);
 +            sv_windows_directory[sizeof(sv_windows_directory) / sizeof(sv_windows_directory[0]) - 1] = L'\0';
 +        }
++
++        /* This has been put here for expediency purposes */
++        if (conda_prefix == NULL || wcstr(sv_executable_dirname, conda_prefix) != sv_executable_dirname)
++        {
++            if (build_prefix == NULL || wcstr(sv_executable_dirname, build_prefix) != sv_executable_dirname)
++            {
++                if (prefix == NULL || wcstr(sv_executable_dirname, prefix) != sv_executable_dirname)
++                {
++                    wfprintf(stderr, L"WARNING :: No conda environment has been activated.  Please use the `Anaconda Prompt`,\n"
++                                     L"        :: `Anaconda Navigator` or one of the activate scripts in <INSTALL_ROOT>\Scripts\n");
++                }
++            }
++        }
 +    }
++
++    if (_wgetenv(L"CONDA_DLL_SEARCH_MODIFICATION_ENABLE") == NULL)
++        return 0;
++    if (_wgetenv(L"CONDA_DLL_SEARCH_MODIFICATION_NEVER_ADD_WINDOWS_DIRECTORY"))
++        add_windows_directory = 0;
++    if (_wgetenv(L"CONDA_DLL_SEARCH_MODIFICATION_NEVER_ADD_CWD"))
++        add_cwd = 0;
 +
 +    if (pSetDefaultDllDirectories == NULL || pSetDllDirectory == NULL || pAddDllDirectory == NULL)
 +    {
@@ -346,7 +365,7 @@ index 5076d5442c..4ac8b6d542 100644
  /* Main program */
  
  int
-@@ -369,6 +685,11 @@ Py_Main(int argc, wchar_t **argv)
+@@ -369,6 +704,11 @@ Py_Main(int argc, wchar_t **argv)
      PyObject *warning_option = NULL;
      PyObject *warning_options = NULL;
  
