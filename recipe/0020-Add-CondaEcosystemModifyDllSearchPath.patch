@@ -1,4 +1,4 @@
-From 32277a8a0c405995554d41191bac42b8f27eb6d4 Mon Sep 17 00:00:00 2001
+From 309ebe63667eceadaa106fd90b67847a40e32927 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Fri, 25 Jan 2019 22:54:57 +0000
 Subject: [PATCH 20/20] Add CondaEcosystemModifyDllSearchPath()
@@ -8,12 +8,12 @@ get searched in before entries in PATH.
 
 Now with more directories.
 ---
- Modules/main.c       | 326 +++++++++++++++++++++++++++++++++++++++++++
+ Modules/main.c       | 327 +++++++++++++++++++++++++++++++++++++++++++
  Python/dynload_win.c |   5 +
- 2 files changed, 331 insertions(+)
+ 2 files changed, 332 insertions(+)
 
 diff --git a/Modules/main.c b/Modules/main.c
-index 5076d5442c..3f903fc708 100644
+index 5076d5442c..af5329cdb4 100644
 --- a/Modules/main.c
 +++ b/Modules/main.c
 @@ -13,6 +13,10 @@
@@ -27,7 +27,7 @@ index 5076d5442c..3f903fc708 100644
  #endif
  
  #ifdef _MSC_VER
-@@ -343,6 +347,323 @@ run_file(FILE *fp, const wchar_t *filename, PyCompilerFlags *p_cf)
+@@ -343,6 +347,324 @@ run_file(FILE *fp, const wchar_t *filename, PyCompilerFlags *p_cf)
  }
  
  
@@ -106,12 +106,13 @@ index 5076d5442c..3f903fc708 100644
 +    wchar_t *p_name;
 +} CONDA_PATH;
 +
-+#define NUM_CONDA_PATHS 4
++#define NUM_CONDA_PATHS 5
 +
 +static CONDA_PATH condaPaths[NUM_CONDA_PATHS] =
 +{
 +    {0, L"Library\\mingw-w64\\bin", NULL},
 +    {0, L"Library\\usr\\bin", NULL},
++    {0, L"Library\\bin", NULL},
 +    {0, L"Scripts", NULL},
 +    {0, L"bin", NULL}
 +};
@@ -135,7 +136,7 @@ index 5076d5442c..3f903fc708 100644
 +    ssize_t j;
 +    CONDA_PATH *p_conda_path;
 +    struct _stat64i32 sb;
-+    int foundCondaPath[NUM_CONDA_PATHS] = {0, 0, 0, 0};
++    int foundCondaPath[NUM_CONDA_PATHS] = {0, 0, 0, 0, 0};
 +#endif /* defined(HARDCODE_CONDA_PATHS) */
 +
 +    int SetDllDirectoryValue = LOAD_LIBRARY_SEARCH_DEFAULT_DIRS;
@@ -351,7 +352,7 @@ index 5076d5442c..3f903fc708 100644
  /* Main program */
  
  int
-@@ -369,6 +690,11 @@ Py_Main(int argc, wchar_t **argv)
+@@ -369,6 +691,11 @@ Py_Main(int argc, wchar_t **argv)
      PyObject *warning_option = NULL;
      PyObject *warning_options = NULL;
  
