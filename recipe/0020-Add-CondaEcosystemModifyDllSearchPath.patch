@@ -1,4 +1,4 @@
-From 59b1de3c17bef963d63c00ecde38d5ac170786d0 Mon Sep 17 00:00:00 2001
+From cd46cfdec408262b6db5364479f1f66bb791538a Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Fri, 25 Jan 2019 22:54:57 +0000
 Subject: [PATCH 20/20] Add CondaEcosystemModifyDllSearchPath()
@@ -13,7 +13,7 @@ Now with more directories.
  2 files changed, 387 insertions(+), 3 deletions(-)
 
 diff --git a/Modules/main.c b/Modules/main.c
-index 5076d5442c..2520694eb0 100644
+index 5076d5442c..094813e954 100644
 --- a/Modules/main.c
 +++ b/Modules/main.c
 @@ -13,6 +13,10 @@
@@ -166,11 +166,11 @@ index 5076d5442c..2520694eb0 100644
 +            sv_windows_directory[sizeof(sv_windows_directory) / sizeof(sv_windows_directory[0]) - 1] = L'\0';
 +        }
 +
-+        if (conda_prefix == NULL || wcsstr(sv_executable_dirname, conda_prefix) != sv_executable_dirname)
++        if (conda_prefix == NULL || wcscmp(sv_executable_dirname, conda_prefix))
 +        {
-+            if (build_prefix == NULL || wcsstr(sv_executable_dirname, build_prefix) != sv_executable_dirname)
++            if (build_prefix == NULL || wcscmp(sv_executable_dirname, build_prefix))
 +            {
-+                if (prefix == NULL || wcsstr(sv_executable_dirname, prefix) != sv_executable_dirname)
++                if (prefix == NULL || wcscmp(sv_executable_dirname, prefix))
 +                {
 +                    int found_conda = 0;
 +                    int argi;
@@ -209,11 +209,11 @@ index 5076d5442c..2520694eb0 100644
 +    static char warnings[1024] = { 0 };
 +    if (sv_conda_not_activated == 1 && warnings[0] == '\0')
 +    {
-+        sprintf(warnings, "Warning:\n"
-+                          "The conda environment for this python interpreter has not been activated.\n"
-+                          "Libraries may fail to load.  To activate this environment please use:\n"
-+                          "`conda activation`:\n"
-+                          "https://conda.io/activation\n"
++        sprintf(warnings, "\n"
++                          "Warning:\n"
++                          "This Python interpreter is in a conda environment, but the environment has\n"
++                          "not been activated. Libraries may fail to load.  To activate this environment\n"
++                          "please see https://conda.io/activation\n"
 +                          "\n");
 +    }
 +    return &warnings[0];
