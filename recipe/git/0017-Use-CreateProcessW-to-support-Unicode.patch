@@ -1,0 +1,50 @@
+From 11695475fb6fdd43ed414813a3f01cacaa8f5886 Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Sat, 16 Mar 2019 22:49:28 +0000
+Subject: [PATCH] Use CreateProcessW to support Unicode
+
+---
+ PC/_subprocess.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/PC/_subprocess.c b/PC/_subprocess.c
+index 66940ff7e4..0f1db960e2 100644
+--- a/PC/_subprocess.c
++++ b/PC/_subprocess.c
+@@ -433,17 +433,17 @@ sp_CreateProcess(PyObject* self, PyObject* args)
+     STARTUPINFO si;
+     PyObject* environment;
+ 
+-    char* application_name;
+-    char* command_line;
++    wchar_t* application_name;
++    wchar_t* command_line;
+     PyObject* process_attributes; /* ignored */
+     PyObject* thread_attributes; /* ignored */
+     int inherit_handles;
+     int creation_flags;
+     PyObject* env_mapping;
+-    char* current_directory;
++    wchar_t* current_directory;
+     PyObject* startup_info;
+ 
+-    if (! PyArg_ParseTuple(args, "zzOOiiOzO:CreateProcess",
++    if (! PyArg_ParseTuple(args, "uuOOiiOuO:CreateProcess",
+                            &application_name,
+                            &command_line,
+                            &process_attributes,
+@@ -475,9 +475,10 @@ sp_CreateProcess(PyObject* self, PyObject* args)
+         if (! environment)
+             return NULL;
+     }
++    creation_flags |= CREATE_UNICODE_ENVIRONMENT;
+ 
+     Py_BEGIN_ALLOW_THREADS
+-    result = CreateProcess(application_name,
++    result = CreateProcessW(application_name,
+                            command_line,
+                            NULL,
+                            NULL,
+-- 
+2.20.1
+
