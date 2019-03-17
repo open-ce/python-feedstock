@@ -1,39 +1,122 @@
-From 11695475fb6fdd43ed414813a3f01cacaa8f5886 Mon Sep 17 00:00:00 2001
+From 9331e0383f31e7c832d8a7cdddcea04439a505b4 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sat, 16 Mar 2019 22:49:28 +0000
-Subject: [PATCH] Use CreateProcessW to support Unicode
+Subject: [PATCH 17/17] Use CreateProcessW to support Unicode
 
 ---
- PC/_subprocess.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ PC/_subprocess.c | 110 +++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 91 insertions(+), 19 deletions(-)
 
 diff --git a/PC/_subprocess.c b/PC/_subprocess.c
-index 66940ff7e4..0f1db960e2 100644
+index 66940ff7e4..cb060ca5d1 100644
 --- a/PC/_subprocess.c
 +++ b/PC/_subprocess.c
-@@ -433,17 +433,17 @@ sp_CreateProcess(PyObject* self, PyObject* args)
-     STARTUPINFO si;
+@@ -425,36 +425,95 @@ process ID, and thread ID.\n\
+ \n\
+ proc_attrs and thread_attrs are ignored internally and can be None.");
+ 
++
+ static PyObject *
+ sp_CreateProcess(PyObject* self, PyObject* args)
+ {
+     BOOL result;
+     PROCESS_INFORMATION pi;
+-    STARTUPINFO si;
++    STARTUPINFOW si;
      PyObject* environment;
  
 -    char* application_name;
 -    char* command_line;
-+    wchar_t* application_name;
-+    wchar_t* command_line;
      PyObject* process_attributes; /* ignored */
      PyObject* thread_attributes; /* ignored */
      int inherit_handles;
++    int i, j, len;
      int creation_flags;
      PyObject* env_mapping;
 -    char* current_directory;
-+    wchar_t* current_directory;
      PyObject* startup_info;
- 
+-
 -    if (! PyArg_ParseTuple(args, "zzOOiiOzO:CreateProcess",
-+    if (! PyArg_ParseTuple(args, "uuOOiiOuO:CreateProcess",
-                            &application_name,
-                            &command_line,
+-                           &application_name,
+-                           &command_line,
++    #define APPLICATION_NAME 0
++    #define COMMAND_LINE 1
++    #define CURRENT_DIRECTORY 2
++    PyObject* us[3] = {NULL, NULL, NULL};
++    PyObject* ss[3] = {NULL, NULL, NULL};
++    wchar_t* wc[3] = {NULL, NULL, NULL};
++
++    if (! PyArg_ParseTuple(args, "OOOOiiOOO:CreateProcess",
++                           &ss[APPLICATION_NAME],
++                           &ss[COMMAND_LINE],
                             &process_attributes,
-@@ -475,9 +475,10 @@ sp_CreateProcess(PyObject* self, PyObject* args)
+                            &thread_attributes,
+                            &inherit_handles,
+                            &creation_flags,
+                            &env_mapping,
+-                           &current_directory,
++                           &ss[CURRENT_DIRECTORY],
+                            &startup_info))
+         return NULL;
+ 
++    /* Was going to use CreateProcessA when all strings, but what about env_mapping? Best to always
++       go Unicode? Also, consider renaming this to CreateProcessW()?
++    if (PyString_Check(ss[APPLICATION_NAME]) && PyString_Check(ss[COMMAND_LINE]) &&
++        PyString_Check(ss[CURRENT_DIRECTORY])) {
++            unicode = FALSE;
++    } else */ {
++        for (i = 0; i < 3; ++i) {
++            if (ss[i] == Py_None) {
++                continue;
++            } else if (PyUnicode_Check(ss[i])) {
++                us[i] = ss[i];
++            } else {
++                us[i] = PyUnicode_FromEncodedObject(ss[i], "utf-8", "strict");
++                if (us[i] == NULL) {
++                    for (j = 0; j < i; ++j) {
++                        if (us[j] != NULL && ss[j] != us[j]) {
++                            Py_DECREF(us[j]);
++                        }
++                    }
++                    return NULL;
++                }
++            }
++        }
++    }
++    for (i = 0; i < 3; ++i) {
++        /* Convert the unicode strings to wchar[]. */
++        if (us[i] == NULL) {
++            continue;
++        }
++        len = PyUnicode_GET_SIZE(us[i]) + 1;
++        wc[i] = PyMem_NEW(wchar_t, len);
++        if (wc[i] == NULL) {
++            for (j = 0; j < 3; ++j) {
++                if (us[j] != NULL && ss[j] != us[j]) {
++                    Py_DECREF(us[j]);
++                }
++            }
++
++            PyErr_NoMemory();
++            return NULL;
++        }
++        if (PyUnicode_AsWideChar((PyUnicodeObject*)us[i], wc[i], len) == -1) {
++            for (j = 0; j < 3; ++j) {
++                if (us[j] != NULL && ss[j] != us[j]) {
++                    Py_DECREF(us[j]);
++                }
++                if (wc[j] != NULL) {
++                    PyMem_FREE(wc[j]);
++                }
++            }
++            return NULL;
++        }
++        wc[i][len - 1] = 0;
++    }
+     ZeroMemory(&si, sizeof(si));
+     si.cb = sizeof(si);
+ 
+@@ -475,20 +534,30 @@ sp_CreateProcess(PyObject* self, PyObject* args)
          if (! environment)
              return NULL;
      }
@@ -41,10 +124,49 @@ index 66940ff7e4..0f1db960e2 100644
  
      Py_BEGIN_ALLOW_THREADS
 -    result = CreateProcess(application_name,
-+    result = CreateProcessW(application_name,
-                            command_line,
-                            NULL,
-                            NULL,
+-                           command_line,
+-                           NULL,
+-                           NULL,
+-                           inherit_handles,
+-                           creation_flags,
+-                           environment ? PyString_AS_STRING(environment) : NULL,
+-                           current_directory,
+-                           &si,
+-                           &pi);
++    result = CreateProcessW(wc[APPLICATION_NAME],
++                            wc[COMMAND_LINE],
++                            NULL,
++                            NULL,
++                            inherit_handles,
++                            creation_flags,
++                            environment ? PyString_AS_STRING(environment) : NULL,
++                            wc[CURRENT_DIRECTORY],
++                            &si,
++                            &pi);
+     Py_END_ALLOW_THREADS
+ 
++    for (i = 0; i < 3; ++i) {
++        if (us[i] != NULL && ss[i] != us[i]) {
++            Py_DECREF(us[i]);
++        }
++        if (wc[i] != NULL) {
++            PyMem_FREE(wc[i]);
++        }
++    }
++
+     Py_XDECREF(environment);
+ 
+     if (! result)
+@@ -499,6 +568,9 @@ sp_CreateProcess(PyObject* self, PyObject* args)
+                          sp_handle_new(pi.hThread),
+                          pi.dwProcessId,
+                          pi.dwThreadId);
++    #undef APPLICATION_NAME
++    #undef COMMAND_LINE
++    #undef CURRENT_DIRECTORY
+ }
+ 
+ PyDoc_STRVAR(TerminateProcess_doc,
 -- 
 2.20.1
 
