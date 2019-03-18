@@ -1,17 +1,17 @@
-From 9331e0383f31e7c832d8a7cdddcea04439a505b4 Mon Sep 17 00:00:00 2001
+From 9461d3d230665ee6caab886527f6376f7bc799d8 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sat, 16 Mar 2019 22:49:28 +0000
 Subject: [PATCH 17/17] Use CreateProcessW to support Unicode
 
 ---
- PC/_subprocess.c | 110 +++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 91 insertions(+), 19 deletions(-)
+ PC/_subprocess.c | 133 ++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 107 insertions(+), 26 deletions(-)
 
 diff --git a/PC/_subprocess.c b/PC/_subprocess.c
-index 66940ff7e4..cb060ca5d1 100644
+index 66940ff7e4..591fab9513 100644
 --- a/PC/_subprocess.c
 +++ b/PC/_subprocess.c
-@@ -425,36 +425,95 @@ process ID, and thread ID.\n\
+@@ -425,36 +425,110 @@ process ID, and thread ID.\n\
  \n\
  proc_attrs and thread_attrs are ignored internally and can be None.");
  
@@ -42,9 +42,10 @@ index 66940ff7e4..cb060ca5d1 100644
 +    #define APPLICATION_NAME 0
 +    #define COMMAND_LINE 1
 +    #define CURRENT_DIRECTORY 2
-+    PyObject* us[3] = {NULL, NULL, NULL};
-+    PyObject* ss[3] = {NULL, NULL, NULL};
-+    wchar_t* wc[3] = {NULL, NULL, NULL};
++    #define ENVIRONMENT 3
++    PyObject* us[4] = {NULL, NULL, NULL, NULL};
++    PyObject* ss[4] = {NULL, NULL, NULL, NULL};
++    wchar_t* wc[4] = {NULL, NULL, NULL, NULL};
 +
 +    if (! PyArg_ParseTuple(args, "OOOOiiOOO:CreateProcess",
 +                           &ss[APPLICATION_NAME],
@@ -59,13 +60,27 @@ index 66940ff7e4..cb060ca5d1 100644
                             &startup_info))
          return NULL;
  
++    if (env_mapping == Py_None)
++        environment = NULL;
++    else {
++        environment = getenvironment(env_mapping);
++        if (! environment)
++            return NULL;
++    }
++
++    if (environment != NULL) {
++        ss[ENVIRONMENT] = environment;
++    } else {
++        ss[ENVIRONMENT] = Py_None;
++    }
++
 +    /* Was going to use CreateProcessA when all strings, but what about env_mapping? Best to always
-+       go Unicode? Also, consider renaming this to CreateProcessW()?
++       go Unicode. Also, consider renaming this to CreateProcessW()?
 +    if (PyString_Check(ss[APPLICATION_NAME]) && PyString_Check(ss[COMMAND_LINE]) &&
 +        PyString_Check(ss[CURRENT_DIRECTORY])) {
 +            unicode = FALSE;
 +    } else */ {
-+        for (i = 0; i < 3; ++i) {
++        for (i = 0; i < 4; ++i) {
 +            if (ss[i] == Py_None) {
 +                continue;
 +            } else if (PyUnicode_Check(ss[i])) {
@@ -83,7 +98,7 @@ index 66940ff7e4..cb060ca5d1 100644
 +            }
 +        }
 +    }
-+    for (i = 0; i < 3; ++i) {
++    for (i = 0; i < 4; ++i) {
 +        /* Convert the unicode strings to wchar[]. */
 +        if (us[i] == NULL) {
 +            continue;
@@ -101,7 +116,7 @@ index 66940ff7e4..cb060ca5d1 100644
 +            return NULL;
 +        }
 +        if (PyUnicode_AsWideChar((PyUnicodeObject*)us[i], wc[i], len) == -1) {
-+            for (j = 0; j < 3; ++j) {
++            for (j = 0; j < 4; ++j) {
 +                if (us[j] != NULL && ss[j] != us[j]) {
 +                    Py_DECREF(us[j]);
 +                }
@@ -116,10 +131,17 @@ index 66940ff7e4..cb060ca5d1 100644
      ZeroMemory(&si, sizeof(si));
      si.cb = sizeof(si);
  
-@@ -475,20 +534,30 @@ sp_CreateProcess(PyObject* self, PyObject* args)
-         if (! environment)
-             return NULL;
-     }
+@@ -468,27 +542,30 @@ sp_CreateProcess(PyObject* self, PyObject* args)
+     if (PyErr_Occurred())
+         return NULL;
+ 
+-    if (env_mapping == Py_None)
+-        environment = NULL;
+-    else {
+-        environment = getenvironment(env_mapping);
+-        if (! environment)
+-            return NULL;
+-    }
 +    creation_flags |= CREATE_UNICODE_ENVIRONMENT;
  
      Py_BEGIN_ALLOW_THREADS
@@ -139,13 +161,13 @@ index 66940ff7e4..cb060ca5d1 100644
 +                            NULL,
 +                            inherit_handles,
 +                            creation_flags,
-+                            environment ? PyString_AS_STRING(environment) : NULL,
++                            wc[ENVIRONMENT],
 +                            wc[CURRENT_DIRECTORY],
 +                            &si,
 +                            &pi);
      Py_END_ALLOW_THREADS
  
-+    for (i = 0; i < 3; ++i) {
++    for (i = 0; i < 4; ++i) {
 +        if (us[i] != NULL && ss[i] != us[i]) {
 +            Py_DECREF(us[i]);
 +        }
@@ -157,13 +179,14 @@ index 66940ff7e4..cb060ca5d1 100644
      Py_XDECREF(environment);
  
      if (! result)
-@@ -499,6 +568,9 @@ sp_CreateProcess(PyObject* self, PyObject* args)
+@@ -499,6 +576,10 @@ sp_CreateProcess(PyObject* self, PyObject* args)
                           sp_handle_new(pi.hThread),
                           pi.dwProcessId,
                           pi.dwThreadId);
 +    #undef APPLICATION_NAME
 +    #undef COMMAND_LINE
 +    #undef CURRENT_DIRECTORY
++    #undef ENVIRONMENT
  }
  
  PyDoc_STRVAR(TerminateProcess_doc,
