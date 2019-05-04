@@ -26,7 +26,7 @@ source:
       - {{ pdir }}/0014-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
       - {{ pdir }}/0015-Unvendor-sqlite3.patch
       - {{ pdir }}/0016-Add-CondaEcosystemModifyDllSearchPath.patch                 # [win]
-      - {{ pdir }}/0017-Use-CreateProcessW-to-support-Unicode.patch                 # [win]
+      # - {{ pdir }}/0017-Use-CreateProcessW-to-support-Unicode.patch                 # [win]
   # - path: ~/conda/CPython
   #   path_via_symlink: True
   - url: https://github.com/python/cpython-source-deps/archive/bzip2-1.0.6.zip      # [win]
