@@ -1,4 +1,4 @@
-From 0c006ad4bb07e2c7f55af257788207f4c738f71d Mon Sep 17 00:00:00 2001
+From c2ffa1e995e9042151ce8ba864f6f9a74ca75f24 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sun, 26 Aug 2018 17:10:08 +0100
 Subject: [PATCH 16/19] Fix cross-compilation on Debian-based distros
@@ -8,7 +8,7 @@ Subject: [PATCH 16/19] Fix cross-compilation on Debian-based distros
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/setup.py b/setup.py
-index 78c2126749..cfc103574a 100644
+index a19fb3e..4e713dc 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -526,7 +526,8 @@ class PyBuildExt(build_ext):
@@ -22,5 +22,5 @@ index 78c2126749..cfc103574a 100644
          # Add paths specified in the environment variables LDFLAGS and
          # CPPFLAGS for header and library files.
 -- 
-2.17.2 (Apple Git-113)
+2.17.1
 

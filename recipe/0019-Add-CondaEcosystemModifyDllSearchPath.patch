@@ -1,4 +1,4 @@
-From 5dd6741aa2c016565194770a50c3e7327c19e41b Mon Sep 17 00:00:00 2001
+From 76cea5fe3261defbb7c2f07b6fcfb3ea7ea1208f Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Fri, 25 Jan 2019 22:54:57 +0000
 Subject: [PATCH 19/19] Add CondaEcosystemModifyDllSearchPath()
@@ -13,7 +13,7 @@ Now with more directories.
  2 files changed, 387 insertions(+), 3 deletions(-)
 
 diff --git a/Modules/main.c b/Modules/main.c
-index 5076d5442c..992e48a256 100644
+index 5076d54..992e48a 100644
 --- a/Modules/main.c
 +++ b/Modules/main.c
 @@ -13,6 +13,10 @@
@@ -431,7 +431,7 @@ index 5076d5442c..992e48a256 100644
  
      if (command != NULL) {
 diff --git a/Python/dynload_win.c b/Python/dynload_win.c
-index 0fdf77f552..c8190a5f05 100644
+index 0fdf77f..c8190a5 100644
 --- a/Python/dynload_win.c
 +++ b/Python/dynload_win.c
 @@ -215,6 +215,11 @@ dl_funcptr _PyImport_FindSharedFuncptrWindows(const char *prefix,
@@ -447,5 +447,5 @@ index 0fdf77f552..c8190a5f05 100644
              in directory of pathname first. */
          /* XXX This call doesn't exist in Windows CE */
 -- 
-2.17.2 (Apple Git-113)
+2.17.1
 
