@@ -1,0 +1,39 @@
+From 0517375c4494b728171b0e306959e3f2703e0046 Mon Sep 17 00:00:00 2001
+From: "Miss Islington (bot)"
+ <31488909+miss-islington@users.noreply.github.com>
+Date: Wed, 10 Jul 2019 19:49:59 -0700
+Subject: [PATCH 01/19] Document default parameter of .seek() in the signature.
+ (GH-14691)
+
+(cherry picked from commit 2a3d4d9c53dd4831c3ecf56bc7c4a289c33030d6)
+
+Co-authored-by: Benjamin Peterson <benjamin@python.org>
+---
+ Doc/library/io.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Doc/library/io.rst b/Doc/library/io.rst
+index dcdd01cd0a..7c053f973a 100644
+--- a/Doc/library/io.rst
++++ b/Doc/library/io.rst
+@@ -304,7 +304,7 @@ I/O Base Classes
+       Note that it's already possible to iterate on file objects using ``for
+       line in file: ...`` without calling ``file.readlines()``.
+ 
+-   .. method:: seek(offset[, whence])
++   .. method:: seek(offset, whence=SEEK_SET)
+ 
+       Change the stream position to the given byte *offset*.  *offset* is
+       interpreted relative to the position indicated by *whence*.  The default
+@@ -736,7 +736,7 @@ Text I/O
+ 
+       If *limit* is specified, at most *limit* characters will be read.
+ 
+-   .. method:: seek(offset[, whence])
++   .. method:: seek(offset, whence=SEEK_SET)
+ 
+       Change the stream position to the given *offset*.  Behaviour depends on
+       the *whence* parameter.  The default value for *whence* is
+-- 
+2.20.1 (Apple Git-117)
+
