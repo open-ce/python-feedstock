@@ -1,7 +1,7 @@
-From b8b91f969317f2a655312078961c7127541a7e25 Mon Sep 17 00:00:00 2001
+From d8186c068c3f0617f3334c5ec36180953afbc65a Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 16 Aug 2017 11:07:08 +0100
-Subject: [PATCH 07/19] Win32: distutils: Also look for executable.bat
+Subject: [PATCH 07/20] Win32: distutils: Also look for executable.bat
 
 This patch should probably not exist, or at least be
 rewritten. See the comments.
@@ -58,5 +58,5 @@ index 737b293f8d..efdfc998bf 100644
          return executable
 +    return None
 -- 
-2.20.1 (Apple Git-117)
+2.20.1
 

@@ -1,7 +1,7 @@
-From 0f2e4b00afd1db0ed9c83817e25be7122b7605e5 Mon Sep 17 00:00:00 2001
+From 70c789b440d959df0c14aad65498ff871772512f Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Fri, 25 Jan 2019 22:54:57 +0000
-Subject: [PATCH 18/19] Add CondaEcosystemModifyDllSearchPath()
+Subject: [PATCH 18/20] Add CondaEcosystemModifyDllSearchPath()
 
 This changes the DLL search order so that C:\Windows\System32 does not
 get searched in before entries in PATH.
@@ -469,5 +469,5 @@ index 4e5555e917..8b299517f9 100644
          }
  
 -- 
-2.20.1 (Apple Git-117)
+2.20.1
 

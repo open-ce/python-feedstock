@@ -1,7 +1,7 @@
-From 2298647a971733e1904fca7dee682467860a5559 Mon Sep 17 00:00:00 2001
+From d5482e88b937e5bcf1cc315328a6ca7dbedc2657 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Thu, 28 Sep 2017 15:47:20 -0500
-Subject: [PATCH 03/19] backport Python 3.6 _PYTHON_SYSCONFIGDATA_NAME
+Subject: [PATCH 03/20] backport Python 3.6 _PYTHON_SYSCONFIGDATA_NAME
 
 ---
  Lib/distutils/sysconfig.py | 5 ++++-
@@ -51,5 +51,5 @@ index 9c8350d953..6700cb6582 100644
  
  def _init_non_posix(vars):
 -- 
-2.20.1 (Apple Git-117)
+2.20.1
 

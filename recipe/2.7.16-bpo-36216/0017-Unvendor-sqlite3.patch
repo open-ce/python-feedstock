@@ -1,7 +1,7 @@
-From 8480ff885aa04a900bef0afd44dcd64928e1a622 Mon Sep 17 00:00:00 2001
+From 2f7513516c95787290d26ff99db79f69451dcf09 Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Mon, 10 Dec 2018 10:49:49 -0600
-Subject: [PATCH 17/19] Unvendor sqlite3
+Subject: [PATCH 17/20] Unvendor sqlite3
 
 ---
  PCbuild/_sqlite3.vcxproj | 7 ++-----
@@ -51,5 +51,5 @@ index 6673ff3136..7987067587 100644
      <bsddbDir>$(ExternalsDir)bsddb-4.7.25.0</bsddbDir>
      <opensslDir>$(ExternalsDir)openssl-1.0.2q\</opensslDir>
 -- 
-2.20.1 (Apple Git-117)
+2.20.1
 
