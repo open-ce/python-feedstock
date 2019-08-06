@@ -92,11 +92,22 @@ requirements:
     - libffi                             # [unix]
 
 test:
+  # Because we need to use xvfb-run on linux, from a CDT package.
+  requires:  # [linux]
+    # We are running centos6 software here (on whatever distro you are on)
+    # .. so it best be compatible (you should use centos6 if possible).
+    - {{ cdt('xorg-x11-server-xvfb') }}  # [linux]
+    - {{ cdt('xorg-x11-xauth') }}  # [linux]
+  files:
+    - tests.py
   commands:
     - python -V
     - pydoc -h
     - python-config --help  # [unix]
-    - idle -h
+    - PATH=$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/bin:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/usr/bin:$PATH LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/lib64:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/usr/lib DISPLAY=localhost:1 xvfb-run python tests.py  # [linux]
+    - PATH=$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/bin:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/usr/bin:$PATH LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/lib64:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/usr/lib DISPLAY=localhost:1 idle -h  # [linux]
+    - python tests.py  # [not linux]
+    - idle -h  # [not linux]
     - python -c "import sysconfig; print sysconfig.get_config_var('CC')"
     -  _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata_x86_64_conda_cos6_linux_gnu python -c "import sysconfig; print sysconfig.get_config_var('CC')"  # [linux64]
 
