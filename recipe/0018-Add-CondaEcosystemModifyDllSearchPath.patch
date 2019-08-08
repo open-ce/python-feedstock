@@ -9,13 +9,15 @@ get searched in before entries in PATH.
 Reviewed by Kai Tietz 7.2.2019
 
 Updated a bit to include other directories.
+
+meh
 ---
- Modules/main.c       | 395 ++++++++++++++++++++++++++++++++++++++++++-
+ Modules/main.c       | 393 ++++++++++++++++++++++++++++++++++++++++++-
  Python/dynload_win.c |  18 +-
- 2 files changed, 409 insertions(+), 4 deletions(-)
+ 2 files changed, 407 insertions(+), 4 deletions(-)
 
 diff --git a/Modules/main.c b/Modules/main.c
-index e0dcd026ed..77c754ceaa 100644
+index e0dcd026ed..5ff15f4cf3 100644
 --- a/Modules/main.c
 +++ b/Modules/main.c
 @@ -20,6 +20,10 @@
@@ -29,18 +31,16 @@ index e0dcd026ed..77c754ceaa 100644
  #endif
  /* End of includes for exit_sigint() */
  
-@@ -31,6 +35,10 @@
+@@ -31,6 +35,8 @@
  extern "C" {
  #endif
  
-+#ifdef MS_WINDOWS
-+char *CondaEcosystemGetWarnings();
-+#endif
++extern char *CondaEcosystemGetWarnings();
 +
  /* --- pymain_init() ---------------------------------------------- */
  
  static PyStatus
-@@ -38,6 +46,11 @@ pymain_init(const _PyArgv *args)
+@@ -38,6 +44,11 @@ pymain_init(const _PyArgv *args)
  {
      PyStatus status;
  
@@ -52,7 +52,7 @@ index e0dcd026ed..77c754ceaa 100644
      status = _PyRuntime_Initialize();
      if (_PyStatus_EXCEPTION(status)) {
          return status;
-@@ -206,7 +219,7 @@ pymain_header(const PyConfig *config)
+@@ -206,7 +217,7 @@ pymain_header(const PyConfig *config)
          return;
      }
  
@@ -61,7 +61,7 @@ index e0dcd026ed..77c754ceaa 100644
      if (config->site_import) {
          fprintf(stderr, "%s\n", COPYRIGHT);
      }
-@@ -661,6 +674,386 @@ Py_RunMain(void)
+@@ -661,6 +672,386 @@ Py_RunMain(void)
  }
  
  
@@ -255,7 +255,7 @@ index e0dcd026ed..77c754ceaa 100644
 +
 +int CondaEcosystemModifyDllSearchPath(int add_windows_directory, int add_cwd) {
 +    /* Returns:
-+       
++
 +       -1: CONDA_DLL_SEARCH_MODIFICATION_ENABLE unset.
 +        0: Success (this can mean that no changes were made, i.e. no calls to the kernel functions were performed).
 +        1: Failed to find kernel functions necessary (i.e. your Windows is too old).

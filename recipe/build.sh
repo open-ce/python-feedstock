@@ -1,4 +1,5 @@
-#!/bin/bash
+# This is the recipe used to build the official Anaconda Distribution's latest Python
+# release (at the times when this is true).
 
 # The LTO/PGO information was sourced from @pitrou and the Debian rules file in:
 # http://http.debian.net/debian/pool/main/p/python3.6/python3.6_3.6.2-2.debian.tar.xz
@@ -7,6 +8,70 @@
 # http://bazaar.launchpad.net/~doko/python/pkg3.5-debian/view/head:/rules#L255
 # .. but upstream regrtest.py now has --pgo (since >= 3.6) and skips tests that are:
 # "not helpful for PGO".
+
+set -x
+
+# Experimental logging system, consider moving it to some helper shell functions script.
+source ${RECIPE_DIR}/logging-functions
+
+_log_init
+
+declare -a LOG_INFO;
+LOG_INFO+=("_log_to_screen_and_file")
+LOG_INFO+=("${_LOG_INFO}")
+
+function _configure_and_build_python_in_folder() {
+  # Args:
+  # $1 :: build folder (warns if already exists)
+  # $2 :: install prefix (or UNINSTALLED)
+  # $3 :: logging level (_LOG_{CRITICAL,ERROR,WARNING,INFO,DEBUG,NOTSET})
+  # $4 :: logging stderr file handle
+  # $5 :: logging stdout file handle
+  # $6 :: stdio_style - may be used for e.g. reproducible builds - with logs - - (UNBUFFERED or anything else == buffered, sorry!)
+  # $7 :: env. variable settings (name of bash array containing pairs of var, value entries)
+  # $8 :: configure args (name of bash array .. etc etc)
+  # $9 :: config.site hacks (name of .. etc etc)
+
+  local _CABPIF_ARG_BUILD_FOLDER=\"$1\"; shift
+  local _CABPIF_ARG_INSTALL_PREFIX=\"$1\"; shift
+  local _CABPIF_ARG_LOGGING_LEVEL=\"$1\"; shift
+  local _CABPIF_ARG_STDERR=\"$1\"; shift
+  local _CABPIF_ARG_STDOUT=\"$1\"; shift
+  local _CABPIF_ARG_STDIO_STYLE=\"$1\"; shift
+  local _CABPIF_ARGVN_ENV_VARS=\"$1\"; shift
+  local _CABPIF_ARGVN_CFG_ARGS=\"$1\"; shift
+  local _CABPIF_ARGVN_CFG_SITE=\"$1\"; shift
+
+  _log_to_screen_and_file "What the heck am I doing here"
+  ${LOG_INFO[@]} "_CABPIF_ARG_INSTALL_PREFIX :: ${_CABPIF_ARG_INSTALL_PREFIX}"
+  ${LOG_INFO[@]} "_CABPIF_ARG_INSTALL_PREFIX :: ${_CABPIF_ARG_INSTALL_PREFIX}"
+  ${LOG_INFO[@]} "_CABPIF_ARG_LOGGING_LEVEL :: ${_CABPIF_ARG_LOGGING_LEVEL}"
+  ${LOG_INFO[@]} "_CABPIF_ARG_STDERR :: ${_CABPIF_ARG_STDERR}"
+  ${LOG_INFO[@]} "_CABPIF_ARG_STDOUT :: ${_CABPIF_ARG_STDOUT}"
+  ${LOG_INFO[@]} "_CABPIF_ARG_STDIO_STYLE :: ${_CABPIF_ARG_STDIO_STYLE}"}
+  ${LOG_INFO[@]} "_CABPIF_ARGVN_ENV_VARS :: ${_CABPIF_ARGVN_ENV_VARS}"}
+  ${LOG_INFO[@]} "_CABPIF_ARGVN_CFG_ARGS :: ${_CABPIF_ARGVN_CFG_ARGS}"}
+  ${LOG_INFO[@]} "_CABPIF_ARGVN_CFG_SITE :: ${_CABPIF_ARGVN_CFG_SITE}"}
+
+  declare -a _CABPIF_ARG_ENV_VARS
+  local __CABPIF_ARGVN_ENV_VARS=$(eval echo ${_CABPIF_ARGVN_ENV_VARS})
+  local _CABPIF_ARG_ENV_VARS="${__CABPIF_ARGVN_ENV_VARS[@]}"
+
+  declare -a _CABPIF_ARG_CFG_ARGS
+  local __CABPIF_ARGVN_CFG_ARGS=$(eval echo ${_CABPIF_ARGVN_CFG_ARGS})
+  local _CABPIF_ARG_CFG_ARGS="${__CABPIF_ARGVN_CFG_ARGS[@]}"
+
+  declare -a _CABPIF_ARG_CFG_SITE
+  local __CABPIF_ARGVN_CFG_SITE=$(eval echo ${_CABPIF_ARGVN_CFG_SITE})
+  local _CABPIF_ARG_CFG_SITE="${__CABPIF_ARGVN_CFG_SITE[@]}"
+
+  ${LOG_INFO[@]} "_CABPIF_ARG_ENV_VARS :: ${_CABPIF_ARG_ENV_VARS[@]}"}
+  ${LOG_INFO[@]} "_CABPIF_ARG_CFG_ARGS :: ${_CABPIF_ARG_CFG_ARGS[@]}"}
+  ${LOG_INFO[@]} "_CABPIF_ARG_CFG_SITE :: ${_CABPIF_ARG_CFG_SITE[@]}"}
+
+  # Run the thing!
+}
+
 
 VERFULL=${PKG_VERSION}
 VER=${PKG_VERSION%.*}
@@ -122,7 +187,20 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
   sed -i -e "s/@OSX_ARCH@/$ARCH/g" Lib/distutils/unixccompiler.py
 fi
 
+
+
 if [[ "${BUILD}" != "${HOST}" ]] && [[ -n "${BUILD}" ]] && [[ -n "${HOST}" ]]; then
+
+  # $1 :: build folder (warns if already exists)
+  # $2 :: install prefix (or UNINSTALLED)
+  # $3 :: maximum logging level (_LOG_{CRITICAL,ERROR,WARNING,INFO,DEBUG,NOTSET}) - NYI, questionable => does it mean maximum tolerable before failure reported?
+  # $4 :: logging stderr file handle
+  # $5 :: logging stdout file handle
+  # $6 :: stdio_style - may be used for e.g. reproducible builds - with logs - - (UNBUFFERED or anything else == buffered, sorry!)
+  # $7 :: env. variable settings (name of bash array containing pairs of var, value entries)
+  # $8 :: configure args (name of bash array .. etc etc)
+  # $9 :: config.site hacks (name of .. etc etc)
+
   # Build the exact same Python for the build machine. It would be nice (and might be
   # possible already?) to be able to make this just an 'exact' pinned build dependency
   # of a split-package?
@@ -137,12 +215,23 @@ if [[ "${BUILD}" != "${HOST}" ]] && [[ -n "${BUILD}" ]] && [[ -n "${HOST}" ]]; t
             AR=/usr/bin/ar \
             RANLIB=/usr/bin/ranlib \
             LD=/usr/bin/ld && \
-      ${SRC_DIR}/configure --build=${BUILD} \
-                           --host=${BUILD} \
-                           --prefix=${BUILD_PYTHON_PREFIX} \
-                           --with-ensurepip=no && \
-      make && \
-      make install)
+      declare -a _CONFIGURE_ARGS
+      _CONFIGURE_ARGS=()
+      _CONFIGURE_ARGS+=("--build=${BUILD}")
+      _CONFIGURE_ARGS+=("--host=${BUILD}")
+      _CONFIGURE_ARGS+=("--prefix=${BUILD_PYTHON_PREFIX}")
+      _CONFIGURE_ARGS+=("--with-ensurepip=no")
+      printf "INFO :: calling\nINFO :: ${SRC_DIR}/configure  \\n"
+      for _CFG_ARG in "${_CONFIGURE_ARGS[@]}"; do
+          printf "INFO ::   \"${_CFG_ARG}\"\n"
+      done
+      "${SRC_DIR}"/configure "${_CONFIGURE_ARGS[@]}" 2>&1 | tee build-machine-python.configure.log
+      if [[ $0 != 0 ]]; then printf "ERROR :: \"${SRC_DIR}\"/configure failed, see ${PWD}/build-machine-python.configure.log\n"; fi
+      make 2>&1 | tee build-machine-python.make.log
+      if [[ $0 != 0 ]]; then printf "ERROR :: \"make failed, see ${PWD}/build-machine-python.make.log\n"; fi
+      make install 2>&1 | tee build-machine-python.install.log
+      if [[ $0 != 0 ]]; then printf "ERROR :: \"make install failed, see ${PWD}/build-machine-python.make.log\n"; fi
+    )
     export PATH=${BUILD_PYTHON_PREFIX}/bin:${PATH}
     ln -s ${BUILD_PYTHON_PREFIX}/bin/python${VER} ${BUILD_PYTHON_PREFIX}/bin/python
   popd
