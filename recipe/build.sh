@@ -20,8 +20,9 @@ declare -a LOG_INFO;
 LOG_INFO+=("_log_to_screen_and_file")
 LOG_INFO+=("${_LOG_INFO}")
 
+# Currently, this is unused, unless you are cross compiling
 function _configure_and_build_python_in_folder() {
-  # Args:
+  # ** Args **
   # $1 :: build folder (warns if already exists)
   # $2 :: install prefix (or UNINSTALLED)
   # $3 :: logging level (_LOG_{CRITICAL,ERROR,WARNING,INFO,DEBUG,NOTSET})
