@@ -32,7 +32,7 @@ index 22249da54f..0989c88c30 100644
     .. versionchanged:: 2.7
        Added IPv6 URL parsing capabilities.
  
-+   .. versionchanged:: 2.7.17
++   .. versionchanged:: 2.7.16
 +      Characters that affect netloc parsing under NFKC normalization will
 +      now raise :exc:`ValueError`.
 +
@@ -54,7 +54,7 @@ index 22249da54f..0989c88c30 100644
     .. versionchanged:: 2.5
        Added attributes to return value.
  
-+   .. versionchanged:: 2.7.17
++   .. versionchanged:: 2.7.16
 +      Characters that affect netloc parsing under NFKC normalization will
 +      now raise :exc:`ValueError`.
 +
