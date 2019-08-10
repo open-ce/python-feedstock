@@ -104,8 +104,10 @@ test:
     - python -V
     - pydoc -h
     - python-config --help  # [unix]
-    - PATH=$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/bin:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/usr/bin:$PATH LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/lib64:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/usr/lib DISPLAY=localhost:1 xvfb-run python tests.py  # [linux]
-    - PATH=$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/bin:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/usr/bin:$PATH LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/lib64:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/usr/lib DISPLAY=localhost:1 idle -h  # [linux]
+    - export PATH=$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/bin:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/usr/bin:$PATH
+    - export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/lib64:$CONDA_PREFIX/x86_64-conda_cos6-linux-gnu/sysroot/usr/lib:/usr/lib64:/usr/lib
+    - export DISPLAY=localhost:1
+    - bash -x xvfb-run python $PWD/tests.py  # [linux]
     - python tests.py  # [not linux]
     - idle -h  # [not linux]
     - python -c "import sysconfig; print sysconfig.get_config_var('CC')"
