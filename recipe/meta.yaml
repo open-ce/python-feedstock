@@ -1,7 +1,5 @@
 {% set version = "2.7.16" %}
 {% set sha256 = "01da813a3600876f03f46db11cc5c408175e99f03af2ba942ef324389a83bad5" %}
-# {% set pdir = "2.7.16" %}
-{% set pdir = "2.7.16-bpo-36216" %}
 
 package:
   name: python
@@ -11,26 +9,28 @@ source:
   - url: https://www.python.org/ftp/python/{{ version }}/Python-{{ version }}.tgz
     sha256: {{ sha256 }}
     patches:
-      - {{ pdir }}/0001-bpo-36216-Add-check-for-characters-in-netloc-that-no.patch
-      - {{ pdir }}/0002-bpo-36216-Only-print-test-messages-when-verbose-GH-1.patch
-      - {{ pdir }}/0003-backport-Python-3.6-_PYTHON_SYSCONFIGDATA_NAME.patch
-      - {{ pdir }}/0004-Add-Anaconda-Distribution-version-logic.patch
-      - {{ pdir }}/0005-Darwin-Hack-sys.-exec_-prefix-if-run-from-python.app.patch
-      - {{ pdir }}/0006-Darwin-Add-arch-x86_64-to-UnicCCompiler-ld_args.patch
-      - {{ pdir }}/0007-Win32-distutils-Also-look-for-executable.bat.patch
-      - {{ pdir }}/0008-Win32-Change-FD_SETSIZE-from-512-to-2048.patch
-      - {{ pdir }}/0009-Win32-Fixes-for-Windows-GCC-interop-needed-by-RPy2-a.patch
-      - {{ pdir }}/0010-Do-not-pass-g-to-GCC-when-not-Py_DEBUG.patch
-      - {{ pdir }}/0011-Darwin-Look-in-sysroot-usr-lib-include-if-sysroot-is.patch
-      - {{ pdir }}/0012-runtime_library_dir_option-Use-1st-word-of-CC-as-com.patch
-      - {{ pdir }}/0013-Mark-sysconfigdata.py-as-utf-8.patch
-      - {{ pdir }}/0014-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch
-      - {{ pdir }}/0015-Fix-cross-compilation-on-Debian-based-distros.patch
-      - {{ pdir }}/0016-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
-      - {{ pdir }}/0017-Unvendor-sqlite3.patch
-      - {{ pdir }}/0018-Add-CondaEcosystemModifyDllSearchPath.patch  # [win]
-      # - {{ pdir }}/0019-Use-CreateProcessW-to-support-Unicode.patch  # [win]
-      - {{ pdir }}/0020-macOS-Allow-SDK-dir-suffixes-e.g.-usr-include-into-t.patch
+      - 0001-bpo-36216-Add-check-for-characters-in-netloc-that-no.patch
+      - 0002-bpo-36216-Only-print-test-messages-when-verbose-GH-1.patch
+      - 0003-bpo-36742-Corrects-fix-to-handle-decomposition-in-us.patch
+      - 0004-bpo-30458-Disallow-control-chars-in-http-URLs.-GH-12.patch
+      - 0005-backport-Python-3.6-_PYTHON_SYSCONFIGDATA_NAME.patch
+      - 0006-Add-Anaconda-Distribution-version-logic.patch
+      - 0007-Darwin-Hack-sys.-exec_-prefix-if-run-from-python.app.patch
+      - 0008-Darwin-Add-arch-x86_64-to-UnicCCompiler-ld_args.patch
+      - 0009-Win32-distutils-Also-look-for-executable.bat.patch
+      - 0010-Win32-Change-FD_SETSIZE-from-512-to-2048.patch
+      - 0011-Win32-Fixes-for-Windows-GCC-interop-needed-by-RPy2-a.patch
+      - 0012-Do-not-pass-g-to-GCC-when-not-Py_DEBUG.patch
+      - 0013-Darwin-Look-in-sysroot-usr-lib-include-if-sysroot-is.patch
+      - 0014-runtime_library_dir_option-Use-1st-word-of-CC-as-com.patch
+      - 0015-Mark-sysconfigdata.py-as-utf-8.patch
+      - 0016-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch
+      - 0017-Fix-cross-compilation-on-Debian-based-distros.patch
+      - 0018-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
+      - 0019-Unvendor-sqlite3.patch
+      - 0020-Add-CondaEcosystemModifyDllSearchPath.patch  # [win]
+      - 0021-macOS-Allow-SDK-dir-suffixes-e.g.-usr-include-into-t.patch
+      # - 0022-Use-CreateProcessW-to-support-Unicode.patch
   # - path: ~/conda/CPython
   #   path_via_symlink: True
   - url: https://github.com/python/cpython-source-deps/archive/bzip2-1.0.6.zip      # [win]
