@@ -1,7 +1,7 @@
 From 8fae676b37ee0d81c828baf44dd54dd332164ca9 Mon Sep 17 00:00:00 2001
 From: Steve Dower <steve.dower@microsoft.com>
 Date: Thu, 7 Mar 2019 09:08:45 -0800
-Subject: [PATCH 01/22] bpo-36216: Add check for characters in netloc that
+Subject: [PATCH 01/23] bpo-36216: Add check for characters in netloc that
  normalize to separators (GH-12201)
 
 ---

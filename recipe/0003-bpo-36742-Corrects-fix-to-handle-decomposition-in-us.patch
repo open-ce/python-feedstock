@@ -1,7 +1,7 @@
 From 84c16ac97eb5e343f1d400b7f360945c461b3166 Mon Sep 17 00:00:00 2001
 From: Steve Dower <steve.dower@python.org>
 Date: Tue, 4 Jun 2019 09:40:16 -0700
-Subject: [PATCH 03/22] bpo-36742: Corrects fix to handle decomposition in
+Subject: [PATCH 03/23] bpo-36742: Corrects fix to handle decomposition in
  usernames (GH-13812)
 
 ---
