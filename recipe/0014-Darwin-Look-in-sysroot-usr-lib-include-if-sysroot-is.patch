@@ -1,4 +1,4 @@
-From fd2dbac3ab7e50a3c849297fe5cfca03574b8337 Mon Sep 17 00:00:00 2001
+From 9afcb504c7a71a832759754b5e64639b527af2a9 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sun, 20 Aug 2017 00:22:22 +0100
 Subject: [PATCH 14/23] Darwin: Look in ${sysroot}/usr/{lib,include} if sysroot

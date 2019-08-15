@@ -29,9 +29,9 @@ source:
       - 0018-Fix-cross-compilation-on-Debian-based-distros.patch
       - 0019-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
       - 0020-Unvendor-sqlite3.patch
-      - 0021-Add-CondaEcosystemModifyDllSearchPath.patch
+      - 0021-Add-CondaEcosystemModifyDllSearchPath.patch  # [win]
       - 0022-macOS-Allow-SDK-dir-suffixes-e.g.-usr-include-into-t.patch
-      - 0023-Use-CreateProcessW-to-support-Unicode.patch
+      # - 0023-Use-CreateProcessW-to-support-Unicode.patch
   # - path: ~/conda/CPython
   #   path_via_symlink: True
   - url: https://github.com/python/cpython-source-deps/archive/bzip2-1.0.6.zip      # [win]
@@ -58,7 +58,7 @@ source:
 
 
 build:
-  number: 2
+  number: 3
   no_link:
     - bin/python2.7     # [unix]
     - DLLs/_ctypes.pyd  # [win]

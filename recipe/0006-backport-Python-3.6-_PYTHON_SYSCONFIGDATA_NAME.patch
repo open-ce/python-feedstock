@@ -1,4 +1,4 @@
-From 9298034943f13fec161db3314c98dabcb10ca740 Mon Sep 17 00:00:00 2001
+From 2e6ac38720d7bdf3f42a8578e33b88031edae93a Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Thu, 28 Sep 2017 15:47:20 -0500
 Subject: [PATCH 06/23] backport Python 3.6 _PYTHON_SYSCONFIGDATA_NAME

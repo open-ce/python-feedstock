@@ -1,4 +1,4 @@
-From 52d70f8da3eaf3e19deb7d815b3ca7c40c1c63c5 Mon Sep 17 00:00:00 2001
+From 99a11c6a69c9586eab934cb8dd5b009f7aee5238 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sat, 16 Mar 2019 22:49:28 +0000
 Subject: [PATCH 23/23] Use CreateProcessW to support Unicode

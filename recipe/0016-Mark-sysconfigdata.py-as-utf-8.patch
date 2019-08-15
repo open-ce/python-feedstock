@@ -1,4 +1,4 @@
-From eecd48056a5669822bc5ab39c25a79601123bb63 Mon Sep 17 00:00:00 2001
+From b7c1d10383dbed11a9bb51874715b7c11eeaccea Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Mon, 4 Dec 2017 22:14:32 +0000
 Subject: [PATCH 16/23] Mark sysconfigdata.py as utf-8

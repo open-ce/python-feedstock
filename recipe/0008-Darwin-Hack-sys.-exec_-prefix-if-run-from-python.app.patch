@@ -1,4 +1,4 @@
-From 7d820fea36640f6792847ddc9aa91c48a737eb65 Mon Sep 17 00:00:00 2001
+From 912c6fd1b518b15ea0f2c8e36f21c4fbdc44a017 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 16 Aug 2017 13:17:26 +0100
 Subject: [PATCH 08/23] Darwin: Hack sys.{exec_,}prefix if run from

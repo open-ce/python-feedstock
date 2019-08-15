@@ -1,4 +1,4 @@
-From c2ae8f5145c15875faa559f309d65384db15e7cf Mon Sep 17 00:00:00 2001
+From ddb7985eb26376880a4e1ca86fec462b6820036f Mon Sep 17 00:00:00 2001
 From: Xtreak <tir.karthi@gmail.com>
 Date: Sat, 15 Jun 2019 20:59:43 +0530
 Subject: [PATCH 05/23] [2.7] bpo-35121: prefix dot in domain for proper

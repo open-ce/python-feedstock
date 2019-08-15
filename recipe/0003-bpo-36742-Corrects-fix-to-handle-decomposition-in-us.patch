@@ -1,4 +1,4 @@
-From 84c16ac97eb5e343f1d400b7f360945c461b3166 Mon Sep 17 00:00:00 2001
+From bf6c8cbeb5e7f89fafe32611bc1a53476741e13d Mon Sep 17 00:00:00 2001
 From: Steve Dower <steve.dower@python.org>
 Date: Tue, 4 Jun 2019 09:40:16 -0700
 Subject: [PATCH 03/23] bpo-36742: Corrects fix to handle decomposition in
@@ -6,8 +6,8 @@ Subject: [PATCH 03/23] bpo-36742: Corrects fix to handle decomposition in
 
 ---
  Lib/test/test_urlparse.py | 13 +++++++------
- Lib/urlparse.py           | 13 ++++++++-----
- 2 files changed, 15 insertions(+), 11 deletions(-)
+ Lib/urlparse.py           | 14 +++++++++-----
+ 2 files changed, 16 insertions(+), 11 deletions(-)
 
 diff --git a/Lib/test/test_urlparse.py b/Lib/test/test_urlparse.py
 index 1830d0b286..669382cba9 100644
@@ -34,10 +34,10 @@ index 1830d0b286..669382cba9 100644
  def test_main():
      test_support.run_unittest(UrlParseTestCase)
 diff --git a/Lib/urlparse.py b/Lib/urlparse.py
-index 54eda08651..6834f3c179 100644
+index 54eda08651..798b467b60 100644
 --- a/Lib/urlparse.py
 +++ b/Lib/urlparse.py
-@@ -171,14 +171,17 @@ def _checknetloc(netloc):
+@@ -171,14 +171,18 @@ def _checknetloc(netloc):
      # looking for characters like \u2100 that expand to 'a/c'
      # IDNA uses NFKC equivalence, so normalize for this check
      import unicodedata
@@ -55,8 +55,9 @@ index 54eda08651..6834f3c179 100644
          if c in netloc2:
 -            raise ValueError("netloc '" + netloc2 + "' contains invalid " +
 -                             "characters under NFKC normalization")
-+            raise ValueError(u"netloc '" + netloc + u"' contains invalid " +
-+                             u"characters under NFKC normalization")
++            raise ValueError("netloc %r contains invalid characters "
++                             "under NFKC normalization"
++                             % netloc)
  
  def urlsplit(url, scheme='', allow_fragments=True):
      """Parse a URL into 5 components:
