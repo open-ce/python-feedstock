@@ -98,4 +98,3 @@ _common_configure_args+=(--with-tcltk-includes="-I${PREFIX}/include")
 _common_configure_args+=("--with-tcltk-libs=-L${PREFIX}/lib -ltcl8.6 -ltk8.6")
 ./configure "${_common_configure_args[@]}" \
             --enable-shared
-make -j${CPU_COUNT}

@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 
-set -x
+set -euxo
 
 VER=${PKG_VERSION%.*}
 
+# this is the mechanism by which we fall back to default gcc, but having it defined here can break the build
+#     or use incorrect settings
+unset _PYTHON_SYSCONFIGDATA_NAME
+unset _CONDA_PYTHON_SYSCONFIGDATA_NAME
+
+make -j${CPU_COUNT}
 make install
 
 env

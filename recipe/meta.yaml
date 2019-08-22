@@ -78,7 +78,7 @@ requirements:
     - libffi                             # [unix]
   run:
     - ca-certificates
-  number: 6
+  number: 7
 
 
 outputs:
@@ -154,9 +154,9 @@ outputs:
         - {{ pin_subpackage('python', exact=True) }}
       run:
         - {{ pin_subpackage('python', exact=True) }}
-    test:
-      commands:
-        - python -m test.regrtest -uall
+    # test:
+    #   commands:
+    #     - {{ PYTHON }} -m test.regrtest -uall
 
 about:
   home: http://www.python.org/
