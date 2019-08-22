@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
+set -x
+
 VER=${PKG_VERSION%.*}
 
 make install
 
 env
 
-set -x
 # Remove the regression test-suite to save space
 # Though keep `support` as some things use that.
 # TODO :: Make a subpackage for this once we implement multi-level testing.

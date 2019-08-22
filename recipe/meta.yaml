@@ -76,6 +76,9 @@ requirements:
     - tk                                 # [unix]
     - ncurses                            # [unix]
     - libffi                             # [unix]
+  run:
+    - ca-certificates
+  number: 6
 
 
 outputs:
@@ -83,7 +86,6 @@ outputs:
     # lib/test will be removed from this, I hope!
     script: install-python.sh
     build:
-      number: 5
       no_link:
         - bin/python2.7     # [unix]
         - DLLs/_ctypes.pyd  # [win]
@@ -148,6 +150,8 @@ outputs:
   - name: python-regr-testsuite
     script: install-python-regr-testsuite.sh
     requirements:
+      build:
+        - {{ pin_subpackage('python', exact=True) }}
       run:
         - {{ pin_subpackage('python', exact=True) }}
     test:
