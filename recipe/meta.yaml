@@ -58,7 +58,7 @@ source:
 
 
 build:
-  number: 4
+  number: 5
   no_link:
     - bin/python2.7     # [unix]
     - DLLs/_ctypes.pyd  # [win]
@@ -91,6 +91,8 @@ requirements:
     - tk                                 # [unix]
     - ncurses                            # [unix]
     - libffi                             # [unix]
+  run:
+    - ca-certificates
 
 test:
   # Because we need to use xvfb-run on linux, from a CDT package.
