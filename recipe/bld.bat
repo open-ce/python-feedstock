@@ -9,8 +9,9 @@ REM if errorlevel 1 exit 1
 :: error MSB4066: The attribute "Label" in element <PropertyGroup> is unrecognized.
 :: The msbuild.exe from the Win7 SDK (.net 4.0), is known to work.
 if %VS_MAJOR% == 9 (
-    COPY C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe .\
-    set "PATH=%CD%;%PATH%"
+   set "PATH=C:\Windows\Microsoft.NET\Framework\v4.0.30319;%PATH%"
+   :: set $(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v9.0\TeamTest\Microsoft.TeamTest.4.targets
+:: maybe https://social.msdn.microsoft.com/Forums/en-US/acd703a6-2673-4dbc-9d90-c5ee5549205e/second-project-uses-wrong-vctargetspath-so-cant-find-microsoftcppdefaultprops?forum=msbuild
 )
 
 REM Compile python, extensions and external libraries

@@ -6,33 +6,33 @@ package:
   version: {{ version }}
 
 source:
-  - url: https://www.python.org/ftp/python/{{ version }}/Python-{{ version }}.tgz
-    sha256: {{ sha256 }}
-    patches:
-      - 0001-bpo-36216-Add-check-for-characters-in-netloc-that-no.patch
-      - 0002-bpo-36216-Only-print-test-messages-when-verbose-GH-1.patch
-      - 0003-bpo-36742-Corrects-fix-to-handle-decomposition-in-us.patch
-      - 0004-bpo-30458-Disallow-control-chars-in-http-URLs.-GH-12.patch
-      - 0005-2.7-bpo-35121-prefix-dot-in-domain-for-proper-subdom.patch
-      - 0006-backport-Python-3.6-_PYTHON_SYSCONFIGDATA_NAME.patch
-      - 0007-Add-Anaconda-Distribution-version-logic.patch
-      - 0008-Darwin-Hack-sys.-exec_-prefix-if-run-from-python.app.patch
-      - 0009-Darwin-Add-arch-x86_64-to-UnicCCompiler-ld_args.patch
-      - 0010-Win32-distutils-Also-look-for-executable.bat.patch
-      - 0011-Win32-Change-FD_SETSIZE-from-512-to-2048.patch
-      - 0012-Win32-Fixes-for-Windows-GCC-interop-needed-by-RPy2-a.patch
-      - 0013-Do-not-pass-g-to-GCC-when-not-Py_DEBUG.patch
-      - 0014-Darwin-Look-in-sysroot-usr-lib-include-if-sysroot-is.patch
-      - 0015-runtime_library_dir_option-Use-1st-word-of-CC-as-com.patch
-      - 0016-Mark-sysconfigdata.py-as-utf-8.patch
-      - 0017-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch
-      - 0018-Fix-cross-compilation-on-Debian-based-distros.patch
-      - 0019-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
-      - 0020-Unvendor-sqlite3.patch
-      - 0021-Add-CondaEcosystemModifyDllSearchPath.patch  # [win]
-      - 0022-macOS-Allow-SDK-dir-suffixes-e.g.-usr-include-into-t.patch
-      # - 0023-Use-CreateProcessW-to-support-Unicode.patch
-  # - path: ~/conda/CPython
+  #- url: https://www.python.org/ftp/python/{{ version }}/Python-{{ version }}.tgz
+  #  sha256: {{ sha256 }}
+  #  patches:
+  #    - 0001-bpo-36216-Add-check-for-characters-in-netloc-that-no.patch
+  #    - 0002-bpo-36216-Only-print-test-messages-when-verbose-GH-1.patch
+  #    - 0003-bpo-36742-Corrects-fix-to-handle-decomposition-in-us.patch
+  #    - 0004-bpo-30458-Disallow-control-chars-in-http-URLs.-GH-12.patch
+  #    - 0005-2.7-bpo-35121-prefix-dot-in-domain-for-proper-subdom.patch
+  #    - 0006-backport-Python-3.6-_PYTHON_SYSCONFIGDATA_NAME.patch
+  #    - 0007-Add-Anaconda-Distribution-version-logic.patch
+  #    - 0008-Darwin-Hack-sys.-exec_-prefix-if-run-from-python.app.patch
+  #    - 0009-Darwin-Add-arch-x86_64-to-UnicCCompiler-ld_args.patch
+  #    - 0010-Win32-distutils-Also-look-for-executable.bat.patch
+  #    - 0011-Win32-Change-FD_SETSIZE-from-512-to-2048.patch
+  #    - 0012-Win32-Fixes-for-Windows-GCC-interop-needed-by-RPy2-a.patch
+  #    - 0013-Do-not-pass-g-to-GCC-when-not-Py_DEBUG.patch
+  #    - 0014-Darwin-Look-in-sysroot-usr-lib-include-if-sysroot-is.patch
+  #    - 0015-runtime_library_dir_option-Use-1st-word-of-CC-as-com.patch
+  #    - 0016-Mark-sysconfigdata.py-as-utf-8.patch
+  #    - 0017-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch
+  #    - 0018-Fix-cross-compilation-on-Debian-based-distros.patch
+  #    - 0019-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
+  #    - 0020-Unvendor-sqlite3.patch
+  #    - 0021-Add-CondaEcosystemModifyDllSearchPath.patch  # [win]
+  #    - 0022-macOS-Allow-SDK-dir-suffixes-e.g.-usr-include-into-t.patch
+  #    # - 0023-Use-CreateProcessW-to-support-Unicode.patch
+  - path: C:/opt/src/CPython
   #   path_via_symlink: True
   - url: https://github.com/python/cpython-source-deps/archive/bzip2-1.0.6.zip      # [win]
     folder: externals/bzip2-1.0.6                                                   # [win]
@@ -83,7 +83,7 @@ outputs:
     # lib/test will be removed from this, I hope!
     script: install-python.sh
     build:
-  number: 5
+      number: 5
       no_link:
         - bin/python2.7     # [unix]
         - DLLs/_ctypes.pyd  # [win]
@@ -119,8 +119,8 @@ outputs:
         - tk                                 # [unix]
         - ncurses                            # [unix]
         - libffi                             # [unix]
-  run:
-    - ca-certificates
+      run:
+        - ca-certificates
 
     test:
       # Because we need to use xvfb-run on linux, from a CDT package.
