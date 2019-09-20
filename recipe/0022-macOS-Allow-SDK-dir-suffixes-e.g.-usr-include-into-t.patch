@@ -1,7 +1,7 @@
-From e5ad47b8bfab4b859dcd20471c83bc5109076e82 Mon Sep 17 00:00:00 2001
+From b6d9c94d3bb9e992b6130de378bb5700316adb74 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 6 Aug 2019 01:33:18 +0200
-Subject: [PATCH 22/23] macOS: Allow SDK dir suffixes (e.g. /usr/include) into
+Subject: [PATCH 22/24] macOS: Allow SDK dir suffixes (e.g. /usr/include) into
  the result of add_dir_to_list()
 
 ---
@@ -38,5 +38,5 @@ index eb7a6b14c8..c353369fe5 100644
      m = re.search(r'-isysroot\s+(\S+)', cflags)
      if m is None:
 -- 
-2.20.1
+2.23.0
 

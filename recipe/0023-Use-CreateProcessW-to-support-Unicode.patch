@@ -1,7 +1,7 @@
-From 99a11c6a69c9586eab934cb8dd5b009f7aee5238 Mon Sep 17 00:00:00 2001
+From f08d64983ed0af7481a9e73cd5ae43b9f1297f5b Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sat, 16 Mar 2019 22:49:28 +0000
-Subject: [PATCH 23/23] Use CreateProcessW to support Unicode
+Subject: [PATCH 23/24] Use CreateProcessW to support Unicode
 
 ---
  PC/_subprocess.c | 133 ++++++++++++++++++++++++++++++++++++++---------
@@ -191,5 +191,5 @@ index 66940ff7e4..591fab9513 100644
  
  PyDoc_STRVAR(TerminateProcess_doc,
 -- 
-2.20.1
+2.23.0
 

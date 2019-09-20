@@ -1,7 +1,7 @@
-From e7f3a509b64d82b2fb3df992acd337c8cad501f0 Mon Sep 17 00:00:00 2001
+From 6c8ff8694028ee367436b73ddb989e1b6aed6561 Mon Sep 17 00:00:00 2001
 From: Steve Dower <steve.dower@microsoft.com>
 Date: Tue, 12 Mar 2019 13:51:58 -0700
-Subject: [PATCH 02/23] bpo-36216: Only print test messages when verbose
+Subject: [PATCH 02/24] bpo-36216: Only print test messages when verbose
  (GH-12291)
 
 ---
@@ -23,5 +23,5 @@ index 73b0228ea8..1830d0b286 100644
                      urlparse.urlsplit(url)
  
 -- 
-2.20.1
+2.23.0
 

@@ -1,0 +1,74 @@
+From cddb1d9483240b4f262e55c865ddfa6d86d4fd59 Mon Sep 17 00:00:00 2001
+From: push0ebp <push0ebp@shl-MacBook-Pro.local>
+Date: Thu, 14 Feb 2019 02:05:46 +0900
+Subject: [PATCH 24/24] bpo-35907: Avoid file reading as disallowing the
+ unnecessary URL scheme in urllib
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+📜🤖 Added by blurb_it.
+
+Update 2019-02-13-17-21-10.bpo-35907.ckk2zg.rst
+
+Add prefix "CVE-2019-9948: "
+
+Update test_urllib.py and urllib.py\nchange assertEqual into assertRasies in DummyURLopener test, and simplify mitigation
+
+Update urllib.py
+
+Modify the object to string in check method name.
+
+Update urllib.py
+
+Fix typo
+---
+ Lib/test/test_urllib.py                                    | 7 +++++++
+ Lib/urllib.py                                              | 4 +++-
+ .../next/Library/2019-02-13-17-21-10.bpo-35907.ckk2zg.rst  | 1 +
+ 3 files changed, 11 insertions(+), 1 deletion(-)
+ create mode 100644 Misc/NEWS.d/next/Library/2019-02-13-17-21-10.bpo-35907.ckk2zg.rst
+
+diff --git a/Lib/test/test_urllib.py b/Lib/test/test_urllib.py
+index 0b20925bfe..41bd2e173d 100644
+--- a/Lib/test/test_urllib.py
++++ b/Lib/test/test_urllib.py
+@@ -1078,6 +1078,13 @@ class URLopener_Tests(unittest.TestCase):
+             "spam://c:|windows%/:=&?~#+!$,;'@()*[]|/path/"),
+             "//c:|windows%/:=&?~#+!$,;'@()*[]|/path/")
+ 
++    def test_local_file_open(self):
++        class DummyURLopener(urllib.URLopener):
++            def open_local_file(self, url):
++                return url
++        for url in ('local_file://example', 'local-file://example'):
++            self.assertRaises(IOError, DummyURLopener().open, url)
++            self.assertRaises(IOError, urllib.urlopen, url)
+ 
+ # Just commented them out.
+ # Can't really tell why keep failing in windows and sparc.
+diff --git a/Lib/urllib.py b/Lib/urllib.py
+index d85504a5cb..156879dd0a 100644
+--- a/Lib/urllib.py
++++ b/Lib/urllib.py
+@@ -203,7 +203,9 @@ class URLopener:
+         name = 'open_' + urltype
+         self.type = urltype
+         name = name.replace('-', '_')
+-        if not hasattr(self, name):
++
++        # bpo-35907: disallow the file reading with the type not allowed
++        if not hasattr(self, name) or name == 'open_local_file':
+             if proxy:
+                 return self.open_unknown_proxy(proxy, fullurl, data)
+             else:
+diff --git a/Misc/NEWS.d/next/Library/2019-02-13-17-21-10.bpo-35907.ckk2zg.rst b/Misc/NEWS.d/next/Library/2019-02-13-17-21-10.bpo-35907.ckk2zg.rst
+new file mode 100644
+index 0000000000..bb187d8d65
+--- /dev/null
++++ b/Misc/NEWS.d/next/Library/2019-02-13-17-21-10.bpo-35907.ckk2zg.rst
+@@ -0,0 +1 @@
++CVE-2019-9948: Avoid file reading as disallowing the unnecessary URL scheme in urllib.urlopen
+-- 
+2.23.0
+

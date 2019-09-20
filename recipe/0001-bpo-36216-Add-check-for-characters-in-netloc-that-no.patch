@@ -1,7 +1,7 @@
-From 8fae676b37ee0d81c828baf44dd54dd332164ca9 Mon Sep 17 00:00:00 2001
+From f09c2a24c122d12fc65b1f2b5b7da3b9998e37ea Mon Sep 17 00:00:00 2001
 From: Steve Dower <steve.dower@microsoft.com>
 Date: Thu, 7 Mar 2019 09:08:45 -0800
-Subject: [PATCH 01/23] bpo-36216: Add check for characters in netloc that
+Subject: [PATCH 01/24] bpo-36216: Add check for characters in netloc that
  normalize to separators (GH-12201)
 
 ---
@@ -154,5 +154,5 @@ index 0000000000..1e1ad92c6f
 +affect how the URL is parsed.
 \ No newline at end of file
 -- 
-2.20.1
+2.23.0
 

@@ -1,7 +1,7 @@
-From bf6c8cbeb5e7f89fafe32611bc1a53476741e13d Mon Sep 17 00:00:00 2001
+From 1331e6cfa422e57d528421644b5bfb4fb045f943 Mon Sep 17 00:00:00 2001
 From: Steve Dower <steve.dower@python.org>
 Date: Tue, 4 Jun 2019 09:40:16 -0700
-Subject: [PATCH 03/23] bpo-36742: Corrects fix to handle decomposition in
+Subject: [PATCH 03/24] bpo-36742: Corrects fix to handle decomposition in
  usernames (GH-13812)
 
 ---
@@ -62,5 +62,5 @@ index 54eda08651..798b467b60 100644
  def urlsplit(url, scheme='', allow_fragments=True):
      """Parse a URL into 5 components:
 -- 
-2.20.1
+2.23.0
 

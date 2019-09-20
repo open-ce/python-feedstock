@@ -1,7 +1,7 @@
-From b7c1d10383dbed11a9bb51874715b7c11eeaccea Mon Sep 17 00:00:00 2001
+From c0f85adfb4a6b8dfe36615df87c3f5b09e357aeb Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Mon, 4 Dec 2017 22:14:32 +0000
-Subject: [PATCH 16/23] Mark sysconfigdata.py as utf-8
+Subject: [PATCH 16/24] Mark sysconfigdata.py as utf-8
 
 This is needed because we do shebang replacement.
 ---
@@ -34,5 +34,5 @@ index 74d1e84f4a..bd5b3ba66d 100755
                  ' the sysconfig module\n')
      fp.write('build_time_vars = ')
 -- 
-2.20.1
+2.23.0
 

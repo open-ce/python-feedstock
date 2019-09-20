@@ -1,7 +1,7 @@
-From 8798570522b4d2b435d05b6d4caf6ed9b7d52f10 Mon Sep 17 00:00:00 2001
+From a3f9a151bae193247254206ddc403d66cd80b80d Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 16 Aug 2017 13:23:40 +0100
-Subject: [PATCH 12/23] Win32: Fixes for Windows GCC interop needed by RPy2 and
+Subject: [PATCH 12/24] Win32: Fixes for Windows GCC interop needed by RPy2 and
  CVXOPT
 
 We must pass -DMS_WIN32 or -DMS_WIN64
@@ -32,5 +32,5 @@ index 258e138b04..74d52c9c94 100644
                               linker_so='%s%s %s %s'
                                      % (self.linker_dll, no_cygwin,
 -- 
-2.20.1
+2.23.0
 

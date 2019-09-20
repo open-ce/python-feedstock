@@ -1,7 +1,7 @@
-From ddca36b667a779743c5ad28126454299ff3f1d4a Mon Sep 17 00:00:00 2001
+From a3b13ad560a9841897f7c27336174ed18f586009 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Miro=20Hron=C4=8Dok?= <miro@hroncok.cz>
 Date: Sun, 14 Jul 2019 11:07:11 +0200
-Subject: [PATCH 04/23] bpo-30458: Disallow control chars in http URLs.
+Subject: [PATCH 04/24] bpo-30458: Disallow control chars in http URLs.
  (GH-12755) (#13207)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -151,5 +151,5 @@ index 0000000000..ed8027fb4d
 @@ -0,0 +1 @@
 +Address CVE-2019-9740 by disallowing URL paths with embedded whitespace or control characters through into the underlying http client request.  Such potentially malicious header injection URLs now cause an http.client.InvalidURL exception to be raised.
 -- 
-2.20.1
+2.23.0
 
