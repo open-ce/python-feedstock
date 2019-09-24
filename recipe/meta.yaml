@@ -5,6 +5,7 @@ package:
   name: python-suite
   version: {{ version }}
 
+source:
   - url: https://www.python.org/ftp/python/{{ version }}/Python-{{ version }}.tgz
     sha256: {{ sha256 }}
     patches:
