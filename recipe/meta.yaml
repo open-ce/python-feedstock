@@ -33,6 +33,7 @@ source:
       - 0022-macOS-Allow-SDK-dir-suffixes-e.g.-usr-include-into-t.patch
       # - 0023-Use-CreateProcessW-to-support-Unicode.patch
       - 0024-bpo-35907-Avoid-file-reading-as-disallowing-the-unne.patch
+      - 0025-2.7-bpo-34155-Dont-parse-domains-containing-GH-13079.patch
   # - path: ~/conda/CPython
   #   path_via_symlink: True
   - url: https://github.com/python/cpython-source-deps/archive/bzip2-1.0.6.zip      # [win]
@@ -59,7 +60,7 @@ source:
 
 
 build:
-  number: 6
+  number: 7
   no_link:
     - bin/python2.7     # [unix]
     - DLLs/_ctypes.pyd  # [win]
