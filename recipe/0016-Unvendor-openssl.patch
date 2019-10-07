@@ -1,4 +1,4 @@
-From 24bc3bb6ac2228ac9a7feb8788f3ce6994760440 Mon Sep 17 00:00:00 2001
+From 8def110beec1165b0567a654990afd923a2a4cd5 Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Sat, 24 Nov 2018 20:38:02 -0600
 Subject: [PATCH 16/19] Unvendor openssl
@@ -13,10 +13,10 @@ Subject: [PATCH 16/19] Unvendor openssl
  6 files changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/PCbuild/_ssl.vcxproj b/PCbuild/_ssl.vcxproj
-index aaf95a361c..b59f2d0ab1 100644
+index 7a514cf..37668e3 100644
 --- a/PCbuild/_ssl.vcxproj
 +++ b/PCbuild/_ssl.vcxproj
-@@ -67,9 +67,6 @@
+@@ -99,9 +99,6 @@
    </ItemDefinitionGroup>
    <ItemGroup>
      <ClCompile Include="..\Modules\_ssl.c" />
@@ -27,7 +27,7 @@ index aaf95a361c..b59f2d0ab1 100644
    <ItemGroup>
      <ResourceCompile Include="..\PC\python_nt.rc" />
 diff --git a/PCbuild/_ssl.vcxproj.filters b/PCbuild/_ssl.vcxproj.filters
-index bd46b60984..1384aeff1f 100644
+index dfb8b6a..4328fd6 100644
 --- a/PCbuild/_ssl.vcxproj.filters
 +++ b/PCbuild/_ssl.vcxproj.filters
 @@ -9,9 +9,6 @@
@@ -41,7 +41,7 @@ index bd46b60984..1384aeff1f 100644
    <ItemGroup>
      <ResourceCompile Include="..\PC\python_nt.rc" />
 diff --git a/PCbuild/openssl.props b/PCbuild/openssl.props
-index a7e16793c7..af1350cae7 100644
+index b43c674..f2800b5 100644
 --- a/PCbuild/openssl.props
 +++ b/PCbuild/openssl.props
 @@ -5,7 +5,7 @@
@@ -54,15 +54,15 @@ index a7e16793c7..af1350cae7 100644
      </Link>
    </ItemDefinitionGroup>
 diff --git a/PCbuild/python.props b/PCbuild/python.props
-index c26d482c63..edc7aff51d 100644
+index 8884c0a..cae52f9 100644
 --- a/PCbuild/python.props
 +++ b/PCbuild/python.props
-@@ -49,9 +49,9 @@
-     <sqlite3Dir>$(ExternalsDir)sqlite-3.28.0.0\</sqlite3Dir>
-     <bz2Dir>$(ExternalsDir)bzip2-1.0.6\</bz2Dir>
-     <lzmaDir>$(ExternalsDir)xz-5.2.2\</lzmaDir>
--    <opensslDir>$(ExternalsDir)openssl-1.1.1c\</opensslDir>
--    <opensslOutDir>$(ExternalsDir)openssl-bin-1.1.1c\$(ArchName)\</opensslOutDir>
+@@ -62,9 +62,9 @@
+     <libffiDir>$(ExternalsDir)libffi\</libffiDir>
+     <libffiOutDir>$(ExternalsDir)libffi\$(ArchName)\</libffiOutDir>
+     <libffiIncludeDir>$(libffiOutDir)include</libffiIncludeDir>
+-    <opensslDir>$(ExternalsDir)openssl-1.1.1d\</opensslDir>
+-    <opensslOutDir>$(ExternalsDir)openssl-bin-1.1.1d\$(ArchName)\</opensslOutDir>
 -    <opensslIncludeDir>$(opensslOutDir)include</opensslIncludeDir>
 +    <opensslDir>$(OPENSSL_DIR)\</opensslDir>
 +    <opensslOutDir>$(opensslDir)bin</opensslOutDir>
@@ -71,10 +71,10 @@ index c26d482c63..edc7aff51d 100644
      <zlibDir>$(ExternalsDir)\zlib-1.2.11\</zlibDir>
      
 diff --git a/PCbuild/python.vcxproj b/PCbuild/python.vcxproj
-index 8b64e364f1..5b0fa34c36 100644
+index a689222..0899220 100644
 --- a/PCbuild/python.vcxproj
 +++ b/PCbuild/python.vcxproj
-@@ -72,6 +72,9 @@
+@@ -105,6 +105,9 @@
    </ItemGroup>
    <ItemGroup>
      <ClCompile Include="..\Programs\python.c" />
@@ -85,10 +85,10 @@ index 8b64e364f1..5b0fa34c36 100644
    <ItemGroup>
      <ProjectReference Include="pythoncore.vcxproj">
 diff --git a/PCbuild/pythonw.vcxproj b/PCbuild/pythonw.vcxproj
-index 19d64a332b..d6d9b14efc 100644
+index 871d250..0abd32b 100644
 --- a/PCbuild/pythonw.vcxproj
 +++ b/PCbuild/pythonw.vcxproj
-@@ -65,6 +65,9 @@
+@@ -97,6 +97,9 @@
    </ItemGroup>
    <ItemGroup>
      <ClCompile Include="..\PC\WinMain.c" />
@@ -99,5 +99,5 @@ index 19d64a332b..d6d9b14efc 100644
    <ItemGroup>
      <ProjectReference Include="pythoncore.vcxproj">
 -- 
-2.20.1
+2.17.1
 

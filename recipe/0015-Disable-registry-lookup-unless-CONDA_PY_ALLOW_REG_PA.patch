@@ -1,4 +1,4 @@
-From a76e4e4d27797c1118b35f3c1e8e2907c74e0957 Mon Sep 17 00:00:00 2001
+From 267edddace3749e740fd941a4e7a9bd22f5f4428 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sat, 27 Oct 2018 18:48:30 +0100
 Subject: [PATCH 15/19] Disable registry lookup unless CONDA_PY_ALLOW_REG_PATHS
@@ -9,10 +9,10 @@ Subject: [PATCH 15/19] Disable registry lookup unless CONDA_PY_ALLOW_REG_PATHS
  1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/PC/getpathp.c b/PC/getpathp.c
-index 04764c9e5a..de1243e126 100644
+index 04f24d9..c0f0e97 100644
 --- a/PC/getpathp.c
 +++ b/PC/getpathp.c
-@@ -780,9 +780,19 @@ calculate_module_search_path(const _PyCoreConfig *core_config,
+@@ -822,9 +822,19 @@ calculate_module_search_path(PyCalculatePath *calculate,
  {
      int skiphome = calculate->home==NULL ? 0 : 1;
  #ifdef Py_ENABLE_SHARED
@@ -33,7 +33,7 @@ index 04764c9e5a..de1243e126 100644
 +
      /* We only use the default relative PYTHONPATH if we haven't
         anything better to use! */
-     int skipdefault = (core_config->module_search_path_env != NULL ||
+     int skipdefault = (calculate->pythonpath_env != NULL ||
 -- 
-2.20.1
+2.17.1
 

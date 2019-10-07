@@ -1,4 +1,4 @@
-From 2965579a25250852947663f6d39190e5dc1897b3 Mon Sep 17 00:00:00 2001
+From faa6e118b7949d4f656a8930f3fd01c89d467b35 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 2 Jan 2019 21:38:48 +0000
 Subject: [PATCH 18/19] venv: Revert a change from
@@ -13,10 +13,10 @@ Also, on Anaconda Distribution, python.exe lives in sys.prefix.
  1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/Lib/venv/__init__.py b/Lib/venv/__init__.py
-index c4540827a9..0a7fde3453 100644
+index caa7285..1a37080 100644
 --- a/Lib/venv/__init__.py
 +++ b/Lib/venv/__init__.py
-@@ -210,7 +210,12 @@ class EnvBuilder:
+@@ -211,7 +211,12 @@ class EnvBuilder:
                      basename = 'venvwlauncher'
                  src = os.path.join(os.path.dirname(src), basename + ext)
              else:
@@ -30,7 +30,7 @@ index c4540827a9..0a7fde3453 100644
              if not os.path.exists(src):
                  if not bad_src:
                      logger.warning('Unable to copy %r', src)
-@@ -228,9 +233,9 @@ class EnvBuilder:
+@@ -229,9 +234,9 @@ class EnvBuilder:
          binpath = context.bin_path
          path = context.env_exe
          copier = self.symlink_or_copy
@@ -42,5 +42,5 @@ index c4540827a9..0a7fde3453 100644
                  os.chmod(path, 0o755)
              for suffix in ('python', 'python3'):
 -- 
-2.20.1
+2.17.1
 
