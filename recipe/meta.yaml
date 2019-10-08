@@ -1,5 +1,5 @@
-{% set base_version = "3.7.4" %}
-{% set version = "3.7.4" %}
+{% set base_version = "3.8.0" %}
+{% set version = "3.8.0rc1" %}
 {% set linkage_nature = os.environ.get('PY_INTERP_LINKAGE_NATURE', '') %}
 {% if linkage_nature != '' %}
   {% set linkage_nature = "_" ~ linkage_nature %}
@@ -11,7 +11,7 @@ package:
 
 source:
   - url: https://www.python.org/ftp/python/{{ base_version }}/Python-{{ version }}.tar.xz
-    sha256: fb799134b868199930b75f26678f18932214042639cd52b16da7fd134cd9b13f
+    sha256: ae44df6ccf5d70059dd4d04c97156f5fcace74384a6f3cfb2fdf9baddb90a821
     patches:
       - 0001-Add-Anaconda-Distribution-version-logic.patch
       - 0002-Darwin-Add-arch-x86_64-to-UnicCCompiler-ld_args.patch
