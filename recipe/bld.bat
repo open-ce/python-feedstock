@@ -33,12 +33,12 @@ if errorlevel 1 exit 1
 cd ..
 
 REM Populate the root package directory
-for %%x in (python37.dll python3.dll python.exe pythonw.exe venvlauncher.exe venvwlauncher.exe) do (
+for %%x in (python38.dll python3.dll python.exe pythonw.exe venvlauncher.exe venvwlauncher.exe) do (
     copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x %PREFIX%
     if errorlevel 1 exit 1
 )
 
-for %%x in (python.pdb python37.pdb pythonw.pdb) do (
+for %%x in (python.pdb python38.pdb pythonw.pdb) do (
     copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x %PREFIX%
     if errorlevel 1 exit 1
 )
@@ -118,7 +118,7 @@ if errorlevel 1 exit 1
 
 REM Populate the libs directory
 mkdir %PREFIX%\libs
-copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\python37.lib %PREFIX%\libs\
+copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\python38.lib %PREFIX%\libs\
 if errorlevel 1 exit 1
 copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\python3.lib %PREFIX%\libs\
 if errorlevel 1 exit 1
