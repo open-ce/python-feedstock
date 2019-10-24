@@ -1,5 +1,4 @@
 setlocal EnableDelayedExpansion
-@echo on
 
 REM brand Python with conda-forge startup message
 REM %SYS_PYTHON% %RECIPE_DIR%\brand_python.py
@@ -28,13 +27,11 @@ if "%DEBUG_C%"=="yes" (
 ) else (
   set PGO=--pgo
 )
-set PGO=
 
 call build.bat %PGO% -m -e -v -p %PLATFORM%
 if errorlevel 1 exit 1
 cd ..
 
-@echo on
 REM Populate the root package directory
 for %%x in (python38.dll python3.dll python.exe pythonw.exe venvlauncher.exe venvwlauncher.exe) do (
     copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x %PREFIX%
