@@ -1,27 +1,21 @@
-From a1ef728615dadaff6a45992b2740f8aabf34bce3 Mon Sep 17 00:00:00 2001
+From c4f34eea0747a110c1a1b6ce110e06e4611afc0b Mon Sep 17 00:00:00 2001
 From: Mike Sarahan <msarahan@gmail.com>
-Date: Thu, 24 Oct 2019 20:09:07 -0500
+Date: Thu, 24 Oct 2019 21:54:17 -0500
 Subject: [PATCH 16/19] Unvendor openssl
 
 ---
- PCbuild/_ssl.vcxproj         | 7 ++-----
- PCbuild/_ssl.vcxproj.filters | 7 ++-----
- PCbuild/openssl.props        | 4 ++--
+ PCbuild/_ssl.vcxproj         | 3 ---
+ PCbuild/_ssl.vcxproj.filters | 5 +----
+ PCbuild/openssl.props        | 2 +-
  PCbuild/python.props         | 6 +++---
- PCbuild/python.vcxproj       | 5 ++++-
- PCbuild/pythonw.vcxproj      | 7 +++++--
- 6 files changed, 18 insertions(+), 18 deletions(-)
+ PCbuild/python.vcxproj       | 3 +++
+ PCbuild/pythonw.vcxproj      | 3 +++
+ 6 files changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/PCbuild/_ssl.vcxproj b/PCbuild/_ssl.vcxproj
-index 506d5ca..43d837e 100644
+index 506d5ca..ba955c1 100644
 --- a/PCbuild/_ssl.vcxproj
 +++ b/PCbuild/_ssl.vcxproj
-@@ -1,4 +1,4 @@
--﻿<?xml version="1.0" encoding="utf-8"?>
-+<?xml version="1.0" encoding="utf-8"?>
- <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-   <ItemGroup Label="ProjectConfigurations">
-     <ProjectConfiguration Include="Debug|Win32">
 @@ -67,9 +67,6 @@
    </ItemDefinitionGroup>
    <ItemGroup>
@@ -32,23 +26,10 @@ index 506d5ca..43d837e 100644
    </ItemGroup>
    <ItemGroup>
      <ResourceCompile Include="..\PC\python_nt.rc" />
-@@ -87,4 +84,4 @@
-   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-   <ImportGroup Label="ExtensionTargets">
-   </ImportGroup>
--</Project>
-\ No newline at end of file
-+</Project>
 diff --git a/PCbuild/_ssl.vcxproj.filters b/PCbuild/_ssl.vcxproj.filters
-index dfb8b6a..4d0e1e6 100644
+index dfb8b6a..785fa04 100644
 --- a/PCbuild/_ssl.vcxproj.filters
 +++ b/PCbuild/_ssl.vcxproj.filters
-@@ -1,4 +1,4 @@
--﻿<?xml version="1.0" encoding="utf-8"?>
-+<?xml version="1.0" encoding="utf-8"?>
- <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-   <ItemGroup>
-     <Filter Include="Source Files">
 @@ -9,11 +9,8 @@
      <ClCompile Include="..\Modules\_ssl.c">
        <Filter>Source Files</Filter>
@@ -64,25 +45,18 @@ index dfb8b6a..4d0e1e6 100644
 \ No newline at end of file
 +</Project>
 diff --git a/PCbuild/openssl.props b/PCbuild/openssl.props
-index b43c674..ed816aa 100644
+index b43c674..b60a4e3 100644
 --- a/PCbuild/openssl.props
 +++ b/PCbuild/openssl.props
-@@ -2,7 +2,7 @@
- <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-   <ItemDefinitionGroup>
-     <ClCompile>
--      <AdditionalIncludeDirectories>$(opensslIncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-+      <AdditionalIncludeDirectories>$(opensslIncludeDir)\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+@@ -5,7 +5,7 @@
+       <AdditionalIncludeDirectories>$(opensslIncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
      </ClCompile>
      <Link>
-       <AdditionalLibraryDirectories>$(opensslOutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-@@ -26,4 +26,4 @@
-   <Target Name="_CleanSSLDLL" BeforeTargets="Clean">
-     <Delete Files="@(_SSLDLL->'$(OutDir)%(Filename)%(Extension)')" TreatErrorsAsWarnings="true" />
-   </Target>
--</Project>
-\ No newline at end of file
-+</Project>
+-      <AdditionalLibraryDirectories>$(opensslOutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <AdditionalLibraryDirectories>$(opensslDir\lib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <AdditionalDependencies>ws2_32.lib;libcrypto.lib;libssl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+     </Link>
+   </ItemDefinitionGroup>
 diff --git a/PCbuild/python.props b/PCbuild/python.props
 index bf9a438..e1da639 100644
 --- a/PCbuild/python.props
@@ -101,15 +75,9 @@ index bf9a438..e1da639 100644
      <zlibDir>$(ExternalsDir)\zlib-1.2.11\</zlibDir>
      
 diff --git a/PCbuild/python.vcxproj b/PCbuild/python.vcxproj
-index 854211e..40a4cca 100644
+index 854211e..a59b1cb 100644
 --- a/PCbuild/python.vcxproj
 +++ b/PCbuild/python.vcxproj
-@@ -1,4 +1,4 @@
--﻿<?xml version="1.0" encoding="utf-8"?>
-+<?xml version="1.0" encoding="utf-8"?>
- <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-   <ItemGroup Label="ProjectConfigurations">
-     <ProjectConfiguration Include="Debug|Win32">
 @@ -72,6 +72,9 @@
    </ItemGroup>
    <ItemGroup>
@@ -121,15 +89,9 @@ index 854211e..40a4cca 100644
    <ItemGroup>
      <ProjectReference Include="pythoncore.vcxproj">
 diff --git a/PCbuild/pythonw.vcxproj b/PCbuild/pythonw.vcxproj
-index 69c5957..229d2b9 100644
+index 69c5957..faff342 100644
 --- a/PCbuild/pythonw.vcxproj
 +++ b/PCbuild/pythonw.vcxproj
-@@ -1,4 +1,4 @@
--﻿<?xml version="1.0" encoding="utf-8"?>
-+<?xml version="1.0" encoding="utf-8"?>
- <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-   <ItemGroup Label="ProjectConfigurations">
-     <ProjectConfiguration Include="Debug|Win32">
 @@ -65,6 +65,9 @@
    </ItemGroup>
    <ItemGroup>
@@ -140,13 +102,6 @@ index 69c5957..229d2b9 100644
    </ItemGroup>
    <ItemGroup>
      <ProjectReference Include="pythoncore.vcxproj">
-@@ -75,4 +78,4 @@
-   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-   <ImportGroup Label="ExtensionTargets">
-   </ImportGroup>
--</Project>
-\ No newline at end of file
-+</Project>
 -- 
 2.20.1
 
