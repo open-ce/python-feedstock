@@ -1,16 +1,16 @@
-From c4f34eea0747a110c1a1b6ce110e06e4611afc0b Mon Sep 17 00:00:00 2001
+From cdae2ccde229fecaddfe714a8ac4e7fa69d4eb51 Mon Sep 17 00:00:00 2001
 From: Mike Sarahan <msarahan@gmail.com>
 Date: Thu, 24 Oct 2019 21:54:17 -0500
 Subject: [PATCH 16/19] Unvendor openssl
 
 ---
- PCbuild/_ssl.vcxproj         | 3 ---
- PCbuild/_ssl.vcxproj.filters | 5 +----
- PCbuild/openssl.props        | 2 +-
- PCbuild/python.props         | 6 +++---
- PCbuild/python.vcxproj       | 3 +++
- PCbuild/pythonw.vcxproj      | 3 +++
- 6 files changed, 11 insertions(+), 11 deletions(-)
+ PCbuild/_ssl.vcxproj         |  3 ---
+ PCbuild/_ssl.vcxproj.filters |  5 +----
+ PCbuild/openssl.props        | 21 ++-------------------
+ PCbuild/python.props         |  6 +++---
+ PCbuild/python.vcxproj       |  3 +++
+ PCbuild/pythonw.vcxproj      |  3 +++
+ 6 files changed, 12 insertions(+), 29 deletions(-)
 
 diff --git a/PCbuild/_ssl.vcxproj b/PCbuild/_ssl.vcxproj
 index 506d5ca..ba955c1 100644
@@ -45,10 +45,10 @@ index dfb8b6a..785fa04 100644
 \ No newline at end of file
 +</Project>
 diff --git a/PCbuild/openssl.props b/PCbuild/openssl.props
-index b43c674..b60a4e3 100644
+index b43c674..a612c9c 100644
 --- a/PCbuild/openssl.props
 +++ b/PCbuild/openssl.props
-@@ -5,7 +5,7 @@
+@@ -5,25 +5,8 @@
        <AdditionalIncludeDirectories>$(opensslIncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
      </ClCompile>
      <Link>
@@ -57,6 +57,26 @@ index b43c674..b60a4e3 100644
        <AdditionalDependencies>ws2_32.lib;libcrypto.lib;libssl.lib;%(AdditionalDependencies)</AdditionalDependencies>
      </Link>
    </ItemDefinitionGroup>
+-  <PropertyGroup>
+-    <_DLLSuffix>-1_1</_DLLSuffix>
+-    <_DLLSuffix Condition="$(Platform) == 'ARM'">$(_DLLSuffix)-arm</_DLLSuffix>
+-    <_DLLSuffix Condition="$(Platform) == 'ARM64'">$(_DLLSuffix)-arm64</_DLLSuffix>
+-  </PropertyGroup>
+-  <ItemGroup>
+-    <_SSLDLL Include="$(opensslOutDir)\libcrypto$(_DLLSuffix).dll" />
+-    <_SSLDLL Include="$(opensslOutDir)\libcrypto$(_DLLSuffix).pdb" />
+-    <_SSLDLL Include="$(opensslOutDir)\libssl$(_DLLSuffix).dll" />
+-    <_SSLDLL Include="$(opensslOutDir)\libssl$(_DLLSuffix).pdb" />
+-  </ItemGroup>
+-  <Target Name="_CopySSLDLL" Inputs="@(_SSLDLL)" Outputs="@(_SSLDLL->'$(OutDir)%(Filename)%(Extension)')" AfterTargets="Build">
+-    <Copy SourceFiles="@(_SSLDLL)" DestinationFolder="$(OutDir)" />
+-  </Target>
+-  <Target Name="_CleanSSLDLL" BeforeTargets="Clean">
+-    <Delete Files="@(_SSLDLL->'$(OutDir)%(Filename)%(Extension)')" TreatErrorsAsWarnings="true" />
+-  </Target>
+-</Project>
+\ No newline at end of file
++</Project>
 diff --git a/PCbuild/python.props b/PCbuild/python.props
 index bf9a438..e1da639 100644
 --- a/PCbuild/python.props
