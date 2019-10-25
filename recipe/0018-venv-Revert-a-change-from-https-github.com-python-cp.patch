@@ -1,4 +1,4 @@
-From 2965579a25250852947663f6d39190e5dc1897b3 Mon Sep 17 00:00:00 2001
+From c568e5bc257ec1dbd5957fc251a612d8583ae246 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 2 Jan 2019 21:38:48 +0000
 Subject: [PATCH 18/19] venv: Revert a change from
@@ -13,7 +13,7 @@ Also, on Anaconda Distribution, python.exe lives in sys.prefix.
  1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/Lib/venv/__init__.py b/Lib/venv/__init__.py
-index c4540827a9..0a7fde3453 100644
+index c454082..0a7fde3 100644
 --- a/Lib/venv/__init__.py
 +++ b/Lib/venv/__init__.py
 @@ -210,7 +210,12 @@ class EnvBuilder:

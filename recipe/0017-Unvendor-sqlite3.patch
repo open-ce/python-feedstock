@@ -1,19 +1,25 @@
-From 020707fff74a087013783f63ff63766c0f7bec67 Mon Sep 17 00:00:00 2001
-From: Nehal J Wani <nehaljw.kkd1@gmail.com>
-Date: Mon, 10 Dec 2018 12:22:37 -0600
-Subject: [PATCH 17/19] Unvendor sqlite3
+From 588c4c88c1f99f3b95fdd9ead067299d617ef211 Mon Sep 17 00:00:00 2001
+From: Mike Sarahan <msarahan@gmail.com>
+Date: Thu, 24 Oct 2019 20:13:56 -0500
+Subject: [PATCH 17/19] unvendor sqlite3
 
 ---
- PCbuild/_sqlite3.vcxproj |  9 ++++-----
+ PCbuild/_sqlite3.vcxproj | 13 ++++++-------
  PCbuild/pcbuild.sln      |  2 --
  PCbuild/python.props     |  2 +-
- PCbuild/sqlite3.vcxproj  | 12 ++++++------
- 4 files changed, 11 insertions(+), 14 deletions(-)
+ PCbuild/sqlite3.vcxproj  | 14 +++++++-------
+ 4 files changed, 14 insertions(+), 17 deletions(-)
 
 diff --git a/PCbuild/_sqlite3.vcxproj b/PCbuild/_sqlite3.vcxproj
-index 1f1a1c8cad..7da816f4c8 100644
+index 9c8e7f3..da4d788 100644
 --- a/PCbuild/_sqlite3.vcxproj
 +++ b/PCbuild/_sqlite3.vcxproj
+@@ -1,4 +1,4 @@
+-﻿<?xml version="1.0" encoding="utf-8"?>
++<?xml version="1.0" encoding="utf-8"?>
+ <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <ItemGroup Label="ProjectConfigurations">
+     <ProjectConfiguration Include="Debug|Win32">
 @@ -61,9 +61,12 @@
    </PropertyGroup>
    <ItemDefinitionGroup>
@@ -28,7 +34,7 @@ index 1f1a1c8cad..7da816f4c8 100644
    </ItemDefinitionGroup>
    <ItemGroup>
      <ClInclude Include="..\Modules\_sqlite\cache.h" />
-@@ -95,10 +98,6 @@
+@@ -95,12 +98,8 @@
        <Project>{cf7ac3d1-e2df-41d2-bea6-1e2556cdea26}</Project>
        <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
      </ProjectReference>
@@ -39,8 +45,12 @@ index 1f1a1c8cad..7da816f4c8 100644
    </ItemGroup>
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
+   </ImportGroup>
+-</Project>
+\ No newline at end of file
++</Project>
 diff --git a/PCbuild/pcbuild.sln b/PCbuild/pcbuild.sln
-index c212d9f8f3..eebeb791fb 100644
+index 554bd13..ef25b2c 100644
 --- a/PCbuild/pcbuild.sln
 +++ b/PCbuild/pcbuild.sln
 @@ -55,8 +55,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bdist_wininst", "..\PC\bdis
@@ -53,7 +63,7 @@ index c212d9f8f3..eebeb791fb 100644
  EndProject
  Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python3dll", "python3dll.vcxproj", "{885D4898-D08D-4091-9C40-C700CFE3FC5A}"
 diff --git a/PCbuild/python.props b/PCbuild/python.props
-index edc7aff51d..bac9df2e7b 100644
+index e1da639..2255b5c 100644
 --- a/PCbuild/python.props
 +++ b/PCbuild/python.props
 @@ -46,7 +46,7 @@
@@ -66,9 +76,15 @@ index edc7aff51d..bac9df2e7b 100644
      <lzmaDir>$(ExternalsDir)xz-5.2.2\</lzmaDir>
      <opensslDir>$(OPENSSL_DIR)\</opensslDir>
 diff --git a/PCbuild/sqlite3.vcxproj b/PCbuild/sqlite3.vcxproj
-index 4f5b1965d9..59cae10127 100644
+index ee703e3..d36958f 100644
 --- a/PCbuild/sqlite3.vcxproj
 +++ b/PCbuild/sqlite3.vcxproj
+@@ -1,4 +1,4 @@
+-﻿<?xml version="1.0" encoding="utf-8"?>
++<?xml version="1.0" encoding="utf-8"?>
+ <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <ItemGroup Label="ProjectConfigurations">
+     <ProjectConfiguration Include="Debug|Win32">
 @@ -56,12 +56,12 @@
    <PropertyGroup Label="UserMacros" />
    <PropertyGroup>
