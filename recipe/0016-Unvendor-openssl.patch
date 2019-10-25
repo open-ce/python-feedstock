@@ -1,4 +1,4 @@
-From cdae2ccde229fecaddfe714a8ac4e7fa69d4eb51 Mon Sep 17 00:00:00 2001
+From 283354c8bd32e60ccbbd41abad1499c72006dd95 Mon Sep 17 00:00:00 2001
 From: Mike Sarahan <msarahan@gmail.com>
 Date: Thu, 24 Oct 2019 21:54:17 -0500
 Subject: [PATCH 16/19] Unvendor openssl
@@ -45,7 +45,7 @@ index dfb8b6a..785fa04 100644
 \ No newline at end of file
 +</Project>
 diff --git a/PCbuild/openssl.props b/PCbuild/openssl.props
-index b43c674..a612c9c 100644
+index b43c674..16d00fc 100644
 --- a/PCbuild/openssl.props
 +++ b/PCbuild/openssl.props
 @@ -5,25 +5,8 @@
@@ -53,7 +53,7 @@ index b43c674..a612c9c 100644
      </ClCompile>
      <Link>
 -      <AdditionalLibraryDirectories>$(opensslOutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-+      <AdditionalLibraryDirectories>$(opensslDir\lib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <AdditionalLibraryDirectories>$(opensslDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
        <AdditionalDependencies>ws2_32.lib;libcrypto.lib;libssl.lib;%(AdditionalDependencies)</AdditionalDependencies>
      </Link>
    </ItemDefinitionGroup>
