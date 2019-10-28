@@ -112,6 +112,10 @@ fi
 
 export CPPFLAGS CFLAGS CXXFLAGS LDFLAGS
 
+# This is needed for libffi:
+export PKG_CONFIG=${PREFIX}/bin/pkg-config
+export PKG_CONFIG_PATH=${PREFIX}/lib/pkgconfig
+
 if [[ ${HOST} =~ .*darwin.* ]]; then
   sed -i -e "s/@OSX_ARCH@/$ARCH/g" Lib/distutils/unixccompiler.py
 fi
@@ -145,8 +149,6 @@ if [[ "${BUILD}" != "${HOST}" ]] && [[ -n "${BUILD}" ]] && [[ -n "${HOST}" ]]; t
   echo "ac_cv_pthread=yes"              >> config.site
   echo "ac_cv_little_endian_double=yes" >> config.site
   export CONFIG_SITE=${PWD}/config.site
-  # This is needed for libffi:
-  export PKG_CONFIG_PATH=${PREFIX}/lib/pkgconfig
 fi
 
 # This causes setup.py to query the sysroot directories from the compiler, something which
