@@ -28,8 +28,6 @@ if "%DEBUG_C%"=="yes" (
   set PGO=--pgo
 )
 
-set PGO=
-
 call build.bat %PGO% -m -e -v -p %PLATFORM%
 if errorlevel 1 exit 1
 cd ..
@@ -119,7 +117,7 @@ copy /Y %SRC_DIR%\Tools\scripts\2to3 %SCRIPTS%
 if errorlevel 1 exit 1
 
 REM copy venvlauncher into Scripts dir
-xcopy /s /y %SRC_DIR%\PCBuild\%BUILD_PATH%\venv*.exe %PREFIX%\Scripts\
+xcopy /s /y %SRC_DIR%\PCBuild\%BUILD_PATH%\venv*.exe %PREFIX%\
 
 REM Populate the libs directory
 mkdir %PREFIX%\libs
