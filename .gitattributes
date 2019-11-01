@@ -7,3 +7,4 @@ bld.bat text eol=crlf
 recipe/patches/*-Win32-Do-not-download-externals.patch binary
 recipe/patches/*-Unvendor-openssl.patch binary
 recipe/patches/*-Unvendor-sqlite3.patch binary
+recipe/patches/*-Win-Add-back-the-DLLSuffix-used-to-find-the-openssl-.patch binary

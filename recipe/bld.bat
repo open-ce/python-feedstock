@@ -1,10 +1,10 @@
 setlocal EnableDelayedExpansion
 
-REM brand Python with conda-forge startup message
-REM %SYS_PYTHON% %RECIPE_DIR%\brand_python.py
-REM if errorlevel 1 exit 1
+:: brand Python with conda-forge startup message
+::%SYS_PYTHON% %RECIPE_DIR%\brand_python.py
+::if errorlevel 1 exit 1
 
-REM Compile python, extensions and external libraries
+:: Compile python, extensions and external libraries
 if "%ARCH%"=="64" (
    set PLATFORM=x64
    set VC_PATH=x64
@@ -32,7 +32,7 @@ call build.bat %PGO% -m -e -v -p %PLATFORM%
 if errorlevel 1 exit 1
 cd ..
 
-REM Populate the root package directory
+:: Populate the root package directory
 for %%x in (python38.dll python3.dll python.exe pythonw.exe venvlauncher.exe venvwlauncher.exe) do (
     copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x %PREFIX%
     if errorlevel 1 exit 1
@@ -46,7 +46,8 @@ for %%x in (python.pdb python38.pdb pythonw.pdb) do (
 copy %SRC_DIR%\LICENSE %PREFIX%\LICENSE_PYTHON.txt
 if errorlevel 1 exit 1
 
-REM Populate the DLLs directory
+
+:: Populate the DLLs directory
 mkdir %PREFIX%\DLLs
 xcopy /s /y %SRC_DIR%\PCBuild\%BUILD_PATH%\*.pyd %PREFIX%\DLLs\
 if errorlevel 1 exit 1
@@ -62,7 +63,8 @@ if errorlevel 1 exit 1
 copy /Y %SRC_DIR%\PC\icons\pyc.ico %PREFIX%\DLLs\
 if errorlevel 1 exit 1
 
-REM Populate the Tools directory
+
+:: Populate the Tools directory
 mkdir %PREFIX%\Tools
 xcopy /s /y /i %SRC_DIR%\Tools\demo %PREFIX%\Tools\demo
 if errorlevel 1 exit 1
@@ -93,19 +95,19 @@ if errorlevel 1 exit 1
 move /y %PREFIX%\Tools\scripts\pydoc3 %PREFIX%\Tools\scripts\pydoc3.py
 if errorlevel 1 exit 1
 
-REM Populate the tcl directory
+:: Populate the tcl directory
 xcopy /s /y /i %SRC_DIR%\externals\tcltk-8.6.9.0\%BUILD_PATH%\lib %PREFIX%\tcl
 if errorlevel 1 exit 1
 
-REM Populate the include directory
+:: Populate the include directory
 xcopy /s /y %SRC_DIR%\Include %PREFIX%\include\
 if errorlevel 1 exit 1
 
 copy /Y %SRC_DIR%\PC\pyconfig.h %PREFIX%\include\
 if errorlevel 1 exit 1
 
-REM Populate the Scripts directory
-IF NOT exist %SCRIPTS% (mkdir %SCRIPTS%)
+:: Populate the Scripts directory
+if not exist %SCRIPTS% (mkdir %SCRIPTS%)
 if errorlevel 1 exit 1
 
 for %%x in (idle pydoc) do (
@@ -116,7 +118,7 @@ for %%x in (idle pydoc) do (
 copy /Y %SRC_DIR%\Tools\scripts\2to3 %SCRIPTS%
 if errorlevel 1 exit 1
 
-REM Populate the libs directory
+:: Populate the libs directory
 mkdir %PREFIX%\libs
 copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\python38.lib %PREFIX%\libs\
 if errorlevel 1 exit 1
@@ -125,7 +127,8 @@ if errorlevel 1 exit 1
 copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\_tkinter.lib %PREFIX%\libs\
 if errorlevel 1 exit 1
 
-REM Populate the Lib directory
+
+:: Populate the Lib directory
 del %PREFIX%\libs\libpython*.a
 xcopy /s /y %SRC_DIR%\Lib %PREFIX%\Lib\
 if errorlevel 1 exit 1
@@ -145,9 +148,9 @@ if errorlevel 1 exit 1
 rd /s /q %PREFIX%\Lib\lib2to3\tests\
 if errorlevel 1 exit 1
 
-REM bytecode compile the standard library
+:: bytecode compile the standard library
 %PREFIX%\python.exe -Wi %PREFIX%\Lib\compileall.py -f -q -x "bad_coding|badsyntax|py2_" %PREFIX%\Lib
 if errorlevel 1 exit 1
 
-REM Pickle lib2to3 Grammar
+:: Pickle lib2to3 Grammar
 %PREFIX%\python.exe -m lib2to3 --help
