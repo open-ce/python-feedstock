@@ -329,7 +329,7 @@ popd
 
 # Size reductions:
 pushd ${PREFIX}
-  if [[ -f lib/libpython${VER}m.a ]]; then
+  if [[ -f lib/libpython${VER}.a ]]; then
     chmod +w lib/libpython${VER}.a
     if [[ -n ${HOST} ]]; then
       ${HOST}-strip -S lib/libpython${VER}.a
