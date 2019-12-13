@@ -1,0 +1,3 @@
+[submodule "recipe/tests/simple-cython-example"]
+	path = recipe/tests/simple-cython-example
+	url = ../simple-cython-example
