@@ -11,6 +11,8 @@
 VER=${PKG_VERSION%.*}
 VERNODOTS=${VER//./}
 CONDA_FORGE=no
+# Disables some PGO/LTO
+QUICK_BUILD=yes
 
 _buildd_static=build-static
 _buildd_shared=build-shared
@@ -61,7 +63,7 @@ find "${PREFIX}/lib" -name "libbz2*${SHLIB_EXT}*" | xargs rm -fv {}
 AR=$(basename "${AR}")
 
 # CC must contain the string 'gcc' or else distutils thinks it is on macOS and uses '-R' to set rpaths.
-if [[ ${HOST} =~ .*darwin.* ]]; then
+if [[ ${target_platform} == osx-64 ]]; then
   CC=$(basename "${CC}")
 else
   CC=$(basename "${GCC}")
@@ -115,8 +117,7 @@ export CPPFLAGS CFLAGS CXXFLAGS LDFLAGS
 # This is needed for libffi:
 export PKG_CONFIG=${PREFIX}/bin/pkg-config
 export PKG_CONFIG_PATH=${PREFIX}/lib/pkgconfig
-
-if [[ ${HOST} =~ .*darwin.* ]]; then
+if [[ ${target_platform} == osx-64 ]]; then
   sed -i -e "s/@OSX_ARCH@/$ARCH/g" Lib/distutils/unixccompiler.py
 fi
 
@@ -209,7 +210,9 @@ if [[ ${_OPTIMIZED} == yes ]]; then
   _extra_opts+=(--with-lto)
   _MAKE_TARGET=profile-opt
   # To speed up build times during testing (1):
-  # _PROFILE_TASK="./python -m test.regrtest --pgo test_builtin"
+  if [[ ${QUICK_BUILD} == yes ]]; then
+    _PROFILE_TASK="./python -m test.regrtest --pgo test_builtin"
+  fi
   if [[ ${CC} =~ .*gcc.* ]]; then
     LTO_CFLAGS+=(-fuse-linker-plugin)
     LTO_CFLAGS+=(-ffat-lto-objects)
@@ -237,12 +240,15 @@ pushd ${_buildd_static}
                        ${_DISABLE_SHARED}
 popd
 
-make -j${CPU_COUNT} -C ${_buildd_static} \
-        EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
-        ${_MAKE_TARGET}
-
-# To speed up build times during testing (2):
-#       ${_MAKE_TARGET} PROFILE_TASK="${_PROFILE_TASK}"
+if [[ ${QUICK_BUILD} == yes ]]; then
+  make -j${CPU_COUNT} -C ${_buildd_static} \
+          EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
+          ${_MAKE_TARGET} PROFILE_TASK="${_PROFILE_TASK}"
+else
+  make -j${CPU_COUNT} -C ${_buildd_static} \
+          EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
+          ${_MAKE_TARGET}
+fi
 
 make -j${CPU_COUNT} -C ${_buildd_shared} \
         EXTRA_CFLAGS="${EXTRA_CFLAGS}"
@@ -269,11 +275,11 @@ if [[ ${_OPTIMIZED} == yes ]]; then
   # Install the shared library (for people who embed Python only, e.g. GDB).
   # Linking module extensions to this on Linux is redundant (but harmless).
   # Linking module extensions to this on Darwin is harmful (multiply defined symbols).
-  if [[ ${HOST} =~ .*linux.* ]]; then
+  if [[ ${target_platform} =~ linux-* ]]; then
     cp -pf ${_buildd_shared}/libpython${VER}m${SHLIB_EXT}.1.0 ${PREFIX}/lib/
     ln -sf ${PREFIX}/lib/libpython${VER}m${SHLIB_EXT}.1.0 ${PREFIX}/lib/libpython${VER}m${SHLIB_EXT}.1
     ln -sf ${PREFIX}/lib/libpython${VER}m${SHLIB_EXT}.1 ${PREFIX}/lib/libpython${VER}m${SHLIB_EXT}
-  elif [[ ${HOST} =~ .*darwin.* ]]; then
+  elif [[ ${target_platform} == osx-64 ]]; then
     cp -pf ${_buildd_shared}/libpython${VER}m${SHLIB_EXT} ${PREFIX}/lib/
   fi
 else
