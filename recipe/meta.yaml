@@ -69,7 +69,6 @@ source:
   - url: https://github.com/python/cpython-bin-deps/archive/nasm-2.11.06.zip         # [win]
     folder: externals/nasm-2.11.06                                                   # [win]
     sha256: de3c87b26a80e789986d8e6950c6304175d3829afe9c6c7211eb7257266ab0ac         # [win]
-
   - url: https://github.com/python/cpython-bin-deps/archive/libffi.zip               # [win]
     folder: externals/libffi                                                         # [win]
     sha256: 57180e18749ad5e8727ae1f488621768a58808ac387968068c563bee8b2b23ec         # [win]
@@ -100,12 +99,14 @@ build:
 # {% if linkage_nature != '' %}
 #   string: {{ version }}{{ linkage_nature }}
 # {% endif %}
-#  script_env:
+#   script_env:
 #    - PY_INTERP_LINKAGE_NATURE
 #    - python_branding
 # Not until: https://github.com/mingwandroid/conda-build/commit/c68a7d100866df7a3e9c0e3177fc7ef0ff76def9
 # {% if 'conda-forge' not in channel_targets %}
 #      - CONDA_FORGE=yes
+# {% else %}
+#      - CONDA_FORGE=no
 # {% endif %}
 
 requirements:

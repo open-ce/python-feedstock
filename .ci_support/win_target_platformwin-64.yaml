@@ -1,0 +1,26 @@
+c_compiler:
+- vs2017
+channel_sources:
+- conda-forge,defaults
+channel_targets:
+- conda-forge main
+cxx_compiler:
+- vs2017
+openssl:
+- 1.1.1a
+pin_run_as_build:
+  openssl:
+    max_pin: x.x.x
+  sqlite:
+    max_pin: x
+  tk:
+    max_pin: x.x
+sqlite:
+- '3'
+target_platform:
+- win-64
+tk:
+- '8.6'
+zip_keys:
+- - c_compiler
+  - cxx_compiler
