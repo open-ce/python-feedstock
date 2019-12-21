@@ -1,4 +1,4 @@
-From 11a9b0ae61c3cdf0527dd22b453f65472dff1023 Mon Sep 17 00:00:00 2001
+From 7f89535cd760114f8077aca1f8d7efe89ab0a9cb Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 2 Jan 2019 21:38:48 +0000
 Subject: [PATCH 18/21] venv: Revert a change from

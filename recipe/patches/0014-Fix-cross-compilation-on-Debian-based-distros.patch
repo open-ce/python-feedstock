@@ -1,4 +1,4 @@
-From e6c451b2d8d0db5bf570cb2e2a2a0908078c7463 Mon Sep 17 00:00:00 2001
+From 66bcc68c2be2138c99a72620f4dc6ee0c9f5493e Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sun, 26 Aug 2018 17:10:08 +0100
 Subject: [PATCH 14/21] Fix cross-compilation on Debian-based distros

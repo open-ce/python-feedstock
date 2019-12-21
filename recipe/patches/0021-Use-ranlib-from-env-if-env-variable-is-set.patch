@@ -1,4 +1,4 @@
-From d57c5c8f5dc01523b3a006f1c22802347a65798e Mon Sep 17 00:00:00 2001
+From 08bef91b40637323f7036df8de2e3aebeb2ff793 Mon Sep 17 00:00:00 2001
 From: Isuru Fernando <isuruf@gmail.com>
 Date: Sun, 3 Nov 2019 15:09:45 -0600
 Subject: [PATCH 21/21] Use ranlib from env if env variable is set
