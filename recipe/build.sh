@@ -193,7 +193,9 @@ _common_configure_args+=(--host=${HOST})
 _common_configure_args+=(--enable-ipv6)
 _common_configure_args+=(--with-ensurepip=no)
 _common_configure_args+=(--with-computed-gotos)
-_common_configure_args+=(--with-system-ffi)
+if [[ ${target_platform} == osx-64 ]]; then
+  _common_configure_args+=(--with-system-ffi)
+fi
 _common_configure_args+=(--enable-loadable-sqlite-extensions)
 _common_configure_args+=(--with-tcltk-includes="-I${PREFIX}/include")
 _common_configure_args+=("--with-tcltk-libs=-L${PREFIX}/lib -ltcl8.6 -ltk8.6")
@@ -216,7 +218,9 @@ if [[ ${_OPTIMIZED} == yes ]]; then
   # To speed up build times during testing (1):
   if [[ ${QUICK_BUILD} == yes ]]; then
     # TODO :: Is this not just profiling everything? It seems like it tests more than test_builtin
-    _PROFILE_TASK+=(PROFILE_TASK=\"./python -m test.regrtest --pgo test_builtin\")
+    _PROFILE_TASK+=(PROFILE_TASK=\"-m test --pgo\")
+  else
+    _PROFILE_TASK+=(PROFILE_TASK=\"-m test --pgo-extended\")
   fi
   if [[ ${CC} =~ .*gcc.* ]]; then
     LTO_CFLAGS+=(-fuse-linker-plugin)
@@ -386,7 +390,10 @@ popd
 
 if [[ ${HOST} =~ .*linux.* ]]; then
   mkdir -p ${PREFIX}/compiler_compat
-  cp ${LD} ${PREFIX}/compiler_compat/ld
+  ln -s ${PREFIX}/bin/${HOST}-ld ${PREFIX}/compiler_compat/ld
   echo "Files in this folder are to enhance backwards compatibility of anaconda software with older compilers."   > ${PREFIX}/compiler_compat/README
   echo "See: https://github.com/conda/conda/issues/6030 for more information."                                   >> ${PREFIX}/compiler_compat/README
 fi
+
+# There are some strange distutils files around. Delete them
+rm -rf ${PREFIX}/lib/python${VER}/distutils/command/*.exe

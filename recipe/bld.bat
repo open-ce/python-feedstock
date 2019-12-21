@@ -1,8 +1,8 @@
 setlocal EnableDelayedExpansion
 
 :: brand Python with conda-forge startup message
-::%SYS_PYTHON% %RECIPE_DIR%\brand_python.py
-::if errorlevel 1 exit 1
+%SYS_PYTHON% %RECIPE_DIR%\brand_python.py
+if errorlevel 1 exit 1
 
 :: Compile python, extensions and external libraries
 if "%ARCH%"=="64" (
@@ -27,7 +27,7 @@ if "%DEBUG_C%"=="yes" (
 ) else (
   set PGO=--pgo
 )
-
+:: Disable PGO for now
 set PGO=
 
 call build.bat %PGO% -m -e -v -p %PLATFORM%
