@@ -37,7 +37,7 @@ source:
       - patches/0018-venv-Revert-a-change-from-https-github.com-python-cp.patch
       # TODO resolve CondaEcosystemModifyDllSearchPath with add-conda-paths...
 {% if 'conda-forge' not in channel_targets %}
-      #- 0019-Add-CondaEcosystemModifyDllSearchPath.patch
+      #- patches/0019-Add-CondaEcosystemModifyDllSearchPath.patch
 {% endif %}
       - patches/0019-add-conda-paths-to-DLL-search-path-on-windows.patch
       - patches/0020-Win-Add-back-the-DLLSuffix-used-to-find-the-openssl-.patch
@@ -83,15 +83,17 @@ build:
   # We delete the shared libraries.
   ignore_run_exports:   # [unix]
     - bzip2             # [unix]
-  detect_binary_files_with_prefix: False
-  binary_has_prefix_files:
-    - lib/libpython3.8.*.1.0
-    - bin/python3.8  # [linux]
-    - lib/libpython3.8.a  # [linux]
-    - lib/libpython3.8.nolto.a  # [linux]
-    - lib/libpython3.so  # [linux]
-    - lib/python3.8/lib-dynload/_hashlib.cpython-38-x86_64-linux-gnu.so  # [linux]
-    - lib/libpython3.dylib  # [osx]
+  # Disabled until new conda-build release
+  detect_binary_files_with_prefix: True
+  # detect_binary_files_with_prefix: False
+  # binary_has_prefix_files:
+  #   - lib/libpython3.8.*.1.0
+  #   - bin/python3.8  # [linux]
+  #   - lib/libpython3.8.a  # [linux]
+  #   - lib/libpython3.8.nolto.a  # [linux]
+  #   - lib/libpython3.so  # [linux]
+  #   - lib/python3.8/lib-dynload/_hashlib.cpython-38-x86_64-linux-gnu.so  # [linux]
+  #   - lib/libpython3.dylib  # [osx]
   # match python.org compiler standard
   skip: True            # [win and int(float(vc)) < 14]
 # Would like to be able to append to the calculated build string here, ping @msarahan, is this possible?
@@ -115,12 +117,14 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
     - {{ cdt('libx11-devel') }}  # [linux]
+    - {{ cdt('libuuid-devel') }}  # [linux]
     - make  # [not win]
     - pkg-config  # [not win]
+    # configure script looks for llvm-ar for lto
+    - llvm-tools  # [osx]
     - patch  # [not win]
     - m2-patch  # [win]
   host:
-    - libuuid  # [linux]
     - bzip2  # [not win]
     - sqlite
     - xz  # [not win]
@@ -130,6 +134,11 @@ requirements:
     - tk  # [not win]
     - ncurses  # [linux]
     - libffi  # [not win]
+    - binutils_impl_{{target_platform}}  # [aarch64]
+    - ld_impl_{{target_platform}}  # [linux and not aarch64]
+  run:
+    - binutils_impl_{{target_platform}}  # [aarch64]
+    - ld_impl_{{target_platform}}  # [linux and not aarch64]
 
 test:
   requires:
