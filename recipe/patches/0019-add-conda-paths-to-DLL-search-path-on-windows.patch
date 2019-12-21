@@ -1,7 +1,7 @@
-From 09eb0bb161d56ef1411f5d7dc78b85859f771542 Mon Sep 17 00:00:00 2001
+From e5db5bb91398c213b72aa9d1cf0c4e4924712d9d Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Tue, 22 Oct 2019 16:32:12 -0500
-Subject: [PATCH 19/20] add conda paths to DLL search path on windows
+Subject: [PATCH 19/21] add conda paths to DLL search path on windows
 
 bpo-36085 restricts the library search paths on Windows.  Conda uses a
 pre-defined set of paths relative to the environment root to store
