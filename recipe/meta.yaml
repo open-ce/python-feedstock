@@ -1,8 +1,12 @@
 {% set base_version = "3.8.1" %}
 {% set version = base_version %}
 {% set linkage_nature = os.environ.get('PY_INTERP_LINKAGE_NATURE', '') %}
+{% set debug = os.environ.get('PY_INTERP_DEBUG', '') %}
 {% if linkage_nature != '' %}
   {% set linkage_nature = "_" ~ linkage_nature %}
+{% endif %}
+{% if debug != '' %}
+  {% set debug = "_d" ~ debug %}
 {% endif %}
 
 package:
@@ -35,14 +39,12 @@ source:
       - patches/0017-Unvendor-sqlite3.patch
       # https://bugs.python.org/issue35644
       - patches/0018-venv-Revert-a-change-from-https-github.com-python-cp.patch
-      # TODO resolve CondaEcosystemModifyDllSearchPath with add-conda-paths...
-{% if 'conda-forge' not in channel_targets %}
-      #- patches/0019-Add-CondaEcosystemModifyDllSearchPath.patch
-{% endif %}
-      - patches/0019-add-conda-paths-to-DLL-search-path-on-windows.patch
-      - patches/0020-Win-Add-back-the-DLLSuffix-used-to-find-the-openssl-.patch
-      - patches/0021-Use-ranlib-from-env-if-env-variable-is-set.patch
-      - patches/0022-roll-back-2e33ecd-for-py_compile.main.patch
+      - patches/0019-Win-Add-back-the-DLLSuffix-used-to-find-the-openssl-.patch
+      - patches/0020-Use-ranlib-from-env-if-env-variable-is-set.patch
+      - patches/0021-roll-back-2e33ecd-for-py_compile.main.patch
+      # Python 3.8 is pretty broken without this.
+      - patches/0022-Add-CondaEcosystemModifyDllSearchPath.patch
+
   # TODO :: Depend on our own packages for these:
   - url: https://github.com/python/cpython-source-deps/archive/xz-5.2.2.zip          # [win]
     folder: externals/xz-5.2.2                                                       # [win]
@@ -76,7 +78,7 @@ source:
 
 
 build:
-  number: 0
+  number: 1
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:
@@ -99,12 +101,12 @@ build:
   skip: True            # [win and int(float(vc)) < 14]
 # Would like to be able to append to the calculated build string here, ping @msarahan, is this possible?
 # Also this messes up hash generation so package ends up without any :-(
-# {% if linkage_nature != '' %}
-#   string: {{ version }}{{ linkage_nature }}
-# {% endif %}
-#   script_env:
-#    - PY_INTERP_LINKAGE_NATURE
-#    - python_branding
+{% if linkage_nature != '' or debug != '' %}
+  string: {{ version }}{{ linkage_nature }}{{ debug }}
+{% endif %}
+  script_env:
+   - PY_INTERP_LINKAGE_NATURE
+   - PY_INTERP_DEBUG
 # Not until: https://github.com/mingwandroid/conda-build/commit/c68a7d100866df7a3e9c0e3177fc7ef0ff76def9
 # {% if 'conda-forge' not in channel_targets %}
 #      - CONDA_FORGE=yes
@@ -125,6 +127,7 @@ requirements:
     - llvm-tools  # [osx]
     - patch  # [not win]
     - m2-patch  # [win]
+    - posix  # [win]
   host:
     - bzip2  # [not win]
     - sqlite
