@@ -27,8 +27,6 @@ if "%DEBUG_C%"=="yes" (
 ) else (
   set PGO=--pgo
 )
-:: LINK : fatal error LNK1104: cannot open file 'pgort.lib' [%SRC_DIR%\PCbuild\pythoncore.vcxproj]
-set PGO=
 
 call build.bat %PGO% -m -e -v -p %PLATFORM%
 if errorlevel 1 exit 1
