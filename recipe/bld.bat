@@ -48,6 +48,11 @@ for %%x in (python38%_D%.dll python3%_D%.dll python%_D%.exe pythonw%_D%.exe venv
     if errorlevel 1 exit 1
 )
 
+if "%PY_INTERP_DEBUG%" neq "" (
+    copy %PREFIX%\venvlauncher%_D%.exe %PREFIX%\venvlauncher.exe
+    copy %PREFIX%\venvwlauncher%_D%.exe %PREFIX%\venvwlauncher.exe
+)
+
 for %%x in (python%_D%.pdb python38%_D%.pdb pythonw%_D%.pdb) do (
     copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x %PREFIX%
     if errorlevel 1 exit 1
@@ -132,6 +137,10 @@ if errorlevel 1 exit 1
 mkdir %PREFIX%\libs
 copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\python38%_D%.lib %PREFIX%\libs\
 if errorlevel 1 exit 1
+if "%PY_INTERP_DEBUG%" neq "" (
+    copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\python38%_D%.lib %PREFIX%\libs\python38.lib
+    if errorlevel 1 exit 1
+)
 copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\python3%_D%.lib %PREFIX%\libs\
 if errorlevel 1 exit 1
 copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\_tkinter%_D%.lib %PREFIX%\libs\
