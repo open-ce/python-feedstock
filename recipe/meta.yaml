@@ -6,7 +6,7 @@
   {% set linkage_nature = "_" ~ linkage_nature %}
 {% endif %}
 {% if debug != '' %}
-  {% set debug = "_d" ~ debug %}
+  {% set debug = "_debug" %}
 {% endif %}
 
 package:
@@ -44,6 +44,10 @@ source:
       - patches/0021-roll-back-2e33ecd-for-py_compile.main.patch
       # Python 3.8 is pretty broken without this.
       - patches/0022-Add-CondaEcosystemModifyDllSearchPath.patch
+      # For distutils - breaks greet test..
+      # - patches/0023-Add-d1trimfile-SRC_DIR-to-make-pdbs-more-relocatable.patch
+      # For the interpreter itself. May be duplicating AdditionalOptions though?
+      # - patches/0024-Doing-d1trimfile.patch
 
   # TODO :: Depend on our own packages for these:
   - url: https://github.com/python/cpython-source-deps/archive/xz-5.2.2.zip          # [win]
