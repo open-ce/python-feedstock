@@ -35,6 +35,7 @@ if "%DEBUG_C%"=="yes" (
 ) else (
   set PGO=--pgo
 )
+set PGO=
 
 cd PCbuild
 

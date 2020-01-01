@@ -3,11 +3,14 @@
 {% set linkage_nature = os.environ.get('PY_INTERP_LINKAGE_NATURE', '') %}
 {% set debug = os.environ.get('PY_INTERP_DEBUG', '') %}
 {% if linkage_nature != '' %}
-  {% set linkage_nature = "_" ~ linkage_nature %}
+  {% set linkage_nature = linkage_nature %}
 {% endif %}
 {% if debug != '' %}
-  {% set debug = "_debug" %}
+  {% set debug = "dbg" %}
 {% endif %}
+# {% set build_string = '_'.join(v for v in [linkage_nature, debug] if v) %}
+
+{% set build_string = [linkage_nature, debug] | reject('equalto', '') | join('_') %}
 
 package:
   name: python
@@ -45,9 +48,9 @@ source:
       # Python 3.8 is pretty broken without this.
       - patches/0022-Add-CondaEcosystemModifyDllSearchPath.patch
       # For distutils - breaks greet test..
-      # - patches/0023-Add-d1trimfile-SRC_DIR-to-make-pdbs-more-relocatable.patch
+      - patches/0023-Add-d1trimfile-SRC_DIR-to-make-pdbs-more-relocatable.patch
       # For the interpreter itself. May be duplicating AdditionalOptions though?
-      # - patches/0024-Doing-d1trimfile.patch
+      - patches/0024-Doing-d1trimfile.patch
 
   # TODO :: Depend on our own packages for these:
   - url: https://github.com/python/cpython-source-deps/archive/xz-5.2.2.zip          # [win]
@@ -105,8 +108,8 @@ build:
   skip: True            # [win and int(float(vc)) < 14]
 # Would like to be able to append to the calculated build string here, ping @msarahan, is this possible?
 # Also this messes up hash generation so package ends up without any :-(
-{% if linkage_nature != '' or debug != '' %}
-  string: {{ version }}{{ linkage_nature }}{{ debug }}
+{% if build_string != '' %}
+  string: {{ build_string }}
 {% endif %}
   script_env:
    - PY_INTERP_LINKAGE_NATURE
@@ -182,14 +185,14 @@ test:
     -   popd
     -   pushd distutils.cext
     -     python setup.py install -v -v
-    -     python -c "import greet; greet.greet('Python user')" | rg "Hello Python"
+    -     python -v -c "import greet; greet.greet('Python user')" | rg "Hello Python"
     -   popd
     -   pushd prefix-replacement  # [unix]
     -     bash build-and-test.sh  # [unix]
     -   popd  # [unix]
     -   pushd cmake
-    -     cmake -GNinja -DPY_VER={{ version }}
-          # --trace --debug-output --debug-trycompile .
+    -     cmake . -GNinja -DPY_VER={{ version }}
+          # --trace --debug-output --debug-trycompile
     -   popd
     - popd
 
