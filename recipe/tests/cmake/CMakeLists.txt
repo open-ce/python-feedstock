@@ -5,6 +5,10 @@ project(mymath)
 
 option(PY_VER, "Python version to use")
 
+# Ref: https://cmake.org/cmake/help/git-stage/module/FindPython.html
+# Args are: pydebug, pymalloc, unicode
+set(Python_FIND_ABI "ANY" "ANY" "ANY")
+
 find_package(PythonInterp ${PY_VER} REQUIRED)
 #             PATHS $ENV{CONDA_PREFIX})
 # This goes after, since it uses PythonInterp as hint
