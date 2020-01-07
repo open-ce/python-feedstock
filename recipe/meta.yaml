@@ -89,6 +89,11 @@ requirements:
     - tk                                 # [unix]
     - ncurses                            # [unix]
     - libffi                             # [unix]
+    - binutils_impl_{{target_platform}}  # [aarch64]
+    - ld_impl_{{target_platform}}  # [linux and not aarch64]
+  run:
+    - binutils_impl_{{target_platform}}  # [aarch64]
+    - ld_impl_{{target_platform}}  # [linux and not aarch64]
 
 test:
   commands:
