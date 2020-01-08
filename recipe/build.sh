@@ -13,7 +13,7 @@ VER=${PKG_VERSION%.*}
 VERNODOTS=${VER//./}
 QUICK_BUILD=no
 # Remove once: https://github.com/mingwandroid/conda-build/commit/c68a7d100866df7a3e9c0e3177fc7ef0ff76def9
-CONDA_FORGE=yes
+CONDA_FORGE=no
 
 _buildd_static=build-static
 _buildd_shared=build-shared
