@@ -151,7 +151,8 @@ requirements:
     - ld_impl_{{target_platform}}  # [linux and not aarch64]
   run:
     - binutils_impl_{{target_platform}}  # [aarch64]
-    - ld_impl_{{target_platform}}  # [linux and not aarch64]
+{% else %}
+    - ld_impl_{{target_platform}}
 {% endif %}
 
 test:
