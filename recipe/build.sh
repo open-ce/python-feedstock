@@ -14,9 +14,9 @@ VER=${PKG_VERSION%.*}
 VERNODOTS=${VER//./}
 TCLTK_VER=${tk}
 # Disables some PGO/LTO
-QUICK_BUILD=no
+QUICK_BUILD=yes
 # Remove once: https://github.com/mingwandroid/conda-build/commit/c68a7d100866df7a3e9c0e3177fc7ef0ff76def9
-CONDA_FORGE=yes
+CONDA_FORGE=no
 
 _buildd_static=build-static
 _buildd_shared=build-shared
@@ -222,12 +222,11 @@ if [[ ${_OPTIMIZED} == yes ]]; then
   _extra_opts+=(--enable-optimizations)
   _extra_opts+=(--with-lto)
   _MAKE_TARGET=profile-opt
-  # To speed up build times during testing (1):
   if [[ ${QUICK_BUILD} == yes ]]; then
-    # TODO :: It seems this is just profiling everything, on Windows, only 40 odd tests are
-    #         run while on Unix, all 400+ are run, making this slower and less well curated
     _PROFILE_TASK+=(PROFILE_TASK="-m test --pgo")
   else
+    # It takes a lot longer to run these 400+ tests but may give better results!
+    # On the other hand, --pgo is a curated list so in-fact may give better results!
     _PROFILE_TASK+=(PROFILE_TASK="-m test --pgo-extended")
   fi
   if [[ ${CC} =~ .*gcc.* ]]; then
