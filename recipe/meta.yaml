@@ -124,7 +124,6 @@ requirements:
     - make  # [not win]
     - pkg-config  # [not win]
     # configure script looks for llvm-ar for lto
-    - llvm-tools  # [osx]
     - patch  # [not win]
     - m2-patch  # [win]
     - posix  # [win]
@@ -136,7 +135,7 @@ requirements:
     - openssl
     - readline  # [not win]
     - tk  # [not win]
-    - ncurses  # [linux]
+    - ncurses  # [not win]
     - libffi  # [not win]
     - binutils_impl_{{target_platform}}  # [aarch64]
     - ld_impl_{{target_platform}}  # [linux and not aarch64]
