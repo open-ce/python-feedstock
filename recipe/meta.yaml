@@ -152,7 +152,7 @@ requirements:
   run:
     - binutils_impl_{{target_platform}}  # [aarch64]
 {% else %}
-    - ld_impl_{{target_platform}}
+    - ld_impl_{{target_platform}}  # [linux]
 {% endif %}
 
 test:
