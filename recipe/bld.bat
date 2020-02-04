@@ -55,6 +55,17 @@ for %%x in (python37%_D%.dll python3%_D%.dll python%_D%.exe pythonw%_D%.exe venv
     if errorlevel 1 exit 1
 )
 
+:: If _d appears anywhere other than at the end of the filename then this will break.
+if "%_D%"=="_d" (
+  for %%x in (python37%_D%.dll python3%_D%.dll python%_D%.exe pythonw%_D%.exe venvlauncher%_D%.exe venvwlauncher%_D%.exe) do (
+    set _TMP=%%x
+    call set _DST=%%_TMP:_D=%%
+    echo Copying: %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x to !_DST!
+    copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x %PREFIX%\!_DST!
+    if errorlevel 1 exit 1
+  )
+)
+
 for %%x in (*.pdb) do (
     echo Copying PDB: %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x to %PREFIX%\DLLs
     copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x %PREFIX%\DLLs
@@ -151,7 +162,14 @@ copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\python3%_D%.lib %PREFIX%\libs\
 if errorlevel 1 exit 1
 copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\_tkinter%_D%.lib %PREFIX%\libs\
 if errorlevel 1 exit 1
-
+if "%_D%"=="_d" (
+  copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\python37%_D%.lib %PREFIX%\libs\python37.lib
+  if errorlevel 1 exit 1
+  copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\python3%_D%.lib %PREFIX%\libs\python3.lib
+  if errorlevel 1 exit 1
+  copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\_tkinter%_D%.lib %PREFIX%\libs\_tkinter.lib
+  if errorlevel 1 exit 1
+)
 
 :: Populate the Lib directory
 del %PREFIX%\libs\libpython*.a
@@ -189,22 +207,28 @@ if errorlevel 1 exit 1
 %PREFIX%\python.exe -m lib2to3 --help
 
 echo "Testing print() does not print Hello"
-%CONDA_EXE% run -p %PREFIX% python -c "print()" 2>&1 | findstr /r /c:"Hello"
+echo CONDA_EXE is %CONDA_EXE%
+echo where conda is
+where conda
+echo where python is
+where python
+
+conda run -p %PREFIX% python -c "print()" 2>&1 | findstr /r /c:"Hello"
 if %errorlevel% neq 1 exit /b 1
 
 echo "Testing print('Hello') prints Hello"
-%CONDA_EXE% run -p %PREFIX% python -c "print('Hello')" 2>&1 | findstr /r /c:"Hello"
+conda run -p %PREFIX% python -c "print('Hello')" 2>&1 | findstr /r /c:"Hello"
 if %errorlevel% neq 0 exit /b 1
 
 echo "Testing import of os does not print The specified module could not be found"
-%CONDA_EXE% run -p %PREFIX% python -v -c "import os" 2>&1
-%CONDA_EXE% run -p %PREFIX% python -v -c "import os" 2>&1 | findstr /r /c:"The specified module could not be found"
+conda run -p %PREFIX% python -v -c "import os" 2>&1
+conda run -p %PREFIX% python -v -c "import os" 2>&1 | findstr /r /c:"The specified module could not be found"
 if %errorlevel% neq 1 exit /b 1
 
 :: echo "Waiting for 60 seconds. Recommend you run procmon to figure out why the impeding import of _sqlite3 fails (on Win 32, python 3.7 building 3.8)"
 :: waitfor SomethingThatIsNeverHappening /t 60 2>NUL
 
 echo "Testing import of _sqlite3 prints The specified module could not be found"
-%CONDA_EXE% run -p %PREFIX% %PREFIX%\python.exe -v -c "import _sqlite3" 2>&1
-%CONDA_EXE% run -p %PREFIX% %PREFIX%\python.exe -v -c "import _sqlite3" 2>&1 | findstr /r /c:"The specified module could not be found"
+conda run -p %PREFIX% %PREFIX%\python.exe -v -c "import _sqlite3" 2>&1
+conda run -p %PREFIX% %PREFIX%\python.exe -v -c "import _sqlite3" 2>&1 | findstr /r /c:"The specified module could not be found"
 if %errorlevel% neq 1 exit /b 1

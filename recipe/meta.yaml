@@ -6,7 +6,7 @@
   {% set linkage_nature = "_" ~ linkage_nature %}
 {% endif %}
 {% if debug != '' %}
-  {% set debug = "_d" ~ debug %}
+  {% set debug = "_d" %}
 {% endif %}
 
 package:
@@ -93,8 +93,6 @@ build:
   #   - lib/libpython3.dylib  # [osx]
   # match python.org compiler standard
   skip: True            # [win and int(float(vc)) < 14]
-# Would like to be able to append to the calculated build string here, ping @msarahan, is this possible?
-# Also this messes up hash generation so package ends up without any :-(
   string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}{{ debug }}_cpython
   run_exports:
    - python * *_cpython
