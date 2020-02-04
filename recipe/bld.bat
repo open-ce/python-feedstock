@@ -39,6 +39,7 @@ if "%PY_INTERP_DEBUG%"=="yes" (
     set PGO=
   ) else (
     set PGO=--pgo
+    set PGO=
   )
 )
 
