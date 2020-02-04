@@ -6,7 +6,7 @@
   {% set linkage_nature = "_" ~ linkage_nature %}
 {% endif %}
 {% if debug != '' %}
-  {% set debug = "_d" %}
+  {% set debug = "_dbg" %}
 {% endif %}
 
 package:
