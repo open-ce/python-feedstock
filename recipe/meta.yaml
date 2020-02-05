@@ -99,11 +99,9 @@ build:
   #   - lib/libpython3.dylib  # [osx]
   # match python.org compiler standard
   skip: True            # [win and int(float(vc)) < 14]
-# Would like to be able to append to the calculated build string here, ping @msarahan, is this possible?
-# Also this messes up hash generation so package ends up without any :-(
-{% if linkage_nature != '' or debug != '' %}
-  string: {{ version }}{{ linkage_nature }}{{ debug }}
-{% endif %}
+  string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}{{ debug }}_cpython
+  run_exports:
+   - python * *_cpython
   script_env:
    - PY_INTERP_LINKAGE_NATURE
    - PY_INTERP_DEBUG
@@ -190,6 +188,7 @@ test:
           # --trace --debug-output --debug-trycompile .
     -   popd
     - popd
+    - exit /b 1  # [win]
 
 about:
   home: http://www.python.org/
