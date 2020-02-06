@@ -6,7 +6,7 @@
   {% set linkage_nature = "_" ~ linkage_nature %}
 {% endif %}
 {% if debug != '' %}
-  {% set debug = "_d" ~ debug %}
+  {% set debug = "_dbg" %}
 {% endif %}
 
 package:
@@ -99,7 +99,7 @@ build:
   #   - lib/libpython3.dylib  # [osx]
   # match python.org compiler standard
   skip: True            # [win and int(float(vc)) < 14]
-  string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}{{ debug }}_cpython
+  string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}_cpython{{ debug }}
   run_exports:
    - python * *_cpython
   script_env:
@@ -127,7 +127,7 @@ requirements:
 {% endif %}
     - patch  # [not win]
     - m2-patch  # [win]
-    - posix  # [win]
+    - m2-gcc-libs  # [win]
   host:
     - bzip2  # [not win]
     - sqlite
@@ -184,11 +184,12 @@ test:
     -     bash build-and-test.sh  # [unix]
     -   popd  # [unix]
     -   pushd cmake
-    -     cmake -GNinja -DPY_VER={{ version }}
-          # --trace --debug-output --debug-trycompile .
+    -     cmake -GNinja -DPY_VER={{ version }} .
+          # --trace --debug-output --debug-trycompile
     -   popd
     - popd
-    - exit /b 1  # [win]
+    # --dirty --keep-old-work should be fine instead of this.
+    # - exit /b 1  # [win]
 
 about:
   home: http://www.python.org/
