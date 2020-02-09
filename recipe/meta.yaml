@@ -1,10 +1,10 @@
 {% set base_version = "3.8.1" %}
 {% set version = base_version %}
 {% set linkage_nature = os.environ.get('PY_INTERP_LINKAGE_NATURE', '') %}
-{% set debug = os.environ.get('PY_INTERP_DEBUG', '') %}
 {% if linkage_nature != '' %}
   {% set linkage_nature = "_" ~ linkage_nature %}
 {% endif %}
+{% set debug = os.environ.get('PY_INTERP_DEBUG', '') %}
 {% if debug != '' %}
   {% set debug = "_dbg" %}
 {% endif %}
@@ -78,7 +78,7 @@ source:
 
 
 build:
-  number: 2
+  number: 3
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:
