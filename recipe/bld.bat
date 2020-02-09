@@ -51,7 +51,7 @@ cd ..
 
 :: Populate the root package directory
 for %%x in (python37%_D%.dll python3%_D%.dll python%_D%.exe pythonw%_D%.exe venvlauncher%_D%.exe venvwlauncher%_D%.exe) do (
-    echo Copying: %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x
+    echo Copying: %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x to %PREFIX%
     copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x %PREFIX%
     if errorlevel 1 exit 1
 )
@@ -67,6 +67,12 @@ if "%_D%"=="_d" (
   )
 )
 
+for %%x in (python%_D%.pdb python37%_D%.pdb pythonw%_D%.pdb) do (
+    echo Copying: %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x %PREFIX%
+    copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x %PREFIX%
+    if errorlevel 1 exit 1
+)
+
 for %%x in (*.pdb) do (
     echo Copying PDB: %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x to %PREFIX%\DLLs
     copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x %PREFIX%\DLLs
@@ -80,8 +86,6 @@ if errorlevel 1 exit 1
 :: Populate the DLLs directory
 mkdir %PREFIX%\DLLs
 xcopy /s /y %SRC_DIR%\PCBuild\%BUILD_PATH%\*.pyd %PREFIX%\DLLs\
-if errorlevel 1 exit 1
-xcopy /s /y %SRC_DIR%\PCBuild\%BUILD_PATH%\*.pdb %PREFIX%\DLLs\
 if errorlevel 1 exit 1
 copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\tcl86t.dll %PREFIX%\DLLs\
 if errorlevel 1 exit 1
@@ -207,13 +211,13 @@ if errorlevel 1 exit 1
 :: Pickle lib2to3 Grammar
 %PREFIX%\python.exe -m lib2to3 --help
 
-echo "Testing print() does not print Hello"
 echo CONDA_EXE is %CONDA_EXE%
 echo where conda is
 where conda
 echo where python is
 where python
 
+echo "Testing print() does not print Hello"
 conda run -p %PREFIX% python -c "print()" 2>&1 | findstr /r /c:"Hello"
 if %errorlevel% neq 1 exit /b 1
 
