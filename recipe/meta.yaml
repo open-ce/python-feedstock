@@ -4,6 +4,10 @@
 {% if linkage_nature != '' %}
   {% set linkage_nature = "_" ~ linkage_nature %}
 {% endif %}
+{% set debug = os.environ.get('PY_INTERP_DEBUG', '') %}
+{% if debug != '' %}
+  {% set debug = "_dbg" %}
+{% endif %}
 
 package:
   name: python
@@ -68,7 +72,7 @@ source:
     sha256: de3c87b26a80e789986d8e6950c6304175d3829afe9c6c7211eb7257266ab0ac         # [win]
 
 build:
-  number: 2
+  number: 3
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:
@@ -90,6 +94,7 @@ build:
 
   # match python.org compiler standard
   skip: True            # [win and int(float(vc)) < 14]
+  string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}_cpython{{ debug }}
 # Would like to be able to append to the calculated build string here, ping @msarahan, is this possible?
 # Also this messes up hash generation so package ends up without any :-(
 # {% if linkage_nature != '' %}
@@ -120,6 +125,7 @@ requirements:
 {% endif %}
     - patch  # [not win]
     - m2-patch  # [win]
+    - m2-gcc-libs  # [win]
   host:
     - bzip2  # [not win]
     - sqlite
