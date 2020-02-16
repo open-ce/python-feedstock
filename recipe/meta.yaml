@@ -72,7 +72,7 @@ source:
     sha256: de3c87b26a80e789986d8e6950c6304175d3829afe9c6c7211eb7257266ab0ac         # [win]
 
 build:
-  number: 3
+  number: 5
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:
@@ -95,14 +95,11 @@ build:
   # match python.org compiler standard
   skip: True            # [win and int(float(vc)) < 14]
   string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}_cpython{{ debug }}
-# Would like to be able to append to the calculated build string here, ping @msarahan, is this possible?
-# Also this messes up hash generation so package ends up without any :-(
-# {% if linkage_nature != '' %}
-#   string: {{ version }}{{ linkage_nature }}
-# {% endif %}
-#   script_env:
-#    - PY_INTERP_LINKAGE_NATURE
-#    - python_branding
+  run_exports:
+   - python * *_cpython
+  script_env:
+   - PY_INTERP_LINKAGE_NATURE
+   - PY_INTERP_DEBUG
 # Not until: https://github.com/mingwandroid/conda-build/commit/c68a7d100866df7a3e9c0e3177fc7ef0ff76def9
 # {% if 'conda-forge' not in channel_targets %}
 #      - CONDA_FORGE=yes
