@@ -7,6 +7,9 @@
 {% set debug = os.environ.get('PY_INTERP_DEBUG', '') %}
 {% if debug != '' %}
   {% set debug = "_dbg" %}
+  {% set debug_distutils = "-g" %}
+{% else %}
+  {% set debug_distutils = "" %}
 {% endif %}
 
 package:
@@ -171,14 +174,13 @@ test:
     - for f in ${CONDA_PREFIX}/lib/python*/_sysconfig*.py; do echo "Checking $f:"; if [[ `rg @ $f` ]]; then echo "FAILED ON $f"; cat $f; exit 1; fi; done  # [linux64 or osx]
     - pushd tests
     -   pushd distutils
-    -     python setup.py install -v -v
+    -     python setup.py build {{ debug_distutils }} install -v -v
     -     python -c "import foobar"
     -   popd
-    {% if debug == '' %}
     -   pushd distutils.cext
-    # --single-version-externally-managed because .egg files with compiled code do not work on Windows (Python 3.8) when Py_DEBUG (this should be investigated)
-    -     python setup.py install -v -v  # [(not win) or environ.get('PY_INTERP_DEBUG') == '']
-    -     python setup.py install --single-version-externally-managed --record=record.txt -v -v  # [win and environ.get('PY_INTERP_DEBUG') != '']
+          # An egg might be possible in debug now that we pass "build -g" when debugging.
+    -     python setup.py build {{ debug_distutils }} install -v -v  # [(not win) or environ.get('PY_INTERP_DEBUG') == '']
+    -     python setup.py build {{ debug_distutils }} install --single-version-externally-managed --record=record.txt -v -v  # [win and environ.get('PY_INTERP_DEBUG') != '']
     -     python -v -v -v -c "import greet"
     -     python -v -v -v -c "import greet; greet.greet('Python user')" | rg "Hello Python"
     -   popd
@@ -189,7 +191,6 @@ test:
     -     cmake -GNinja -DPY_VER={{ version }}
           # --trace --debug-output --debug-trycompile .
     -   popd
-    {% endif %}
     - popd
 
 about:
