@@ -1,7 +1,7 @@
-From bd510e850256e4711b3e7d9a2ba089f32d3a0eea Mon Sep 17 00:00:00 2001
+From b385013d27e93b59a2e02e1d1f7ac7a8affe37a4 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 24 Dec 2019 18:37:17 +0100
-Subject: [PATCH 22/24] Add CondaEcosystemModifyDllSearchPath()
+Subject: [PATCH 22/26] Add CondaEcosystemModifyDllSearchPath()
 
 This changes the DLL search order so that C:\Windows\System32 does not
 get searched in before entries in PATH.
@@ -457,5 +457,5 @@ index 6deba1134e..56d8913455 100644
  #if HAVE_SXS
          _Py_DeactivateActCtx(cookie);
 -- 
-2.25.0
+2.23.0
 
