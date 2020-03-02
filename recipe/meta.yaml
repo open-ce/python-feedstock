@@ -102,8 +102,8 @@ build:
   # match python.org compiler standard
   skip: True            # [win and int(float(vc)) < 14]
   string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}_cpython{{ debug }}
-  run_exports:
-   - python * *cpython{{ debug }}
+  # run_exports:
+  #  - python * *cpython{{ debug }}
   script_env:
    - PY_INTERP_LINKAGE_NATURE
    - PY_INTERP_DEBUG
