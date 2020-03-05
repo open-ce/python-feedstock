@@ -75,7 +75,7 @@ source:
     sha256: de3c87b26a80e789986d8e6950c6304175d3829afe9c6c7211eb7257266ab0ac         # [win]
 
 build:
-  number: 6
+  number: 7
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:
@@ -98,8 +98,8 @@ build:
   # match python.org compiler standard
   skip: True            # [win and int(float(vc)) < 14]
   string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}_cpython{{ debug }}
-  run_exports:
-   - python * *cpython{{ debug }}
+  # run_exports:
+  #  - python * *cpython{{ debug }}
   script_env:
    - PY_INTERP_LINKAGE_NATURE
    - PY_INTERP_DEBUG
