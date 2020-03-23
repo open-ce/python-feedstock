@@ -46,6 +46,10 @@ source:
       - patches/0019-Add-CondaEcosystemModifyDllSearchPath.patch
 {% endif %}
       - patches/0020-Use-ranlib-from-env-if-env-variable-is-set.patch
+      # patch for CVE-2020-8492
+      # https://nvd.nist.gov/vuln/detail/CVE-2020-8492
+      # https://github.com/python/cpython/pull/18284
+      - patches/18284.patch
   # TODO :: Depend on our own packages for these:
   - url: https://github.com/python/cpython-source-deps/archive/xz-5.2.2.zip          # [win]
     folder: externals/xz-5.2.2                                                       # [win]
