@@ -44,6 +44,10 @@ source:
       - patches/0021-roll-back-2e33ecd-for-py_compile.main.patch
       # Python 3.8 is pretty broken without this.
       - patches/0022-Add-CondaEcosystemModifyDllSearchPath.patch
+      # patch for CVE-2020-8492
+      # https://nvd.nist.gov/vuln/detail/CVE-2020-8492
+      # https://github.com/python/cpython/pull/18284
+      - patches/18284.patch
 
   # TODO :: Depend on our own packages for these:
   - url: https://github.com/python/cpython-source-deps/archive/xz-5.2.2.zip          # [win]
