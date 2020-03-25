@@ -27,6 +27,9 @@ source:
     #   - 0019-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
     #   - 0021-Add-CondaEcosystemModifyDllSearchPath.patch  # [win]
       # - 0023-Use-CreateProcessW-to-support-Unicode.patch
+    # TODO apply patch for CVE-2020-8492 if not merge upstream:
+    # https://nvd.nist.gov/vuln/detail/CVE-2020-8492
+    # https://github.com/python/cpython/pull/18284
   # - path: ~/conda/CPython
   #   path_via_symlink: True
   - url: https://github.com/python/cpython-source-deps/archive/bzip2-1.0.6.zip      # [win]
