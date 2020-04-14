@@ -135,7 +135,6 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - ccache
     - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
     - {{ cdt('libx11-devel') }}  # [linux]
     - {{ cdt('libuuid-devel') }}  # [linux and not (ppc64le or aarch64)]
