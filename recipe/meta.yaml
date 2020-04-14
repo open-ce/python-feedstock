@@ -21,6 +21,7 @@ source:
     # md5 from: https://www.python.org/downloads/release/python-377/
     md5: 172c650156f7bea68ce31b2fd01fa766
     patches:
+      - patches/0000-Fix-off-by-one-error-in-_winapi_WaitForMultipleObjec.patch
 {% if 'conda-forge' not in channel_targets %}
       - patches/0001-Add-Anaconda-Distribution-version-logic.patch
 {% endif %}
@@ -79,7 +80,7 @@ source:
     sha256: de3c87b26a80e789986d8e6950c6304175d3829afe9c6c7211eb7257266ab0ac         # [win]
 
 build:
-  number: 0
+  number: 1
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:
