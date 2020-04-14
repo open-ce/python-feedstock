@@ -123,8 +123,8 @@ build:
    # Putting these here means they get emitted to build_env_setup.{sh,bat} meaning we can launch IDEs
    # after sourcing or calling that script without examine the contents of conda_build.{sh,bat} for
    # important env. vars.
-   - 'OPENSSL_DIR=%PREFIX%\Library'  # [win]
-   - 'SQLITE3_DIR=%PREFIX%\Library'  # [win]
+   # - 'OPENSSL_DIR=%PREFIX%\Library'  # [win]
+   # - 'SQLITE3_DIR=%PREFIX%\Library'  # [win]
 # Not until: https://github.com/mingwandroid/conda-build/commit/c68a7d100866df7a3e9c0e3177fc7ef0ff76def9
 # {% if 'conda-forge' not in channel_targets %}
 #      - CONDA_FORGE=yes
