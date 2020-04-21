@@ -6,6 +6,8 @@ package:
   version: {{ version }}
 
 source:
+  # - path: ~/conda/CPython
+  #   path_via_symlink: True
   - url: https://www.python.org/ftp/python/{{ version }}/Python-{{ version }}.tgz
     sha256: {{ sha256 }}
     patches:
@@ -28,8 +30,6 @@ source:
       - 0017-macOS-Allow-SDK-dir-suffixes-e.g.-usr-include-into-t.patch
       # While this works to an extent, it is buggy.
       # - 0018-Use-CreateProcessW-to-support-Unicode.patch
-  # - path: ~/conda/CPython
-  #   path_via_symlink: True
   - url: https://github.com/python/cpython-source-deps/archive/bzip2-1.0.6.zip      # [win]
     folder: externals/bzip2-1.0.6                                                   # [win]
     sha256: c42fd1432a2667b964a74bc423bb7485059c4a6d5dc92946d59dbf9a6bdb988d        # [win]
@@ -79,7 +79,7 @@ outputs:
     # lib/test will be removed from this, I hope!
     script: install-python.sh
     build:
-  number: 4
+      number: 0
       no_link:
         - bin/python2.7     # [unix]
         - DLLs/_ctypes.pyd  # [win]
@@ -93,9 +93,9 @@ outputs:
         - openssl           # [osx]
       skip: True            # [win and vc != 9]
       binary_has_prefix_files:
-       - bin/python2.7
-       - lib/libpython2.7.dylib
-       - lib/python2.7/config/libpython2.7.a
+        - bin/python2.7
+        - lib/libpython2.7.dylib
+        - lib/python2.7/config/libpython2.7.a
 
     requirements:
       build:
@@ -121,12 +121,12 @@ outputs:
 
     test:
       # Because we need to use xvfb-run on linux, from a CDT package.
-      requires:  # [linux]
+      requires:
         # We are running centos6 software here (on whatever distro you are on)
         # .. so it best be compatible (you should use centos6 if possible).
         - {{ cdt('xorg-x11-server-xvfb') }}  # [linux and not ppc64le]
         - {{ cdt('xorg-x11-xauth') }}  # [linux and not ppc64le]
-	- ripgrep
+        - ripgrep
       files:
         - tests.py
       commands:
@@ -143,12 +143,14 @@ outputs:
         - _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata_x86_64_conda_cos6_linux_gnu python -c "import sysconfig; print sysconfig.get_config_var('CC')"  # [linux64]
         # Test for https://github.com/ContinuumIO/anaconda-issues/issues/11205
         - python -c 'import ssl; print(ssl.get_default_verify_paths().openssl_capath)' | rg -F ${CONDA_PREFIX}  # [unix]
-        - python -c "import ssl; print(ssl.get_default_verify_paths().openssl_capath.replace('/', '\\'))" | rg -F %CONDA_PREFIX%  # [win]
+        # - python -c "import ssl; print(ssl.get_default_verify_paths().openssl_capath.replace('/', '\\'))" | rg -F %CONDA_PREFIX%  # [win]
 
   # If this fails to test then do not upload the built python package!
   - name: python-regr-testsuite
     script: install-python-regr-testsuite.sh
     requirements:
+      host:
+        - {{ pin_subpackage('python', exact=True) }}
       run:
         - {{ pin_subpackage('python', exact=True) }}
     test:
