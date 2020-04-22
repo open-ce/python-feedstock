@@ -97,6 +97,7 @@ test:
     # .. so it best be compatible (you should use centos6 if possible).
     - {{ cdt('xorg-x11-server-xvfb') }}  # [linux and not ppc64le]
     - {{ cdt('xorg-x11-xauth') }}  # [linux and not ppc64le]
+    - {{ cdt('libxau') }}  # [linux and not ppc64le]
   files:
     - tests.py
   commands:
@@ -106,7 +107,7 @@ test:
     - export PATH=${CONDA_PREFIX}/${HOST}/sysroot/bin:${CONDA_PREFIX}/${HOST}/sysroot/usr/bin:${PATH}  # [unix]
     - export LD_LIBRARY_PATH=${CONDA_PREFIX}/lib:${CONDA_PREFIX}/${HOST}/sysroot/lib64:${CONDA_PREFIX}/${HOST}/sysroot/usr/lib:/usr/lib64:/usr/lib  # [unix]
     - export DISPLAY=localhost:1  # [unix]
-    - bash -x xvfb-run python $PWD/tests.py  # [linux and not ppc64le]
+    - bash -x ${CONDA_PREFIX}/*-linux-gnu/sysroot/usr/bin/xvfb-run python $PWD/tests.py  # [linux and not ppc64le]
     - python tests.py  # [not linux or ppc64le]
     - idle -h  # [not linux or ppc64le]
     - python -c "import sysconfig; print sysconfig.get_config_var('CC')"
