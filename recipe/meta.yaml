@@ -54,7 +54,7 @@ source:
 
 
 build:
-  number: 0
+  number: 1
   no_link:
     - bin/python2.7     # [unix]
     - DLLs/_ctypes.pyd  # [win]
@@ -99,7 +99,6 @@ test:
     - {{ cdt('xorg-x11-server-xvfb') }}  # [linux and not ppc64le]
     - {{ cdt('xorg-x11-xauth') }}  # [linux and not ppc64le]
     - {{ cdt('libxau') }}  # [linux and not ppc64le]
-    - libffi <3.3.0a0  # [unix]
   files:
     - tests.py
   commands:
