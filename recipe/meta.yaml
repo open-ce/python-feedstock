@@ -64,7 +64,9 @@ build:
   # We delete the shared libraries.
   ignore_run_exports:
     - bzip2
-    - libcxx
+    - clangxx_osx-64    # [osx]
+    - gxx_linux-64      # [linux64]
+    - gxx_linux-32      # [linux32]
     - openssl
   skip: True            # [win and vc != 9]
 
