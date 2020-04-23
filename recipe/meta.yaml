@@ -62,10 +62,10 @@ build:
   # script_env:
   #   - python_branding
   # We delete the shared libraries.
-  ignore_run_exports:   # [unix]
-    - bzip2             # [unix]
-    - libcxx            # [osx]
-    - openssl           # [osx]
+  ignore_run_exports:
+    - bzip2
+    - libcxx
+    - openssl
   skip: True            # [win and vc != 9]
 
 requirements:
@@ -92,12 +92,13 @@ requirements:
 
 test:
   # Because we need to use xvfb-run on linux, from a CDT package.
-  requires:  # [linux and not ppc64le]
+  requires:  # [unix]
     # We are running centos6 software here (on whatever distro you are on)
     # .. so it best be compatible (you should use centos6 if possible).
     - {{ cdt('xorg-x11-server-xvfb') }}  # [linux and not ppc64le]
     - {{ cdt('xorg-x11-xauth') }}  # [linux and not ppc64le]
     - {{ cdt('libxau') }}  # [linux and not ppc64le]
+    - libffi <3.3.0a0  # [unix]
   files:
     - tests.py
   commands:
