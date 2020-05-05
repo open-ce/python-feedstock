@@ -24,7 +24,7 @@ source:
     md5: 172c650156f7bea68ce31b2fd01fa766
     patches:
       - patches/0001-Fix-off-by-one-error-in-_winapi_WaitForMultipleObjec.patch
-      - patches/0002-Adds-test.support.PGO-and-skips-tests-that-are-not-u.patch
+      # - patches/0002-Adds-test.support.PGO-and-skips-tests-that-are-not-u.patch
 {% if 'conda-forge' not in channel_targets %}
       - patches/0003-Add-Anaconda-Distribution-version-logic.patch
 {% endif %}
@@ -206,8 +206,8 @@ test:
     -     python ppe.py
     -   popd
     -   pushd cmake
-    -     cmake -GNinja -DPY_VER={{ version }}
-          # --trace --debug-output --debug-trycompile .
+    -     cmake -GNinja -DPY_VER={{ version }} -DPython_ROOT_DIR=%PREFIX% --trace --debug-output --debug-trycompile .  # [win]
+    -     cmake -GNinja -DPY_VER={{ version }} -DPython_ROOT_DIR=${PREFIX} --trace --debug-output --debug-trycompile .  # [not win]
     -   popd
     - popd
 
