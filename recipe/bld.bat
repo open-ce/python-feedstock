@@ -228,6 +228,7 @@ where python
 
 exit /b 0
 
+:: When we fix conda run we can enable these tests again.
 echo "Testing print() does not print Hello"
 conda run -p %PREFIX% python -c "print()" 2>&1 | findstr /r /c:"Hello"
 if %errorlevel% neq 1 exit /b 1
