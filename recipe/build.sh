@@ -11,7 +11,8 @@ set -ex
 
 VER=${PKG_VERSION%.*}
 VERNODOTS=${VER//./}
-QUICK_BUILD=no
+# Disables some PGO/LTO
+QUICK_BUILD=yes
 # Remove once: https://github.com/mingwandroid/conda-build/commit/c68a7d100866df7a3e9c0e3177fc7ef0ff76def9
 CONDA_FORGE=no
 
@@ -221,8 +222,13 @@ if [[ ${_OPTIMIZED} == yes ]]; then
   _MAKE_TARGET=profile-opt
   # To speed up build times during testing (1):
   if [[ ${QUICK_BUILD} == yes ]]; then
-    # TODO :: Is this not just profiling everything? It seems like it tests more than test_builtin
-    _PROFILE_TASK+=(PROFILE_TASK=\"./python -m test.regrtest --pgo test_builtin\")
+    _PROFILE_TASK+=(PROFILE_TASK="-m test --pgo")
+  else
+    # TODO :: Run some benchmarks on these to see which is better.
+    #      :: We decided to go with the faster-to-build option for now
+    #      :: --pgo-extended runs 10 times as many tests as --pgo does.
+    # _PROFILE_TASK+=(PROFILE_TASK="-m test --pgo-extended")
+    _PROFILE_TASK+=(PROFILE_TASK="-m test --pgo")
   fi
   if [[ ${CC} =~ .*gcc.* && ! ${c_compiler} =~ .*toolchain.* ]]; then
     LTO_CFLAGS+=(-fuse-linker-plugin)
@@ -255,7 +261,7 @@ pushd ${_buildd_static}
                        "${_extra_opts[@]}" \
                        "${_dbg_opts[@]}" \
                        -oldincludedir=${BUILD_PREFIX}/${HOST}/sysroot/usr/include \
-                       ${_DISABLE_SHARED}
+                       ${_DISABLE_SHARED} "${_PROFILE_TASK[@]}"
 popd
 
 make -j${CPU_COUNT} -C ${_buildd_static} \
@@ -344,11 +350,7 @@ popd
 pushd ${PREFIX}
   if [[ -f lib/libpython${VERABI}.a ]]; then
     chmod +w lib/libpython${VERABI}.a
-    if [[ -n ${HOST} ]]; then
-      ${HOST}-strip -S lib/libpython${VERABI}.a
-    else
-      strip -S lib/libpython${VERABI}.a
-    fi
+    ${STRIP} -S lib/libpython${VERABI}.a
   fi
   CONFIG_LIBPYTHON=$(find lib/python${VER}/config-${VERABI}* -name "libpython${VERABI}.a")
   if [[ -f lib/libpython${VERABI}.a ]] && [[ -f ${CONFIG_LIBPYTHON} ]]; then
