@@ -23,36 +23,36 @@ source:
     # md5 from: https://www.python.org/downloads/release/python-{{ ver3nd }}/
     md5: 172c650156f7bea68ce31b2fd01fa766
     patches:
-      - patches/0000-Fix-off-by-one-error-in-_winapi_WaitForMultipleObjec.patch
+      - patches/0001-Fix-off-by-one-error-in-_winapi_WaitForMultipleObjec.patch
+      - patches/0002-Adds-test.support.PGO-and-skips-tests-that-are-not-u.patch
 {% if 'conda-forge' not in channel_targets %}
-      - patches/0001-Add-Anaconda-Distribution-version-logic.patch
+      - patches/0003-Add-Anaconda-Distribution-version-logic.patch
 {% endif %}
-      - patches/0002-Darwin-Add-arch-x86_64-to-UnicCCompiler-ld_args.patch
-      - patches/0003-Win32-Change-FD_SETSIZE-from-512-to-2048.patch
-      - patches/0004-Win32-distutils-Add-support-to-cygwinccompiler-for-V.patch
-      - patches/0005-Do-not-pass-g-to-GCC-when-not-Py_DEBUG.patch
-      - patches/0006-Support-cross-compiling-byte-code.patch
-      - patches/0007-Win32-Fixes-for-Windows-GCC-interop-needed-by-RPy2-a.patch
-      - patches/0008-Darwin-Look-in-sysroot-usr-lib-include-if-sysroot-is.patch
-      - patches/0009-runtime_library_dir_option-Use-1st-word-of-CC-as-com.patch
-      - patches/0010-Win32-Do-not-download-externals.patch
-      - patches/0011-Add-support-for-_CONDA_PYTHON_SYSCONFIGDATA_NAME-if-.patch
-      - patches/0012-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch
-      - patches/0013-Disable-new-dtags-in-unixccompiler.py.patch
-      - patches/0014-Fix-cross-compilation-on-Debian-based-distros.patch
-      - patches/0015-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
-      - patches/0016-Unvendor-openssl.patch
-      - patches/0017-Unvendor-sqlite3.patch
+      - patches/0004-Darwin-Add-arch-x86_64-to-UnicCCompiler-ld_args.patch
+      - patches/0005-Win32-Change-FD_SETSIZE-from-512-to-2048.patch
+      - patches/0006-Win32-distutils-Add-support-to-cygwinccompiler-for-V.patch
+      - patches/0007-Do-not-pass-g-to-GCC-when-not-Py_DEBUG.patch
+      - patches/0008-Support-cross-compiling-byte-code.patch
+      - patches/0009-Win32-Fixes-for-Windows-GCC-interop-needed-by-RPy2-a.patch
+      - patches/0010-Darwin-Look-in-sysroot-usr-lib-include-if-sysroot-is.patch
+      - patches/0011-runtime_library_dir_option-Use-1st-word-of-CC-as-com.patch
+      - patches/0012-Win32-Do-not-download-externals.patch
+      - patches/0013-Add-support-for-_CONDA_PYTHON_SYSCONFIGDATA_NAME-if-.patch
+      - patches/0014-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch
+      - patches/0015-Disable-new-dtags-in-unixccompiler.py.patch
+      - patches/0016-Fix-cross-compilation-on-Debian-based-distros.patch
+      - patches/0017-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
+      - patches/0018-Unvendor-openssl.patch
+      - patches/0019-Unvendor-sqlite3.patch
       # https://bugs.python.org/issue35644
-      - patches/0018-venv-Revert-a-change-from-https-github.com-python-cp.patch
-{% if 'conda-forge' not in channel_targets %}
-      - patches/0019-Add-CondaEcosystemModifyDllSearchPath.patch
-{% endif %}
-      - patches/0020-Use-ranlib-from-env-if-env-variable-is-set.patch
+      - patches/0020-venv-Revert-a-change-from-https-github.com-python-cp.patch
+      - patches/0021-Add-CondaEcosystemModifyDllSearchPath.patch
+      - patches/0022-Use-ranlib-from-env-if-env-variable-is-set.patch
       # patch for CVE-2020-8492
       # https://nvd.nist.gov/vuln/detail/CVE-2020-8492
       # https://github.com/python/cpython/pull/18284
-      - patches/18284.patch
+      - patches/0023-bpo-39503-Fix-urllib-basic-auth-regex.patch
+      - patches/0024-Add-CVE-2020-8492-to-the-NEWS-entry.patch
   # TODO :: Depend on our own packages for these:
   - url: https://github.com/python/cpython-source-deps/archive/xz-5.2.2.zip          # [win]
     folder: externals/xz-5.2.2                                                       # [win]
@@ -82,7 +82,7 @@ source:
     sha256: de3c87b26a80e789986d8e6950c6304175d3829afe9c6c7211eb7257266ab0ac         # [win]
 
 build:
-  number: 2
+  number: 3
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:

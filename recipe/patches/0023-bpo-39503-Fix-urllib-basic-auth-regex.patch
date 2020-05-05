@@ -1,0 +1,43 @@
+From ac43467c3e1dba0beda5ae5910c8e2eb2600f305 Mon Sep 17 00:00:00 2001
+From: Victor Stinner <vstinner@python.org>
+Date: Thu, 30 Jan 2020 16:13:03 +0100
+Subject: [PATCH 23/24] bpo-39503: Fix urllib basic auth regex
+
+The AbstractBasicAuthHandler class of the urllib.request module uses
+an inefficient regular expression which can be exploited by an
+attacker to cause a denial of service. Fix the regex to prevent the
+catastrophic backtracking.
+
+Vulnerability reported by Matt Schwager.
+---
+ Lib/urllib/request.py                                         | 2 +-
+ .../next/Security/2020-01-30-16-15-29.bpo-39503.B299Yq.rst    | 4 ++++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+ create mode 100644 Misc/NEWS.d/next/Security/2020-01-30-16-15-29.bpo-39503.B299Yq.rst
+
+diff --git a/Lib/urllib/request.py b/Lib/urllib/request.py
+index 0d3f9670fe..9c1d9d59c6 100644
+--- a/Lib/urllib/request.py
++++ b/Lib/urllib/request.py
+@@ -944,7 +944,7 @@ class AbstractBasicAuthHandler:
+ 
+     # allow for double- and single-quoted realm values
+     # (single quotes are a violation of the RFC, but appear in the wild)
+-    rx = re.compile('(?:.*,)*[ \t]*([^ \t]+)[ \t]+'
++    rx = re.compile('(?:[^,]*,)*[ \t]*([^ \t]+)[ \t]+'
+                     'realm=(["\']?)([^"\']*)\\2', re.I)
+ 
+     # XXX could pre-emptively send auth info already accepted (RFC 2617,
+diff --git a/Misc/NEWS.d/next/Security/2020-01-30-16-15-29.bpo-39503.B299Yq.rst b/Misc/NEWS.d/next/Security/2020-01-30-16-15-29.bpo-39503.B299Yq.rst
+new file mode 100644
+index 0000000000..2c2622f4e8
+--- /dev/null
++++ b/Misc/NEWS.d/next/Security/2020-01-30-16-15-29.bpo-39503.B299Yq.rst
+@@ -0,0 +1,4 @@
++The :class:`~urllib.request.AbstractBasicAuthHandler` class of the
++:mod:`urllib.request` module uses an inefficient regular expression which can
++be exploited by an attacker to cause a denial of service. Fix the regex to
++prevent the catastrophic backtracking. Vulnerability reported by Matt Schwager.
+-- 
+2.23.0
+

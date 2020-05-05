@@ -1,0 +1,91 @@
+From 3ce2f15774aa3892b392c2e4dd72d9ae67852782 Mon Sep 17 00:00:00 2001
+From: Steve Dower <steve.dower@microsoft.com>
+Date: Tue, 6 Sep 2016 19:38:15 -0700
+Subject: [PATCH 02/24] Adds test.support.PGO and skips tests that are not
+ useful for PGO.
+
+(backport of 22d0698d3b034f4f4314aa793da7225a5da640ba)
+---
+ Lib/test/test_asyncore.py   |  5 ++++-
+ Lib/test/test_subprocess.py |  3 +++
+ Tools/msi/buildrelease.bat  | 13 +++++--------
+ 3 files changed, 12 insertions(+), 9 deletions(-)
+
+diff --git a/Lib/test/test_asyncore.py b/Lib/test/test_asyncore.py
+index 3fcedb58ec..5d81689208 100644
+--- a/Lib/test/test_asyncore.py
++++ b/Lib/test/test_asyncore.py
+@@ -7,7 +7,6 @@ import sys
+ import time
+ import errno
+ import struct
+-import threading
+ 
+ from test import support
+ from io import BytesIO
+@@ -15,6 +14,10 @@ from io import BytesIO
+ if support.PGO:
+     raise unittest.SkipTest("test is not helpful for PGO")
+ 
++try:
++    import threading
++except ImportError:
++    threading = None
+ 
+ TIMEOUT = 3
+ HAS_UNIX_SOCKETS = hasattr(socket, 'AF_UNIX')
+diff --git a/Lib/test/test_subprocess.py b/Lib/test/test_subprocess.py
+index d024158e18..7ca045d60c 100644
+--- a/Lib/test/test_subprocess.py
++++ b/Lib/test/test_subprocess.py
+@@ -36,6 +36,9 @@ except ImportError:
+ if support.PGO:
+     raise unittest.SkipTest("test is not helpful for PGO")
+ 
++if support.PGO:
++    raise unittest.SkipTest("test is not helpful for PGO")
++
+ mswindows = (sys.platform == "win32")
+ 
+ #
+diff --git a/Tools/msi/buildrelease.bat b/Tools/msi/buildrelease.bat
+index 45e189b537..61c1bc71fa 100644
+--- a/Tools/msi/buildrelease.bat
++++ b/Tools/msi/buildrelease.bat
+@@ -36,10 +36,7 @@ set BUILDX86=
+ set BUILDX64=
+ set TARGET=Rebuild
+ set TESTTARGETDIR=
+-set PGO=-m test -q --pgo
+-set BUILDMSI=1
+-set BUILDNUGET=1
+-set BUILDZIP=1
++set PGO=default
+ 
+ 
+ :CheckOpts
+@@ -205,9 +202,9 @@ if not "%OUTDIR%" EQU "" (
+ exit /B 0
+ 
+ :Help
+-echo buildrelease.bat [--out DIR] [-x86] [-x64] [--certificate CERTNAME] [--build] [--pgo COMMAND]
+-echo                  [--skip-build] [--skip-doc] [--skip-nuget] [--skip-zip] [--skip-pgo]
+-echo                  [--download DOWNLOAD URL] [--test TARGETDIR]
++echo buildrelease.bat [--out DIR] [-x86] [-x64] [--certificate CERTNAME] [--build]
++echo                  [--skip-doc] [--skip-nuget] [--skip-zip]
++echo                  [--pgo COMMAND] [--skip-pgo] [--download DOWNLOAD URL] [--test TARGETDIR]
+ echo                  [-h]
+ echo.
+ echo    --out (-o)          Specify an additional output directory for installers
+@@ -217,7 +214,7 @@ echo    --build (-b)        Incrementally build Python rather than rebuilding
+ echo    --skip-build (-B)   Do not build Python (just do the installers)
+ echo    --skip-doc (-D)     Do not build documentation
+ echo    --pgo               Specify PGO command for x64 installers
+-echo    --skip-pgo          Build x64 installers without using PGO
++echo    --skip-pgo          Build x64 installers using PGO
+ echo    --skip-msi          Do not build executable/MSI packages
+ echo    --skip-nuget        Do not build Nuget packages
+ echo    --skip-zip          Do not build embeddable package
+-- 
+2.23.0
+
