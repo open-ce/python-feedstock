@@ -90,6 +90,7 @@ build:
   # We delete the shared libraries.
   ignore_run_exports:   # [unix]
     - bzip2             # [unix]
+    - {{ compiler('cxx') }}
   # Disabled until new conda-build release
   # detect_binary_files_with_prefix: True
   binary_has_prefix_files:
