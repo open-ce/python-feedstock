@@ -222,7 +222,7 @@ if [[ ${_OPTIMIZED} == yes ]]; then
     # _PROFILE_TASK+=(PROFILE_TASK="-m test --pgo-extended")
     _PROFILE_TASK+=(PROFILE_TASK="-m test --pgo")
   fi
-  if [[ ${CC} =~ .*gcc.* && ! ${c_compiler} =~ .*toolchain.* ]]; then
+  if [[ ${CC} =~ .*gcc.* ]]; then
     LTO_CFLAGS+=(-fuse-linker-plugin)
     LTO_CFLAGS+=(-ffat-lto-objects)
     # -flto must come after -flto-partition due to the replacement code

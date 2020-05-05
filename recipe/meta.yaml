@@ -87,10 +87,13 @@ build:
   # Copy rather than link.
   no_link:
     - DLLs/_ctypes.pyd  # [win]
-  # We delete the shared libraries.
-  ignore_run_exports:   # [unix]
-    - bzip2             # [unix]
-    - {{ compiler('cxx') }}
+  ignore_run_exports:  # [unix]
+    # We delete the shared libraries here.
+    - bzip2  # [unix]
+    # C++ only installed so CXX is defined for distutils/sysconfig.
+    - libcxx  # [osx]
+    - libcxxabi  # [osx]
+    - libstdcxx-ng  # [linux]
   # Disabled until new conda-build release
   # detect_binary_files_with_prefix: True
   binary_has_prefix_files:
