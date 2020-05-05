@@ -84,14 +84,18 @@ source:
 
 
 build:
-  number: 10
+  number: 12
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:
     - DLLs/_ctypes.pyd  # [win]
-  # We delete the shared libraries.
-  ignore_run_exports:   # [unix]
-    - bzip2             # [unix]
+  ignore_run_exports:  # [unix]
+    # We delete the shared libraries here.
+    - bzip2  # [unix]
+    # C++ only installed so CXX is defined for distutils/sysconfig.
+    - libcxx  # [osx]
+    - libcxxabi  # [osx]
+    - libstdcxx-ng  # [linux]
   detect_binary_files_with_prefix: False
   binary_has_prefix_files:
     - lib/libpython{{ ver2 }}.*.1.0
@@ -102,8 +106,12 @@ build:
     # - lib/python{{ ver2 }}/lib-dynload/_hashlib.cpython-{{ ver2nd }}-x86_64-linux-gnu.so  # [linux]
     - lib/libpython3.dylib  # [osx]
   # match python.org compiler standard
-  string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}_cpython{{ debug }}
   skip: True  # [win and int(float(vc)) < 14]
+{% if 'conda-forge' in channel_targets %}
+  string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}_cpython{{ debug }}
+{% else %}
+  string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}{{ debug }}
+{% endif %}
 {% if 'conda-forge' in channel_targets %}
   run_exports:
     noarch:
@@ -123,10 +131,10 @@ build:
    # Putting these here means they get emitted to build_env_setup.{sh,bat} meaning we can launch IDEs
    # after sourcing or calling that script without examine the contents of conda_build.{sh,bat} for
    # important env. vars.
-   # - 'OPENSSL_DIR=%PREFIX%\Library'  # [win]
-   # - 'SQLITE3_DIR=%PREFIX%\Library'  # [win]
+   - 'OPENSSL_DIR=%PREFIX%\Library'  # [win]
+   - 'SQLITE3_DIR=%PREFIX%\Library'  # [win]
 # Not until: https://github.com/mingwandroid/conda-build/commit/c68a7d100866df7a3e9c0e3177fc7ef0ff76def9
-# {% if 'conda-forge' not in channel_targets %}
+# {% if 'conda-forge' in channel_targets %}
 #      - CONDA_FORGE=yes
 # {% else %}
 #      - CONDA_FORGE=no
