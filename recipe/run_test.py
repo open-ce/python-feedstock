@@ -68,6 +68,7 @@ import test.support
 import unicodedata
 import zlib
 from os import urandom
+import os
 
 t = 100 * b'Foo '
 assert lzma.decompress(lzma.compress(t)) == t
