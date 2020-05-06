@@ -246,6 +246,6 @@ if %errorlevel% neq 1 exit /b 1
 :: waitfor SomethingThatIsNeverHappening /t 60 2>NUL
 
 echo "Testing import of _sqlite3 prints The specified module could not be found"
-conda run -p %PREFIX% python -v -c "import _sqlite3" 2>&1
-conda run -p %PREFIX% python -v -c "import _sqlite3" 2>&1 | findstr /r /c:"The specified module could not be found"
+conda run -p %PREFIX% %PREFIX%\python.exe -v -c "import _sqlite3" 2>&1
+conda run -p %PREFIX% %PREFIX%\python.exe -v -c "import _sqlite3" 2>&1 | findstr /r /c:"The specified module could not be found"
 if %errorlevel% neq 1 exit /b 1
