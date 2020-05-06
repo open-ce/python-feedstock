@@ -1,3 +1,7 @@
+python:  # [not win]
+  - 3.7  # [not win]
+  - 3.7  # [not win]
+  - 3.7  # [not win]
 python:                        # [win]
   - 3.7                        # [win]
 c_compiler:                    # [win]
