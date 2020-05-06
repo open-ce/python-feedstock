@@ -63,6 +63,16 @@ call build.bat %PGO% %CONFIG% -m -e -v -p %PLATFORM%
 if errorlevel 1 exit 1
 cd ..
 
+if exist %SRC_DIR%\PCbuild\%BUILD_PATH%\instrumented (
+  echo "INFO :: Found PGO instrumented DLLs, will remove them."
+  echo "INFO :: They link to pgort140.DLL which is probably not"
+  echo "INFO :: re-distributable."
+  rmdir /s /q %SRC_DIR%\PCbuild\%BUILD_PATH%\instrumented
+) else (
+  echo "WARNING :: Did not find PGO instrumented DLLs (which I wanted to delete)"
+  echo "WARNING :: It is likely that this build is not optimized, be careful!"
+)
+
 :: Populate the root package directory
 for %%x in (python38%_D%.dll python3%_D%.dll python%_D%.exe pythonw%_D%.exe venvlauncher%_D%.exe venvwlauncher%_D%.exe) do (
     echo Copying: %SRC_DIR%\PCbuild\%BUILD_PATH%\%%x to %PREFIX%
