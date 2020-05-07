@@ -82,7 +82,7 @@ source:
     sha256: de3c87b26a80e789986d8e6950c6304175d3829afe9c6c7211eb7257266ab0ac         # [win]
 
 build:
-  number: 4
+  number: 5
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:
@@ -166,9 +166,9 @@ requirements:
     - tk  # [not win]
     - ncurses  # [not win]
     - libffi  # [not win]
-{% if 'conda-forge' in channel_targets %}
   run:
     - ld_impl_{{target_platform}}  # [linux]
+{% if 'conda-forge' in channel_targets %}
   run_constrained:
     - python_abi {{ ver2 }}.* *_cp{{ ver2nd }}{{ dbg_abi }}
 {% endif %}
