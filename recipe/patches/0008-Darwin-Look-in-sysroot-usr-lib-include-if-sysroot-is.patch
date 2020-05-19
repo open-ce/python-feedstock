@@ -1,4 +1,4 @@
-From baf6891de4ecfe2619207d006d9b53e97193174f Mon Sep 17 00:00:00 2001
+From d348daa682333579e1326cf49bd5e7503c46e5de Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sun, 20 Aug 2017 00:22:22 +0100
 Subject: [PATCH 08/26] Darwin: Look in ${sysroot}/usr/{lib,include} if sysroot
@@ -28,5 +28,5 @@ index b168ed4082..fc1715e4f3 100644
              self.inc_dirs = self.compiler.include_dirs + system_include_dirs
          else:
 -- 
-2.23.0.windows.1
+2.23.0
 

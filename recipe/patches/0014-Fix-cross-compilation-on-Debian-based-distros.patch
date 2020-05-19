@@ -1,4 +1,4 @@
-From e93058e06f5333c0c98cee2bb15bc32f72f874da Mon Sep 17 00:00:00 2001
+From 66e500daabc8f2fcc600639675cd086a789895a8 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sun, 26 Aug 2018 17:10:08 +0100
 Subject: [PATCH 14/26] Fix cross-compilation on Debian-based distros
@@ -22,5 +22,5 @@ index fc1715e4f3..edb2557c40 100644
  
      def init_inc_lib_dirs(self):
 -- 
-2.23.0.windows.1
+2.23.0
 

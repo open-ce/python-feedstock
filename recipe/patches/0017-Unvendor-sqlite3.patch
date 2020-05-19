@@ -1,4 +1,4 @@
-From 9277eda1aa552a5908b0186f65dab6da70c33daa Mon Sep 17 00:00:00 2001
+From edccb085f71cde2a48847c49b845bbc928d1e6bf Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Mon, 10 Dec 2018 12:22:37 -0600
 Subject: [PATCH 17/26] Unvendor sqlite3
@@ -98,5 +98,5 @@ index 90b4d3108f..6deeafd422 100644
    <ItemDefinitionGroup>
      <ClCompile>
 -- 
-2.23.0.windows.1
+2.23.0
 

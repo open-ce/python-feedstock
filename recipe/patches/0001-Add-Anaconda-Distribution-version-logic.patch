@@ -1,4 +1,4 @@
-From 932a29b1e8110b9e9f74a7852df24cc2a5ced884 Mon Sep 17 00:00:00 2001
+From 44c2835dbc11e465abc41f14d5bf9890613139bb Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 15 Aug 2017 22:34:16 +0100
 Subject: [PATCH 01/26] Add Anaconda Distribution version logic
@@ -109,5 +109,5 @@ index c32b6f9d60..b5dfffb606 100644
  Py_GetVersion(void)
  {
 -- 
-2.23.0.windows.1
+2.23.0
 

@@ -1,4 +1,4 @@
-From cfc051b7754b2e8aa86f551c42b58f19e2263dac Mon Sep 17 00:00:00 2001
+From b69aa9db81be580664546d8b0d8e55186bf469a8 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 18 Feb 2020 17:38:32 +0100
 Subject: [PATCH 26/26] Revert part of https://bugs.python.org/issue33895
@@ -64,5 +64,5 @@ index 56d8913455..dd5b200861 100644
          _Py_DeactivateActCtx(cookie);
  #endif
 -- 
-2.23.0.windows.1
+2.23.0
 

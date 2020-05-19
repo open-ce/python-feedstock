@@ -1,4 +1,4 @@
-From 18b9b8a8ad772d8fe6248b739b35e0e587e8472d Mon Sep 17 00:00:00 2001
+From 435faf8ef80ba82399bb74714b2caad1a1388186 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 24 Dec 2019 18:37:17 +0100
 Subject: [PATCH 22/26] Add CondaEcosystemModifyDllSearchPath()
@@ -457,5 +457,5 @@ index 6deba1134e..56d8913455 100644
  #if HAVE_SXS
          _Py_DeactivateActCtx(cookie);
 -- 
-2.23.0.windows.1
+2.23.0
 

@@ -1,4 +1,4 @@
-From 5cebec3eaba9fd29aa710927e5cb6801d54ed67c Mon Sep 17 00:00:00 2001
+From a3af15eb2575effab094b16bb5e133b7694bf812 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 31 Dec 2019 21:47:47 +0100
 Subject: [PATCH 24/26] Doing d1trimfile
@@ -873,5 +873,5 @@ index 776335a15c..6e9e556e81 100644
      <Link>
        <AdditionalDependencies>wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
 -- 
-2.23.0.windows.1
+2.23.0
 
