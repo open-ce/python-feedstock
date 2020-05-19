@@ -1,4 +1,4 @@
-{% set version = "3.8.2" %}
+{% set version = "3.8.3" %}
 {% set ver2 = '.'.join(version.split('.')[0:2]) %}
 {% set ver2nd = ''.join(version.split('.')[0:2]) %}
 {% set ver3nd = ''.join(version.split('.')[0:3]) %}
@@ -20,7 +20,7 @@ package:
 source:
   - url: https://www.python.org/ftp/python/{{ version }}/Python-{{ version }}.tar.xz
     # md5 from: https://www.python.org/downloads/release/python-{{ ver3nd }}/
-    md5: e9d6ebc92183a177b8e8a58cad5b8d67
+    md5: 3000cf50aaa413052aef82fd2122ca78
     patches:
       - patches/0000-Fix-off-by-one-error-in-_winapi_WaitForMultipleObjec.patch
 {% if 'conda-forge' not in channel_targets %}

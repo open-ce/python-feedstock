@@ -1,4 +1,4 @@
-From ee37e362c18535c1c5888136004bb67444de6dd3 Mon Sep 17 00:00:00 2001
+From 18b9b8a8ad772d8fe6248b739b35e0e587e8472d Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 24 Dec 2019 18:37:17 +0100
 Subject: [PATCH 22/26] Add CondaEcosystemModifyDllSearchPath()
@@ -17,7 +17,7 @@ Made fwprintfs breakpointable
  2 files changed, 396 insertions(+), 2 deletions(-)
 
 diff --git a/Modules/main.c b/Modules/main.c
-index 0d2cf3ab82..fcf9811aaf 100644
+index 0d2cf3ab82..362684196c 100644
 --- a/Modules/main.c
 +++ b/Modules/main.c
 @@ -20,6 +20,10 @@
@@ -457,5 +457,5 @@ index 6deba1134e..56d8913455 100644
  #if HAVE_SXS
          _Py_DeactivateActCtx(cookie);
 -- 
-2.25.0
+2.23.0.windows.1
 

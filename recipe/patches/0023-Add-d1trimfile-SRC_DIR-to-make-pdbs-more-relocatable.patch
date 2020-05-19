@@ -1,4 +1,4 @@
-From 1f8d036e34beb73fc141a451e363de89669cbcba Mon Sep 17 00:00:00 2001
+From 048e5c5b4a79f8e2c7120a8e0f1e80c12f3f53ee Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 31 Dec 2019 20:46:36 +0100
 Subject: [PATCH 23/26] Add /d1trimfile:%SRC_DIR% to make pdbs more relocatable
@@ -8,10 +8,10 @@ Subject: [PATCH 23/26] Add /d1trimfile:%SRC_DIR% to make pdbs more relocatable
  1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/Lib/distutils/_msvccompiler.py b/Lib/distutils/_msvccompiler.py
-index e8e4b717b9..d8ff37d8bd 100644
+index 03a5986d98..c80ceef350 100644
 --- a/Lib/distutils/_msvccompiler.py
 +++ b/Lib/distutils/_msvccompiler.py
-@@ -383,6 +383,13 @@ class MSVCCompiler(CCompiler) :
+@@ -350,6 +350,13 @@ class MSVCCompiler(CCompiler) :
                  # without asking the user to browse for it
                  src = os.path.abspath(src)
  
@@ -25,7 +25,7 @@ index e8e4b717b9..d8ff37d8bd 100644
              if ext in self._c_extensions:
                  input_opt = "/Tc" + src
              elif ext in self._cpp_extensions:
-@@ -427,7 +434,7 @@ class MSVCCompiler(CCompiler) :
+@@ -394,7 +401,7 @@ class MSVCCompiler(CCompiler) :
                  raise CompileError("Don't know how to compile {} to {}"
                                     .format(src, obj))
  
@@ -35,5 +35,5 @@ index e8e4b717b9..d8ff37d8bd 100644
                  args.append('/EHsc')
              args.append(input_opt)
 -- 
-2.25.0
+2.23.0.windows.1
 

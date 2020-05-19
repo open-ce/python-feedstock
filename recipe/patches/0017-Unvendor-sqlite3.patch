@@ -1,4 +1,4 @@
-From 1a8b9e6a5b32971d29e913f1c0fd0b46d078194c Mon Sep 17 00:00:00 2001
+From 9277eda1aa552a5908b0186f65dab6da70c33daa Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Mon, 10 Dec 2018 12:22:37 -0600
 Subject: [PATCH 17/26] Unvendor sqlite3
@@ -6,9 +6,9 @@ Subject: [PATCH 17/26] Unvendor sqlite3
 ---
  PCbuild/_sqlite3.vcxproj |  9 ++++-----
  PCbuild/pcbuild.sln      |  2 --
- PCbuild/python.props     |  2 +-
+ PCbuild/python.props     |  4 ++--
  PCbuild/sqlite3.vcxproj  | 12 ++++++------
- 4 files changed, 11 insertions(+), 14 deletions(-)
+ 4 files changed, 12 insertions(+), 15 deletions(-)
 
 diff --git a/PCbuild/_sqlite3.vcxproj b/PCbuild/_sqlite3.vcxproj
 index 7e0062692b..3e7b2262e8 100644
@@ -53,18 +53,27 @@ index 6dc0139bc4..2f58d8ab24 100644
  EndProject
  Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python3dll", "python3dll.vcxproj", "{885D4898-D08D-4091-9C40-C700CFE3FC5A}"
 diff --git a/PCbuild/python.props b/PCbuild/python.props
-index a44df6aa52..11ff31c12d 100644
+index 079a57fdda..11ff31c12d 100644
 --- a/PCbuild/python.props
 +++ b/PCbuild/python.props
 @@ -56,7 +56,7 @@
      <ExternalsDir>$(EXTERNALS_DIR)</ExternalsDir>
      <ExternalsDir Condition="$(ExternalsDir) == ''">$([System.IO.Path]::GetFullPath(`$(PySourcePath)externals`))</ExternalsDir>
      <ExternalsDir Condition="!HasTrailingSlash($(ExternalsDir))">$(ExternalsDir)\</ExternalsDir>
--    <sqlite3Dir>$(ExternalsDir)sqlite-3.28.0.0\</sqlite3Dir>
+-    <sqlite3Dir>$(ExternalsDir)sqlite-3.31.1.0\</sqlite3Dir>
 +    <sqlite3Dir>$(SQLITE3_DIR)\</sqlite3Dir>
      <bz2Dir>$(ExternalsDir)bzip2-1.0.6\</bz2Dir>
      <lzmaDir>$(ExternalsDir)xz-5.2.2\</lzmaDir>
      <libffiDir>$(ExternalsDir)libffi\</libffiDir>
+@@ -64,7 +64,7 @@
+     <libffiIncludeDir>$(libffiOutDir)include</libffiIncludeDir>
+     <opensslDir>$(OPENSSL_DIR)\</opensslDir>
+     <opensslOutDir>$(opensslDir)bin</opensslOutDir>
+-    <opensslIncludeDir>$(opensslOutDir)include</opensslIncludeDir>
++    <opensslIncludeDir>$(opensslDir)include</opensslIncludeDir>
+     <nasmDir>$(ExternalsDir)\nasm-2.11.06\</nasmDir>
+     <zlibDir>$(ExternalsDir)\zlib-1.2.11\</zlibDir>
+     
 diff --git a/PCbuild/sqlite3.vcxproj b/PCbuild/sqlite3.vcxproj
 index 90b4d3108f..6deeafd422 100644
 --- a/PCbuild/sqlite3.vcxproj
@@ -89,5 +98,5 @@ index 90b4d3108f..6deeafd422 100644
    <ItemDefinitionGroup>
      <ClCompile>
 -- 
-2.25.0
+2.23.0.windows.1
 

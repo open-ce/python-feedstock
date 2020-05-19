@@ -1,4 +1,4 @@
-From 9d8b20b885246b9ba1482779bbaaab5f95218aee Mon Sep 17 00:00:00 2001
+From 6d7d2619d9baf6ceb3f25c35a058888d90bc8675 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sun, 29 Apr 2018 16:10:42 +0100
 Subject: [PATCH 13/26] Disable new-dtags in unixccompiler.py
@@ -43,7 +43,7 @@ index eef702cf01..2d8d61df03 100644
          # GCC GNULD with fully qualified configuration prefix
          # see #7617
 diff --git a/Lib/distutils/unixccompiler.py b/Lib/distutils/unixccompiler.py
-index 78a4665c91..efacb6301e 100644
+index 84a421767d..12a9f777fe 100644
 --- a/Lib/distutils/unixccompiler.py
 +++ b/Lib/distutils/unixccompiler.py
 @@ -248,12 +248,12 @@ class UnixCCompiler(CCompiler):
@@ -63,5 +63,5 @@ index 78a4665c91..efacb6301e 100644
                  # No idea how --enable-new-dtags would be passed on to
                  # ld if this system was using GNU ld.  Don't know if a
 -- 
-2.25.0
+2.23.0.windows.1
 
