@@ -1,4 +1,4 @@
-From 435faf8ef80ba82399bb74714b2caad1a1388186 Mon Sep 17 00:00:00 2001
+From 02284061b0f087798a754cdee8b0c15e237a2a60 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 24 Dec 2019 18:37:17 +0100
 Subject: [PATCH 22/26] Add CondaEcosystemModifyDllSearchPath()
@@ -11,13 +11,16 @@ Reviewed by Kai Tietz 7.2.2019
 Updated a bit to include other directories.
 
 Made fwprintfs breakpointable
+
+From Shaun Walbridge:
+Fix CondaEcosystemModifyDllSearchPath for users of the Python DLL
 ---
- Modules/main.c       | 391 +++++++++++++++++++++++++++++++++++++++++++
+ Modules/main.c       | 398 +++++++++++++++++++++++++++++++++++++++++++
  Python/dynload_win.c |   7 +-
- 2 files changed, 396 insertions(+), 2 deletions(-)
+ 2 files changed, 403 insertions(+), 2 deletions(-)
 
 diff --git a/Modules/main.c b/Modules/main.c
-index 0d2cf3ab82..362684196c 100644
+index 0d2cf3ab82..5278b87f70 100644
 --- a/Modules/main.c
 +++ b/Modules/main.c
 @@ -20,6 +20,10 @@
@@ -40,7 +43,7 @@ index 0d2cf3ab82..362684196c 100644
  /* --- pymain_init() ---------------------------------------------- */
  
  static PyStatus
-@@ -658,10 +664,395 @@ Py_RunMain(void)
+@@ -658,10 +664,402 @@ Py_RunMain(void)
      return exitcode;
  }
  
@@ -252,6 +255,13 @@ index 0d2cf3ab82..362684196c 100644
 +    if (sv_failed_to_find_dll_fns)
 +        return 1;
 +
++    /* Fix for embedding the Python DLL. Courtesy of Shaun Walbridge
++     * if the CondaEcosystemModifyDllSearchPath_Init(argc, argv) code hasn't been run
++     * or failed to bind to the required functions in kernel32.dll, fail early to avoid
++     * an access violation. */
++    if (pSetDefaultDllDirectories == NULL || pSetDllDirectory == NULL || pAddDllDirectory == NULL)
++        return 1;
++
 +    if (_wgetenv(L"CONDA_DLL_SEARCH_MODIFICATION_ENABLE") == NULL)
 +        return 0;
 +    if (_wgetenv(L"CONDA_DLL_SEARCH_MODIFICATION_NEVER_ADD_WINDOWS_DIRECTORY"))
@@ -457,5 +467,5 @@ index 6deba1134e..56d8913455 100644
  #if HAVE_SXS
          _Py_DeactivateActCtx(cookie);
 -- 
-2.23.0
+2.27.0
 

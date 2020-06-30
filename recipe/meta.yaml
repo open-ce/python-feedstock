@@ -84,14 +84,9 @@ source:
     sha256: 4872e72e188a5aa1124db0c3b163a4163e84ead359a514d86dd7c6fa2d2ff02a         # [win]
 
 build:
-  number: 0  # [linux or win64]
-  # For osx, build #1 is built against clang 10
-  number: 1  # [win32]
-{% if c_compiler_version == '4.0.1' %}  # [osx]
-  number: 0  # [osx]
-{% else %}  # [osx]
-  number: 1  # [osx]
-{% endif %}  # [osx]
+  # Work around conda not caring about subdirs very much (the package cache for example).
+  number: 2  # [linux or osx or win64]
+  number: 3  # [win32]
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:
