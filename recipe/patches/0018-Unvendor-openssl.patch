@@ -1,7 +1,7 @@
-From eaa20efb3e01bad0a0c8debc277118ba2ba1f979 Mon Sep 17 00:00:00 2001
+From 1ee925afa6622928336c8e368a09f83c0f838f1b Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Sat, 24 Nov 2018 20:38:02 -0600
-Subject: [PATCH 18/19] Unvendor openssl
+Subject: [PATCH 18/22] Unvendor openssl
 
 ---
  PCbuild/_ssl.vcxproj         | 3 ---
@@ -54,15 +54,15 @@ index a7e16793c7..af1350cae7 100644
      </Link>
    </ItemDefinitionGroup>
 diff --git a/PCbuild/python.props b/PCbuild/python.props
-index 7ff32a81b6..e4f36cd397 100644
+index 8be1daa696..e4f36cd397 100644
 --- a/PCbuild/python.props
 +++ b/PCbuild/python.props
 @@ -49,9 +49,9 @@
      <sqlite3Dir>$(ExternalsDir)sqlite-3.31.1.0\</sqlite3Dir>
      <bz2Dir>$(ExternalsDir)bzip2-1.0.6\</bz2Dir>
      <lzmaDir>$(ExternalsDir)xz-5.2.2\</lzmaDir>
--    <opensslDir>$(ExternalsDir)openssl-1.1.1d\</opensslDir>
--    <opensslOutDir>$(ExternalsDir)openssl-bin-1.1.1d\$(ArchName)\</opensslOutDir>
+-    <opensslDir>$(ExternalsDir)openssl-1.1.1g\</opensslDir>
+-    <opensslOutDir>$(ExternalsDir)openssl-bin-1.1.1g\$(ArchName)\</opensslOutDir>
 -    <opensslIncludeDir>$(opensslOutDir)include</opensslIncludeDir>
 +    <opensslDir>$(OPENSSL_DIR)\</opensslDir>
 +    <opensslOutDir>$(opensslDir)bin</opensslOutDir>
@@ -99,5 +99,5 @@ index 19d64a332b..d6d9b14efc 100644
    <ItemGroup>
      <ProjectReference Include="pythoncore.vcxproj">
 -- 
-2.25.0
+2.23.0
 

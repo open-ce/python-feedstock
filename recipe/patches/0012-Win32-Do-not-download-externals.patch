@@ -1,7 +1,7 @@
-From 16580e29700d62fe39be9e7cc636f1be902c2129 Mon Sep 17 00:00:00 2001
+From 413ce1c7054a569fdcba58a5bc24b6b293bc1719 Mon Sep 17 00:00:00 2001
 From: Mike Sarahan <msarahan@gmail.com>
 Date: Thu, 24 Oct 2019 19:59:14 -0500
-Subject: [PATCH 12/24] Win32: Do not download externals
+Subject: [PATCH 12/22] Win32: Do not download externals
 
 ---
  PCbuild/build.bat | 2 +-

@@ -1,7 +1,7 @@
-From 6d148c590759abec3ac327e0692bafa1eb18e13d Mon Sep 17 00:00:00 2001
+From 49466bc5d89e0694036ae046deb8d0a5c9d20125 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Fri, 25 Jan 2019 22:54:57 +0000
-Subject: [PATCH 21/24] Add CondaEcosystemModifyDllSearchPath()
+Subject: [PATCH 21/22] Add CondaEcosystemModifyDllSearchPath()
 
 This changes the DLL search order so that C:\Windows\System32 does not
 get searched in before entries in PATH.
@@ -9,13 +9,16 @@ get searched in before entries in PATH.
 Reviewed by Kai Tietz 7.2.2019
 
 Updated a bit to include other directories.
+
+From Shaun Walbridge:
+Fix CondaEcosystemModifyDllSearchPath for users of the Python DLL
 ---
- Modules/main.c       | 387 ++++++++++++++++++++++++++++++++++++++++++-
+ Modules/main.c       | 394 ++++++++++++++++++++++++++++++++++++++++++-
  Python/dynload_win.c |   4 +
- 2 files changed, 390 insertions(+), 1 deletion(-)
+ 2 files changed, 397 insertions(+), 1 deletion(-)
 
 diff --git a/Modules/main.c b/Modules/main.c
-index 0e84d57539..da62a474e2 100644
+index a29f2f82ed..37e877a7c0 100644
 --- a/Modules/main.c
 +++ b/Modules/main.c
 @@ -16,6 +16,10 @@
@@ -38,7 +41,7 @@ index 0e84d57539..da62a474e2 100644
  #ifdef MS_WINDOWS
  #define WCSTOK wcstok_s
  #else
-@@ -1267,7 +1273,7 @@ pymain_header(_PyMain *pymain)
+@@ -1278,7 +1284,7 @@ pymain_header(_PyMain *pymain)
          return;
      }
  
@@ -47,7 +50,7 @@ index 0e84d57539..da62a474e2 100644
      if (!Py_NoSiteFlag) {
          fprintf(stderr, "%s\n", COPYRIGHT);
      }
-@@ -3046,9 +3052,388 @@ pymain_init(_PyMain *pymain)
+@@ -3057,9 +3063,395 @@ pymain_init(_PyMain *pymain)
  }
  
  
@@ -257,6 +260,13 @@ index 0e84d57539..da62a474e2 100644
 +
 +    int SetDllDirectoryValue = LOAD_LIBRARY_SEARCH_DEFAULT_DIRS;
 +    if (sv_failed_to_find_dll_fns)
++        return 1;
++
++    /* Fix for embedding the Python DLL. Courtesy of Shaun Walbridge
++     * if the CondaEcosystemModifyDllSearchPath_Init(argc, argv) code hasn't been run
++     * or failed to bind to the required functions in kernel32.dll, fail early to avoid
++     * an access violation. */
++    if (pSetDefaultDllDirectories == NULL || pSetDllDirectory == NULL || pAddDllDirectory == NULL)
 +        return 1;
 +
 +    if (_wgetenv(L"CONDA_DLL_SEARCH_MODIFICATION_ENABLE") == NULL)

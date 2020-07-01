@@ -1,14 +1,14 @@
-From 24add48c4c3f58c9c7995effae1360fb22a00184 Mon Sep 17 00:00:00 2001
+From 5df9f4ae36b0a5a986f24436e028675142200c56 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sun, 26 Aug 2018 17:10:08 +0100
-Subject: [PATCH 16/24] Fix cross-compilation on Debian-based distros
+Subject: [PATCH 16/22] Fix cross-compilation on Debian-based distros
 
 ---
  setup.py | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/setup.py b/setup.py
-index 40cd9ebd01..653fccd552 100644
+index 21b393a441..4417c59086 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -590,7 +590,8 @@ class PyBuildExt(build_ext):

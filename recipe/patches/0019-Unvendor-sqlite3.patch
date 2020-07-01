@@ -1,7 +1,7 @@
-From 607ddbf5daa14d68db17848cf639cf96c865975e Mon Sep 17 00:00:00 2001
+From 1886bb2ffdc39613f1dee401d4ff33a347209504 Mon Sep 17 00:00:00 2001
 From: Mike Sarahan <msarahan@gmail.com>
 Date: Thu, 24 Oct 2019 21:55:24 -0500
-Subject: [PATCH 19/24] Unvendor sqlite3
+Subject: [PATCH 19/22] Unvendor sqlite3
 
 ---
  PCbuild/_sqlite3.vcxproj |  9 ++++-----

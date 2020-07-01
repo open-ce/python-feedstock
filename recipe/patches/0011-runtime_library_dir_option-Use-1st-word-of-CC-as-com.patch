@@ -1,7 +1,7 @@
-From 914377e983ed16b0891398506aed3c6891921513 Mon Sep 17 00:00:00 2001
+From 8ebb411e2dcf13d489cb7f9a0b343ea317bda46a Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Thu, 5 Oct 2017 02:00:41 +0100
-Subject: [PATCH 11/24] runtime_library_dir_option: Use 1st word of CC as
+Subject: [PATCH 11/22] runtime_library_dir_option: Use 1st word of CC as
  compiler
 
 Previous, 'CC' got passed to os.path.basename, so any paths in it after
@@ -12,7 +12,7 @@ not get detected as gcc (or whatever it actually is).
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/Lib/distutils/unixccompiler.py b/Lib/distutils/unixccompiler.py
-index 87b3aedde9..78a4665c91 100644
+index 3f05cf7f8c..84a421767d 100644
 --- a/Lib/distutils/unixccompiler.py
 +++ b/Lib/distutils/unixccompiler.py
 @@ -232,7 +232,7 @@ class UnixCCompiler(CCompiler):

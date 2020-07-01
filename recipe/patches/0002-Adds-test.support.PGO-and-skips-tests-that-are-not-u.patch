@@ -1,7 +1,7 @@
-From 3ce2f15774aa3892b392c2e4dd72d9ae67852782 Mon Sep 17 00:00:00 2001
+From 19757f263b1d557f060596a118a2a41f59e099d4 Mon Sep 17 00:00:00 2001
 From: Steve Dower <steve.dower@microsoft.com>
 Date: Tue, 6 Sep 2016 19:38:15 -0700
-Subject: [PATCH 02/24] Adds test.support.PGO and skips tests that are not
+Subject: [PATCH 02/22] Adds test.support.PGO and skips tests that are not
  useful for PGO.
 
 (backport of 22d0698d3b034f4f4314aa793da7225a5da640ba)
@@ -35,7 +35,7 @@ index 3fcedb58ec..5d81689208 100644
  TIMEOUT = 3
  HAS_UNIX_SOCKETS = hasattr(socket, 'AF_UNIX')
 diff --git a/Lib/test/test_subprocess.py b/Lib/test/test_subprocess.py
-index d024158e18..7ca045d60c 100644
+index 89dcb8f602..4809009d42 100644
 --- a/Lib/test/test_subprocess.py
 +++ b/Lib/test/test_subprocess.py
 @@ -36,6 +36,9 @@ except ImportError:
