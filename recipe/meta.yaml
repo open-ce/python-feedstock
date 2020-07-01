@@ -20,7 +20,7 @@ package:
 source:
   - url: https://www.python.org/ftp/python/{{ version }}/Python-{{ version }}.tar.xz
     # md5 from: https://www.python.org/downloads/release/python-{{ ver3nd }}/
-    md5: 172c650156f7bea68ce31b2fd01fa766
+    md5: a224ef2249a18824f48fba9812f4006f
     patches:
       - patches/0001-Fix-off-by-one-error-in-_winapi_WaitForMultipleObjec.patch
       # Unfinished, still runs the whole thing.
