@@ -1,4 +1,4 @@
-From b775575c9ff498c3c508606112196ccd26a04031 Mon Sep 17 00:00:00 2001
+From fed9a30dc49f680a8fde9da58a17e3489016ff06 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sun, 12 Apr 2020 18:22:21 +0200
 Subject: [PATCH 00/26] Fix off-by-one-error in
@@ -22,5 +22,5 @@ index 647075cdb1..aec836ad82 100644
                       "need at most %zd handles, got a sequence of length %zd",
                       MAXIMUM_WAIT_OBJECTS - 1, nhandles);
 -- 
-2.25.0
+2.23.0
 

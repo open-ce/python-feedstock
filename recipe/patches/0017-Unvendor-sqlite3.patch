@@ -1,4 +1,4 @@
-From edccb085f71cde2a48847c49b845bbc928d1e6bf Mon Sep 17 00:00:00 2001
+From 2079be75bbfbca3df3839a2ec7e93775f24c87ea Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Mon, 10 Dec 2018 12:22:37 -0600
 Subject: [PATCH 17/26] Unvendor sqlite3

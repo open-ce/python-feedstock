@@ -1,4 +1,4 @@
-From 44c2835dbc11e465abc41f14d5bf9890613139bb Mon Sep 17 00:00:00 2001
+From c8ccead80f2c018b51f48cba62106b54ec0d5369 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 15 Aug 2017 22:34:16 +0100
 Subject: [PATCH 01/26] Add Anaconda Distribution version logic
@@ -35,7 +35,7 @@ index 994d892c5e..2df9c1ef92 100755
      r'(?:,\s*([\w ]*)'  # ", builddate"
      r'(?:,\s*([\w :]*))?)?\)\s*'  # ", buildtime)<space>"
 diff --git a/Modules/main.c b/Modules/main.c
-index 2a360b58ef..0d2cf3ab82 100644
+index 70be4cfacb..5150587a75 100644
 --- a/Modules/main.c
 +++ b/Modules/main.c
 @@ -204,7 +204,7 @@ pymain_header(const PyConfig *config)

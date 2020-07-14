@@ -1,4 +1,4 @@
-From 7ea2c4e63f052672478f4fdf4c225a81dcc73d46 Mon Sep 17 00:00:00 2001
+From f95ba9fce7a451479159b5756a50083d3015b38f Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 16 Aug 2017 11:59:00 +0100
 Subject: [PATCH 04/26] Win32: distutils: Add support to cygwinccompiler for

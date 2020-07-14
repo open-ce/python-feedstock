@@ -1,4 +1,4 @@
-From 02284061b0f087798a754cdee8b0c15e237a2a60 Mon Sep 17 00:00:00 2001
+From 31bcd2042c42e5376ae773d739319b5d9934d9c6 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 24 Dec 2019 18:37:17 +0100
 Subject: [PATCH 22/26] Add CondaEcosystemModifyDllSearchPath()
@@ -20,7 +20,7 @@ Fix CondaEcosystemModifyDllSearchPath for users of the Python DLL
  2 files changed, 403 insertions(+), 2 deletions(-)
 
 diff --git a/Modules/main.c b/Modules/main.c
-index 0d2cf3ab82..5278b87f70 100644
+index 5150587a75..3af1eba4be 100644
 --- a/Modules/main.c
 +++ b/Modules/main.c
 @@ -20,6 +20,10 @@
@@ -43,7 +43,7 @@ index 0d2cf3ab82..5278b87f70 100644
  /* --- pymain_init() ---------------------------------------------- */
  
  static PyStatus
-@@ -658,10 +664,402 @@ Py_RunMain(void)
+@@ -699,10 +705,402 @@ Py_RunMain(void)
      return exitcode;
  }
  
@@ -467,5 +467,5 @@ index 6deba1134e..56d8913455 100644
  #if HAVE_SXS
          _Py_DeactivateActCtx(cookie);
 -- 
-2.27.0
+2.23.0
 

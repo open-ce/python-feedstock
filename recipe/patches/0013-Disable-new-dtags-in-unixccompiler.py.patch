@@ -1,4 +1,4 @@
-From 8038de8981e5a61f27a34e4dbedfc00ac329e841 Mon Sep 17 00:00:00 2001
+From 912ced8630d0b038e395d785530bf6fe62a3cec0 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sun, 29 Apr 2018 16:10:42 +0100
 Subject: [PATCH 13/26] Disable new-dtags in unixccompiler.py

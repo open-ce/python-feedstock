@@ -1,4 +1,4 @@
-From aaf662864e30568051fa56c8a183ecb46601ce5c Mon Sep 17 00:00:00 2001
+From b59a7a88699fb61b0276589b2783a998f579c084 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 12 Feb 2020 21:35:50 +0100
 Subject: [PATCH 25/26] egg debugging with Windows debug builds
