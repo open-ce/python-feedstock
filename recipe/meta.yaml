@@ -1,4 +1,4 @@
-{% set base_version = "3.8.1" %}
+{% set base_version = "3.8.5" %}
 {% set version = base_version %}
 {% set linkage_nature = os.environ.get('PY_INTERP_LINKAGE_NATURE', '') %}
 {% set debug = os.environ.get('PY_INTERP_DEBUG', '') %}
@@ -16,7 +16,7 @@ package:
 source:
   - url: https://www.python.org/ftp/python/{{ base_version }}/Python-{{ version }}.tar.xz
     # md5 from: https://www.python.org/downloads/release/python-381/
-    md5: b3fb85fd479c0bf950c626ef80cacb57
+    md5: 35b5a3d0254c1c59be9736373d429db7
     patches:
 {% if 'conda-forge' not in channel_targets %}
       - patches/0001-Add-Anaconda-Distribution-version-logic.patch
@@ -123,6 +123,8 @@ requirements:
     - {{ cdt('libuuid-devel') }}  # [linux and not (ppc64le or aarch64)]
     - make  # [not win]
     - pkg-config  # [not win]
+    - patch     # [not win]
+    - m2-patch  # [win]
     # configure script looks for llvm-ar for lto
 {% if 'conda-forge' in channel_targets %}
     - llvm-tools  # [osx]
