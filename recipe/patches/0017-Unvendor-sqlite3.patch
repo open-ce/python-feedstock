@@ -1,14 +1,14 @@
-From 2079be75bbfbca3df3839a2ec7e93775f24c87ea Mon Sep 17 00:00:00 2001
+From fdc891748604aaccf7495a0d3ecc4cb900983166 Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Mon, 10 Dec 2018 12:22:37 -0600
-Subject: [PATCH 17/26] Unvendor sqlite3
+Subject: [PATCH 17/22] Unvendor sqlite3
 
 ---
  PCbuild/_sqlite3.vcxproj |  9 ++++-----
  PCbuild/pcbuild.sln      |  2 --
- PCbuild/python.props     |  4 ++--
+ PCbuild/python.props     |  2 +-
  PCbuild/sqlite3.vcxproj  | 12 ++++++------
- 4 files changed, 12 insertions(+), 15 deletions(-)
+ 4 files changed, 11 insertions(+), 14 deletions(-)
 
 diff --git a/PCbuild/_sqlite3.vcxproj b/PCbuild/_sqlite3.vcxproj
 index 7e0062692b..3e7b2262e8 100644
@@ -53,7 +53,7 @@ index 6dc0139bc4..2f58d8ab24 100644
  EndProject
  Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python3dll", "python3dll.vcxproj", "{885D4898-D08D-4091-9C40-C700CFE3FC5A}"
 diff --git a/PCbuild/python.props b/PCbuild/python.props
-index 079a57fdda..11ff31c12d 100644
+index a44df6aa52..11ff31c12d 100644
 --- a/PCbuild/python.props
 +++ b/PCbuild/python.props
 @@ -56,7 +56,7 @@
@@ -65,15 +65,6 @@ index 079a57fdda..11ff31c12d 100644
      <bz2Dir>$(ExternalsDir)bzip2-1.0.6\</bz2Dir>
      <lzmaDir>$(ExternalsDir)xz-5.2.2\</lzmaDir>
      <libffiDir>$(ExternalsDir)libffi\</libffiDir>
-@@ -64,7 +64,7 @@
-     <libffiIncludeDir>$(libffiOutDir)include</libffiIncludeDir>
-     <opensslDir>$(OPENSSL_DIR)\</opensslDir>
-     <opensslOutDir>$(opensslDir)bin</opensslOutDir>
--    <opensslIncludeDir>$(opensslOutDir)include</opensslIncludeDir>
-+    <opensslIncludeDir>$(opensslDir)include</opensslIncludeDir>
-     <nasmDir>$(ExternalsDir)\nasm-2.11.06\</nasmDir>
-     <zlibDir>$(ExternalsDir)\zlib-1.2.11\</zlibDir>
-     
 diff --git a/PCbuild/sqlite3.vcxproj b/PCbuild/sqlite3.vcxproj
 index 90b4d3108f..6deeafd422 100644
 --- a/PCbuild/sqlite3.vcxproj
@@ -98,5 +89,5 @@ index 90b4d3108f..6deeafd422 100644
    <ItemDefinitionGroup>
      <ClCompile>
 -- 
-2.23.0
+2.24.0
 
