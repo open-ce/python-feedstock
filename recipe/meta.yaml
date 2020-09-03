@@ -150,8 +150,8 @@ build:
 #      - CONDA_FORGE=no
 # {% endif %}
   missing_dso_whitelist:  # [win]
-    - MSVCR71.dll  # [win]
-    - MSVCR80.dll  # [win]
+    - '**/MSVCR71.dll'  # [win]
+    - '**/MSVCR80.dll'  # [win]
 
 requirements:
   build:
