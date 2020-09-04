@@ -182,7 +182,7 @@ requirements:
     - zlib  # [not win]
     - openssl
     - readline  # [not win]
-    - tk
+    - tk  # [not win]
     - ncurses  # [not win]
     - libffi  # [not win]
     - ld_impl_{{target_platform}}  # [linux]
