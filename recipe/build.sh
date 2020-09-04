@@ -77,7 +77,7 @@ CXX=$(basename "${CXX}")
 RANLIB=$(basename "${RANLIB}")
 READELF=$(basename "${READELF}")
 
-if [[ ${HOST} =~ .*darwin.* ]] && [[ -n ${CONDA_BUILD_SYSROOT} ]]; then
+if [[ ${target_platform} =~ osx-.* ]] && [[ -n ${CONDA_BUILD_SYSROOT} ]]; then
   # Python's setup.py will figure out that this is a macOS sysroot.
   CFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${CFLAGS}
   LDFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${LDFLAGS}
@@ -102,6 +102,11 @@ CPPFLAGS=${CPPFLAGS}" -I${PREFIX}/include"
 re='^(.*)(-I[^ ]*)(.*)$'
 if [[ ${CFLAGS} =~ $re ]]; then
   CFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[3]}"
+fi
+
+# https://src.fedoraproject.org/rpms/python39/pull-request/9
+if [[ ${target_platform} =~ linux.* ]] && [[ ${_OPTIMIZED} == yes ]]; then
+  CFLAGS="${CFLAGS} -fno-semantic-interposition"
 fi
 
 # Force rebuild to avoid:
