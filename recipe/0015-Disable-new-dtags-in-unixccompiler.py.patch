@@ -1,4 +1,4 @@
-From 2f451663e39f0626f1a86e9ea5564b971e5c2fd0 Mon Sep 17 00:00:00 2001
+From fb9a2101a474bf61c31d001c877a901e493b545d Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sun, 29 Apr 2018 16:10:42 +0100
 Subject: [PATCH 15/19] Disable new-dtags in unixccompiler.py
@@ -16,7 +16,7 @@ bit controversial I am convinced this is the right thing to do.
  2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/Lib/distutils/tests/test_unixccompiler.py b/Lib/distutils/tests/test_unixccompiler.py
-index efba27e..4b02cde 100644
+index efba27e1c8..4b02cdedbf 100644
 --- a/Lib/distutils/tests/test_unixccompiler.py
 +++ b/Lib/distutils/tests/test_unixccompiler.py
 @@ -67,7 +67,7 @@ class UnixCCompilerTestCase(unittest.TestCase):
@@ -38,7 +38,7 @@ index efba27e..4b02cde 100644
          # GCC GNULD with fully qualified configuration prefix
          # see #7617
 diff --git a/Lib/distutils/unixccompiler.py b/Lib/distutils/unixccompiler.py
-index 06f0f71..e0741c3 100644
+index 06f0f7157f..e0741c3a36 100644
 --- a/Lib/distutils/unixccompiler.py
 +++ b/Lib/distutils/unixccompiler.py
 @@ -242,12 +242,12 @@ class UnixCCompiler(CCompiler):
@@ -58,5 +58,5 @@ index 06f0f71..e0741c3 100644
                  # No idea how --enable-new-dtags would be passed on to
                  # ld if this system was using GNU ld.  Don't know if a
 -- 
-2.17.1
+2.23.0
 
