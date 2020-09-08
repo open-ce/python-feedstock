@@ -70,6 +70,9 @@ build:
     - bzip2             # [unix]
   # match python.org compiler standard
   skip: True            # [win and vc != 14]
+  missing_dso_whitelist:  # [win]
+    - '**/MSVCR71.dll'  # [win]
+    - '**/MSVCR80.dll'  # [win]
 
 requirements:
   build:
