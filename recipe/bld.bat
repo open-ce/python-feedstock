@@ -34,6 +34,11 @@ for %%x in (python.pdb python36.pdb pythonw.pdb) do (
 copy %SRC_DIR%\LICENSE %PREFIX%\LICENSE_PYTHON.txt
 if errorlevel 1 exit 1
 
+REM We do not want or need these instrumented pyd files.
+REM Further, they link to the PGO runtime library which
+REM is a part of Visual Studio and *not* distributed.
+REM ERROR (python,DLLs/instrumented/_multiprocessing.pyd): $RPATH/pgort140.DLL not found in packages, sysroot(s) nor the missing_dso_whietlist
+rmdir /s /q %SRC_DIR%\PCBuild\%BUILD_PATH%\instrumented
 
 REM Populate the DLLs directory
 mkdir %PREFIX%\DLLs
