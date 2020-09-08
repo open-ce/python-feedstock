@@ -3,5 +3,4 @@
 meta.yaml text eol=lf
 build.sh text eol=lf
 bld.bat text eol=crlf
-recipe/*-Win32-Do-not-download-externals.patch binary
-recipe/*-Unvendor-sqlite3.patch binary
+*.patch binary
