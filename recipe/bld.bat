@@ -57,9 +57,10 @@ set SQLITE3_DIR=%PREFIX%\Library
 :: type my_props.props
 :: call build.bat %PGO% %CONFIG% -m -e -v -p %PLATFORM% "/p:ForceImportBeforeCppTargets=%CD%\my_props.props" "/p:ForceImportAfterCppTargets=%CD%\my_props.props"
 
-:: Twice because I am changing zipimport ATM.
+:: Twice because I am changing zipimport ATM:
+:: error : importlib_zipimport.h updated. You will need to rebuild pythoncore to see the changes.
 call build.bat %PGO% %CONFIG% -m -e -v -p %PLATFORM%
-:: call build.bat %PGO% %CONFIG% -m -e -v -p %PLATFORM%
+call build.bat %PGO% %CONFIG% -m -e -v -p %PLATFORM%
 if errorlevel 1 exit 1
 cd ..
 
