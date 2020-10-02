@@ -1,4 +1,4 @@
-From bbd255c11924027711df3369e531cf2f2bc1f583 Mon Sep 17 00:00:00 2001
+From 2c83198de83ca52e3daaa0a30429ac2fb2212f9d Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 24 Dec 2019 18:37:17 +0100
 Subject: [PATCH 22/26] Add CondaEcosystemModifyDllSearchPath()
@@ -21,7 +21,7 @@ Fix CondaEcosystemModifyDllSearchPath for users of the Python DLL
  3 files changed, 412 insertions(+), 3 deletions(-)
 
 diff --git a/Lib/ctypes/__init__.py b/Lib/ctypes/__init__.py
-index 8f0991147d..a3b6fb1449 100644
+index 8f09911..aad1830 100644
 --- a/Lib/ctypes/__init__.py
 +++ b/Lib/ctypes/__init__.py
 @@ -363,6 +363,14 @@ class CDLL(object):
@@ -40,7 +40,7 @@ index 8f0991147d..a3b6fb1449 100644
          class _FuncPtr(_CFuncPtr):
              _flags_ = flags
 diff --git a/Modules/main.c b/Modules/main.c
-index 5150587a75..fb42bafa06 100644
+index 5150587..fb42baf 100644
 --- a/Modules/main.c
 +++ b/Modules/main.c
 @@ -20,6 +20,10 @@
@@ -476,7 +476,7 @@ index 5150587a75..fb42bafa06 100644
      if (_PyStatus_IS_EXIT(status)) {
          pymain_free();
 diff --git a/Python/dynload_win.c b/Python/dynload_win.c
-index 4896c6dc8c..cf5cb5cf78 100644
+index 4896c6d..cf5cb5c 100644
 --- a/Python/dynload_win.c
 +++ b/Python/dynload_win.c
 @@ -199,10 +199,13 @@ dl_funcptr _PyImport_FindSharedFuncptrWindows(const char *prefix,
@@ -496,5 +496,5 @@ index 4896c6dc8c..cf5cb5cf78 100644
  #if HAVE_SXS
          _Py_DeactivateActCtx(cookie);
 -- 
-2.24.3 (Apple Git-128)
+2.20.1
 

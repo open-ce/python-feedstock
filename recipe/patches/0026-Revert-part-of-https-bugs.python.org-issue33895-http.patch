@@ -1,4 +1,4 @@
-From afabf79b7a967bf50471cd0e546c23865bb3c7e3 Mon Sep 17 00:00:00 2001
+From 2cbf17aefaa0a66a38edd5d2a3373998bcdc0305 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 18 Feb 2020 17:38:32 +0100
 Subject: [PATCH 26/26] Revert part of https://bugs.python.org/issue33895
@@ -22,7 +22,7 @@ more debuggable which should pay off in future.
  1 file changed, 17 insertions(+), 4 deletions(-)
 
 diff --git a/Python/dynload_win.c b/Python/dynload_win.c
-index cf5cb5cf78..9a8ffcf3f9 100644
+index cf5cb5c..9a8ffcf 100644
 --- a/Python/dynload_win.c
 +++ b/Python/dynload_win.c
 @@ -188,6 +188,11 @@ dl_funcptr _PyImport_FindSharedFuncptrWindows(const char *prefix,
@@ -64,5 +64,5 @@ index cf5cb5cf78..9a8ffcf3f9 100644
          _Py_DeactivateActCtx(cookie);
  #endif
 -- 
-2.24.3 (Apple Git-128)
+2.20.1
 

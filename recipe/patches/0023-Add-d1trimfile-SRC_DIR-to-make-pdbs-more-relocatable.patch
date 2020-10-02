@@ -1,4 +1,4 @@
-From 1b1ff806d0ece308e23bc32b0a2114aeb2903f27 Mon Sep 17 00:00:00 2001
+From 07e992a2543f01c7cddf113bb7ba576c2cacfd1f Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 31 Dec 2019 20:46:36 +0100
 Subject: [PATCH 23/26] Add /d1trimfile:%SRC_DIR% to make pdbs more relocatable
@@ -8,7 +8,7 @@ Subject: [PATCH 23/26] Add /d1trimfile:%SRC_DIR% to make pdbs more relocatable
  1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/Lib/distutils/_msvccompiler.py b/Lib/distutils/_msvccompiler.py
-index 03a5986d98..c80ceef350 100644
+index 03a5986..c80ceef 100644
 --- a/Lib/distutils/_msvccompiler.py
 +++ b/Lib/distutils/_msvccompiler.py
 @@ -350,6 +350,13 @@ class MSVCCompiler(CCompiler) :
@@ -35,5 +35,5 @@ index 03a5986d98..c80ceef350 100644
                  args.append('/EHsc')
              args.append(input_opt)
 -- 
-2.24.3 (Apple Git-128)
+2.20.1
 
