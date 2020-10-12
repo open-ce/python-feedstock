@@ -2,6 +2,8 @@
 
 PYVER=$(${CONDA_PREFIX}/bin/python -c 'import sys; sys.stdout.write("{}.{}".format(sys.version_info[0], sys.version_info[1]))')
 
+env
+
 if [[ $(uname) == Darwin ]]; then
   # The macOS linker does not work like this. If you want a single archive to get linked in then you need to
   # identify it to the linker with the full path.
@@ -22,7 +24,13 @@ fi
 
 ERRORS=no
 
-for NATURE in static shared default; do
+declare -a NATURES=(shared)
+if [[ ${PKG_NAME} == libpython-static ]]; then
+  NATURES+=(static)
+  NATURES+=(default)
+fi
+
+for NATURE in "${NATURES[@]}"; do
 
   LDFLAGS_ORIG=$(python3-config --ldflags --embed)
   re='^(.*)(-lpython[^ ]*)(.*)$'

@@ -1,7 +1,7 @@
-From 7ebfd03c1b92ac33038938c27881748f34394230 Mon Sep 17 00:00:00 2001
+From d2bec7fa299be363c0c6dab461b6d3172539675b Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sun, 12 Apr 2020 18:22:21 +0200
-Subject: [PATCH 00/25] Fix off-by-one-error in
+Subject: [PATCH 00/30] Fix off-by-one-error in
  _winapi_WaitForMultipleObjects_impl
 
 ---

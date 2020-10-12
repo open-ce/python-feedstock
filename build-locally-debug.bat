@@ -2,10 +2,13 @@ setlocal EnableDelayedExpansion
 echo on
 set PF=win-64
 :: set PF=win-32
-export CONDA_SUBDIR=%PF%
+set CONDA_SUBDIR=%PF%
 
 set THISD=%~dp0
 set THISD=%THISD:~0,-1%
+set TEE=C:\msys64\usr\bin\tee
+:: This does not work at all, simple stdin piping is a no-go still.
+:: set TEE=C:\Windows\System32\bash.exe tee
 
 call conda activate
 set CB_CROOT=!CONDA_PREFIX!\conda-bld
@@ -16,7 +19,8 @@ set PIPS=yes
 set LIEFS=yes
 set LEVEN=no
 set THREE_SEVEN=no
-set THREE_EIGHT=yes
+set THREE_EIGHT=no
+set THREE_NINE=yes
 set DEBUG_ME=yes
 set RELEASE_ME=yes
 
@@ -35,17 +39,18 @@ set CHANNELS=-c local -c rdonnelly -c defaults
 mkdir %CB_CROOT%
 
 if %PYTHONS%==no goto skip_pythons
-  if %THREE_EIGHT%==yes (
+
+  if %THREE_NINE%==yes (
     if %DEBUG_ME%==yes (
       if %SKIP_BUILT%==no del %CB_CROOT%\win-64\python-3.8.2-h8359038_8_cpython_dbg.tar.bz2
       if not exist %CB_CROOT%\win-64\python-3.8.2-h8359038_8_cpython_dbg.tar.bz2 (
         set PY_INTERP_DEBUG=yes
-        set BLD_DIRNAME=python-dbg-3.8.2-%PF%
+        set BLD_DIRNAME=python-dbg-3.9.0-%PF%
         set DST_DIR=%CB_CROOT%\!BLD_DIRNAME!
         del /s /q !DST_DIR!
         mkdir !DST_DIR!
-        echo conda-build --croot %CB_CROOT% --build-id-pat {n}-dbg-{v}-%PF% -m %DBG_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% | C:\msys32\usr\bin\tee !DST_DIR!\build.log
-        conda-build --croot %CB_CROOT% --build-id-pat {n}-dbg-{v}-%PF% -m %DBG_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | C:\msys32\usr\bin\tee -a !DST_DIR!\build.log
+        echo conda-build --croot %CB_CROOT% --build-id-pat {n}-dbg-{v}-%PF% -m %DBG_CFG% . --python 3.8 %CHANNELS% %CB_KEEP% %CB_DEBUG% | %TEE% !DST_DIR!\build.log
+        conda-build --croot %CB_CROOT% --build-id-pat {n}-dbg-{v}-%PF% -m %DBG_CFG% . --python 3.8 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | %TEE% -a !DST_DIR!\build.log
         if %errorlevel% neq 0 exit /b 1
       )
     )
@@ -57,8 +62,38 @@ if %PYTHONS%==no goto skip_pythons
         set DST_DIR=%CB_CROOT%\!BLD_DIRNAME!
         del /s /q !DST_DIR!
         mkdir !DST_DIR!
-        echo conda-build --croot %CB_CROOT% --build-id-pat {n}-{v}-%PF% -m %REL_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% | C:\msys32\usr\bin\tee !DST_DIR!\build.log
-        conda-build --croot %CB_CROOT% --build-id-pat {n}-{v}-%PF% -m %REL_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | C:\msys32\usr\bin\tee -a !DST_DIR!\build.log
+        echo conda-build --croot %CB_CROOT% --build-id-pat {n}-{v}-%PF% -m %REL_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% | %TEE% !DST_DIR!\build.log
+        conda-build --croot %CB_CROOT% --build-id-pat {n}-{v}-%PF% -m %REL_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | %TEE% -a !DST_DIR!\build.log
+        if %errorlevel% neq 0 exit /b 1
+      )
+    )
+  )
+
+
+  if %THREE_EIGHT%==yes (
+    if %DEBUG_ME%==yes (
+      if %SKIP_BUILT%==no del %CB_CROOT%\win-64\python-3.8.2-h8359038_8_cpython_dbg.tar.bz2
+      if not exist %CB_CROOT%\win-64\python-3.8.2-h8359038_8_cpython_dbg.tar.bz2 (
+        set PY_INTERP_DEBUG=yes
+        set BLD_DIRNAME=python-dbg-3.8.2-%PF%
+        set DST_DIR=%CB_CROOT%\!BLD_DIRNAME!
+        del /s /q !DST_DIR!
+        mkdir !DST_DIR!
+        echo conda-build --croot %CB_CROOT% --build-id-pat {n}-dbg-{v}-%PF% -m %DBG_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% | %TEE% !DST_DIR!\build.log
+        conda-build --croot %CB_CROOT% --build-id-pat {n}-dbg-{v}-%PF% -m %DBG_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | %TEE% -a !DST_DIR!\build.log
+        if %errorlevel% neq 0 exit /b 1
+      )
+    )
+    if %RELEASE_ME%==yes (
+      if %SKIP_BUILT%==no del %CB_CROOT%\win-64\python-3.8.2-hfe8d314_8_cpython.tar.bz2
+      if not exist %CB_CROOT%\win-64\python-3.8.2-hfe8d314_8_cpython.tar.bz2 (
+        set PY_INTERP_DEBUG=
+        set BLD_DIRNAME=python-3.8.2-%PF%
+        set DST_DIR=%CB_CROOT%\!BLD_DIRNAME!
+        del /s /q !DST_DIR!
+        mkdir !DST_DIR!
+        echo conda-build --croot %CB_CROOT% --build-id-pat {n}-{v}-%PF% -m %REL_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% | %TEE% !DST_DIR!\build.log
+        conda-build --croot %CB_CROOT% --build-id-pat {n}-{v}-%PF% -m %REL_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | %TEE% -a !DST_DIR!\build.log
         if %errorlevel% neq 0 exit /b 1
       )
     )
@@ -74,8 +109,8 @@ if %PYTHONS%==no goto skip_pythons
         set DST_DIR=%CB_CROOT%\!BLD_DIRNAME!
         del /s /q !DST_DIR!
         mkdir !DST_DIR!
-        echo conda-build --croot %CB_CROOT% --build-id-pat {n}-dbg-{v}-%PF% -m %DBG_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% | C:\msys32\usr\bin\tee !DST_DIR!\build.log
-        conda-build --croot %CB_CROOT% --build-id-pat {n}-dbg-{v}-%PF% -m %DBG_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | C:\msys32\usr\bin\tee -a !DST_DIR!\build.log
+        echo conda-build --croot %CB_CROOT% --build-id-pat {n}-dbg-{v}-%PF% -m %DBG_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% | %TEE% !DST_DIR!\build.log
+        conda-build --croot %CB_CROOT% --build-id-pat {n}-dbg-{v}-%PF% -m %DBG_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | %TEE% -a !DST_DIR!\build.log
         if %errorlevel% neq 0 exit /b 1
       )
     )
@@ -87,8 +122,8 @@ if %PYTHONS%==no goto skip_pythons
         set DST_DIR=%CB_CROOT%\!BLD_DIRNAME!
         del /s /q !DST_DIR!
         mkdir !DST_DIR!
-        echo conda-build --croot %CB_CROOT% --build-id-pat {n}-{v}-%PF% -m %REL_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% | C:\msys32\usr\bin\tee !DST_DIR!\build.log
-        conda-build --croot %CB_CROOT% --build-id-pat {n}-{v}-%PF% -m %REL_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | C:\msys32\usr\bin\tee -a !DST_DIR!\build.log
+        echo conda-build --croot %CB_CROOT% --build-id-pat {n}-{v}-%PF% -m %REL_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% | %TEE% !DST_DIR!\build.log
+        conda-build --croot %CB_CROOT% --build-id-pat {n}-{v}-%PF% -m %REL_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | %TEE% -a !DST_DIR!\build.log
         if %errorlevel% neq 0 exit /b 1
       )
     )
@@ -121,7 +156,7 @@ if %LIEFS%==yes (
         set DST_DIR=%CB_CROOT%\!BLD_DIRNAME!
         del /s /q !DST_DIR!
         mkdir !DST_DIR!
-        conda-build --croot %CB_CROOT% --build-id-pat {n}-dbg-3.8.2-%PF% -m %DBG_CFG% . --python 3.8 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | C:\msys32\usr\bin\tee !DST_DIR!\build.log
+        conda-build --croot %CB_CROOT% --build-id-pat {n}-dbg-3.8.2-%PF% -m %DBG_CFG% . --python 3.8 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | %TEE% !DST_DIR!\build.log
       )
     )
     if %RELEASE_ME%==yes (
@@ -131,7 +166,7 @@ if %LIEFS%==yes (
         set DST_DIR=%CB_CROOT%\!BLD_DIRNAME!
         del /s /q !DST_DIR!
         mkdir !DST_DIR!
-        conda-build --croot %CB_CROOT% --build-id-pat {n}-3.8.2-%PF% -m %REL_CFG% . --python 3.8 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | C:\msys32\usr\bin\tee !DST_DIR!\build.log
+        conda-build --croot %CB_CROOT% --build-id-pat {n}-3.8.2-%PF% -m %REL_CFG% . --python 3.8 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | %TEE% !DST_DIR!\build.log
       )
     )
   )
@@ -144,7 +179,7 @@ if %LIEFS%==yes (
         set DST_DIR=%CB_CROOT%\!BLD_DIRNAME!
         del /s /q !DST_DIR!
         mkdir !DST_DIR!
-        conda-build --croot %CB_CROOT% --build-id-pat {n}-dbg-3.7.6-%PF% -m %DBG_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | C:\msys32\usr\bin\tee !DST_DIR!\build.log
+        conda-build --croot %CB_CROOT% --build-id-pat {n}-dbg-3.7.6-%PF% -m %DBG_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | %TEE% !DST_DIR!\build.log
       )
     )
     if %RELEASE_ME%==yes (
@@ -154,7 +189,7 @@ if %LIEFS%==yes (
         set DST_DIR=%CB_CROOT%\!BLD_DIRNAME!
         del /s /q !DST_DIR!
         mkdir !DST_DIR!
-        conda-build --croot %CB_CROOT% --build-id-pat {n}-3.7.6-%PF% -m %REL_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | C:\msys32\usr\bin\tee !DST_DIR!\build.log
+        conda-build --croot %CB_CROOT% --build-id-pat {n}-3.7.6-%PF% -m %REL_CFG% . --python 3.7 %CHANNELS% %CB_KEEP% %CB_DEBUG% 2>&1 | %TEE% !DST_DIR!\build.log
       )
     )
   )
@@ -169,25 +204,25 @@ set CONDA_DLL_SEARCH_MODIFICATION_DEBUG=
 if %THREE_EIGHT%==no goto skip_38_2
   if %DEBUG_ME%==yes (
     call conda activate %CB_CROOT%\lief-dbg-3.8.2-win-64\_h_env
-    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | C:\msys32\usr\bin\tee !CONDA_PREFIX!\..\debug-v1.log
-    echo ErrorLevel :: %ErrorLevel%  2>&1 | C:\msys32\usr\bin\tee -a !CONDA_PREFIX!\..\debug-v1.log
+    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | %TEE% !CONDA_PREFIX!\..\debug-v1.log
+    echo ErrorLevel :: %ErrorLevel%  2>&1 | %TEE% -a !CONDA_PREFIX!\..\debug-v1.log
   )
   if %RELEASE_ME%==yes (
     call conda activate %CB_CROOT%\lief-3.8.2-win-64\_h_env
-    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | C:\msys32\usr\bin\tee !CONDA_PREFIX!\..\debug-v1.log
-    echo ErrorLevel :: %ErrorLevel%  2>&1 | C:\msys32\usr\bin\tee -a !CONDA_PREFIX!\..\debug-v1.log
+    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | %TEE% !CONDA_PREFIX!\..\debug-v1.log
+    echo ErrorLevel :: %ErrorLevel%  2>&1 | %TEE% -a !CONDA_PREFIX!\..\debug-v1.log
   )
 :skip_38_2
 if %THREE_SEVEN%==no goto skip_37_2
   if %DEBUG_ME%==yes (
     call conda activate %CB_CROOT%\lief-dbg-3.7.6-win-64\_h_env_moved_py-lief-0.10.1-py37h5824298_0_win-64
-    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | C:\msys32\usr\bin\tee !CONDA_PREFIX!\..\debug-v1.log
-    echo ErrorLevel :: %ErrorLevel%  2>&1 | C:\msys32\usr\bin\tee -a !CONDA_PREFIX!\..\debug-v1.log
+    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | %TEE% !CONDA_PREFIX!\..\debug-v1.log
+    echo ErrorLevel :: %ErrorLevel%  2>&1 | %TEE% -a !CONDA_PREFIX!\..\debug-v1.log
   )
   if %RELEASE_ME%==yes (
     call conda activate %CB_CROOT%\lief-3.7.6-win-64\_h_env_moved_py-lief-0.10.1-py37ha4be599_0_win-64
-    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | C:\msys32\usr\bin\tee !CONDA_PREFIX!\..\debug-v1.log
-    echo ErrorLevel :: %ErrorLevel%  2>&1 | C:\msys32\usr\bin\tee -a !CONDA_PREFIX!\..\debug-v1.log
+    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | %TEE% !CONDA_PREFIX!\..\debug-v1.log
+    echo ErrorLevel :: %ErrorLevel%  2>&1 | %TEE% -a !CONDA_PREFIX!\..\debug-v1.log
   )
 :skip_37_2
 
@@ -197,24 +232,24 @@ if %THREE_EIGHT%==no goto skip_38_3
   if %DEBUG_ME%==yes (
     call conda activate %CB_CROOT%\lief-dbg-3.8.2-win-64\_h_env
     py-lief-0.10.1-py38h5824298_0.tar.bz2
-    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | C:\msys32\usr\bin\tee !CONDA_PREFIX!\..\debug-v2.log
-    echo ErrorLevel :: %ErrorLevel%  2>&1 | C:\msys32\usr\bin\tee -a !CONDA_PREFIX!\..\debug-v2.log
+    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | %TEE% !CONDA_PREFIX!\..\debug-v2.log
+    echo ErrorLevel :: %ErrorLevel%  2>&1 | %TEE% -a !CONDA_PREFIX!\..\debug-v2.log
   )
   if %RELEASE_ME%==yes (
     call conda activate %CB_CROOT%\lief-3.8.2-win-64\_h_env
-    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | C:\msys32\usr\bin\tee !CONDA_PREFIX!\..\debug-v2.log
-    echo ErrorLevel :: %ErrorLevel%  2>&1 | C:\msys32\usr\bin\tee -a !CONDA_PREFIX!\..\debug-v2.log
+    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | %TEE% !CONDA_PREFIX!\..\debug-v2.log
+    echo ErrorLevel :: %ErrorLevel%  2>&1 | %TEE% -a !CONDA_PREFIX!\..\debug-v2.log
   )
 :skip_38_3
 if %THREE_SEVEN%==no goto skip_37_2
   if %DEBUG_ME%==yes (
     call conda activate %CB_CROOT%\lief-dbg-3.7.6-win-64\_h_env_moved_py-lief-0.10.1-py37h5824298_0_win-64
-    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | C:\msys32\usr\bin\tee !CONDA_PREFIX!\..\debug-v2.log
-    echo ErrorLevel :: %ErrorLevel%  2>&1 | C:\msys32\usr\bin\tee -a !CONDA_PREFIX!\..\debug-v2.log
+    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | %TEE% !CONDA_PREFIX!\..\debug-v2.log
+    echo ErrorLevel :: %ErrorLevel%  2>&1 | %TEE% -a !CONDA_PREFIX!\..\debug-v2.log
   )
   if %RELEASE_ME%==yes (
     call conda activate %CB_CROOT%\lief-3.7.6-win-64\_h_env_moved_py-lief-0.10.1-py37ha4be599_0_win-64
-    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | C:\msys32\usr\bin\tee !CONDA_PREFIX!\..\debug-v2.log
-    echo ErrorLevel :: %ErrorLevel%  2>&1 | C:\msys32\usr\bin\tee -a !CONDA_PREFIX!\..\debug-v2.log
+    python -c "from ctypes import *; from sys import *; cdll.LoadLibrary(prefix+'/lib/site-packages/lief.pyd')" 2>&1 | %TEE% !CONDA_PREFIX!\..\debug-v2.log
+    echo ErrorLevel :: %ErrorLevel%  2>&1 | %TEE% -a !CONDA_PREFIX!\..\debug-v2.log
   )
 :skip_37_2
