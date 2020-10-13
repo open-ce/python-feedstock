@@ -48,7 +48,7 @@ if "%CONDA_FORGE%"=="yes" (
 :: PGO is not yet working for Python 3.9:
 :: (CopyPGCFiles target) ->
 ::   C:\opt\conda\conda-bld\python-split-3.9.0_7\work\PCbuild\pyproject.props(165,5): error : PGO run did not succeed (no python39!*.pgc files) and there is no data to merge [C:\opt\conda\conda-bld\python-split-3.9.0_7\work\PCbuild\pythoncore.vcxproj]
-set PGO=
+:: set PGO=
 
 cd PCbuild
 
