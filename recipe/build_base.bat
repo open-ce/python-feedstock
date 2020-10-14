@@ -95,7 +95,6 @@ if errorlevel 1 exit 1
 copy /Y %SRC_DIR%\PC\icons\pyc.ico %PREFIX%\DLLs\
 if errorlevel 1 exit 1
 
-
 :: Populate the Tools directory
 mkdir %PREFIX%\Tools
 xcopy /s /y /i %SRC_DIR%\Tools\demo %PREFIX%\Tools\demo
@@ -175,8 +174,16 @@ rd /s /q %PREFIX%\Lib\test
 if errorlevel 1 exit 1
 move %PREFIX%\Lib\test_keep %PREFIX%\Lib\test
 if errorlevel 1 exit 1
+
+:: Remove some tests (unfortunate)
 rd /s /q %PREFIX%\Lib\lib2to3\tests\
 if errorlevel 1 exit 1
+
+:: Remove PGO DLLs
+if exist %PREFIX%\DLLs\instrumented (
+  rd /s /q %PREFIX%\DLLs\instrumented\
+  if errorlevel 1 exit 1
+)
 
 :: bytecode compile the standard library
 
