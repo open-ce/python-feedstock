@@ -4,7 +4,7 @@
 {% set ver2 = '.'.join(version.split('.')[0:2]) %}
 {% set ver2nd = ''.join(version.split('.')[0:2]) %}
 {% set ver3nd = ''.join(version.split('.')[0:3]) %}
-{% set build_number = 0 %}
+{% set build_number = 1 %}
 
 # Sanitize build system env. var tweak parameters
 # (passed to the build scripts via script_env).
@@ -81,6 +81,7 @@ source:
       - patches/0030-gh21564.patch
       - patches/0031-gh21228.patch
       - patches/0032-Fix-TZPATH-on-windows.patch
+      - patches/0033-gh22674.patch
 {% if 'conda-forge' not in channel_targets %}
       - patches/9999-Add-Anaconda-Distribution-version-logic.patch
 {% endif %}
@@ -251,7 +252,7 @@ outputs:
         - tests/cmake/*
         - tests/cython/*
         - tests/embedding-interpreter/*
-        - tests/processpoolexecutor-max_workers-61
+        - tests/processpoolexecutor-max_workers-61/*
       commands:
         - echo on  # [win]
         - set  # [win]
@@ -267,8 +268,7 @@ outputs:
         - set "PIP_CACHE_DIR=%CONDA_PREFIX%/pip_cache"  # [win]
         - set "TEMP=%CONDA_PREFIX%/tmp"  # [win]
         - mkdir "%TEMP%"  # [win]
-        # This works but gives an error code, I think? May depend on the setting of add_pip_as_python_dependency
-        # - python -Im ensurepip --upgrade --default-pip  # [win]
+        - python -Im ensurepip --upgrade --default-pip  # [win]
         # tzdata/zoneinfo test that will need the tzdata package to pass
         - python -c "from zoneinfo import ZoneInfo; from datetime import datetime; dt = datetime(2020, 10, 31, 12, tzinfo=ZoneInfo('America/Los_Angeles')); print(dt.tzname())"
         - python -m venv test-venv
@@ -334,8 +334,12 @@ outputs:
       files:
         - tests/embedding-interpreter/*
       requires:
-        - {{ compiler('c') }}
         - ripgrep
+        - cmake
+        - make  # [unix]
+        - {{ compiler('c') }}
+        # Tried to use enable_language(C) to avoid needing this. It does not work.
+        - {{ compiler('cxx') }}
       commands:
         - test -f ${PREFIX}/lib/libpython${PKG_VERSION%.*}.a  # [unix]
         - test -f ${PREFIX}/lib/libpython${PKG_VERSION%.*}.nolto.a  # [unix]
@@ -368,6 +372,7 @@ extra:
     - isuruf
     - jakirkham
     - jjhelmus
+    - mbargull
     - mingwandroid
     - msarahan
     - pelson
