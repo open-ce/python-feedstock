@@ -151,10 +151,10 @@ outputs:
         # we could just use ignore_run_exports/from: {{ compiler('cxx') }}
         # here instead of this nonsense:
         - clangxx_osx-64  # [osx]
-        - clangxx_osx-aarch64  # [osxaarch64]
+        - clangxx_osx-aarch64  # [osx and aarch64]
         - gxx_linux-64  # [linux64]
-        - gxx_linux-aarch64  # [linuxaarch64]
-        - gxx_linux-ppc64le  # [linuxppc64le]
+        - gxx_linux-aarch64  # [linux and aarch64]
+        - gxx_linux-ppc64le  # [linux and ppc64le]
       # Disabled until verified to work correctly
       detect_binary_files_with_prefix: True
       # detect_binary_files_with_prefix: False
@@ -242,14 +242,14 @@ outputs:
         - setuptools
       requires:
         - ripgrep
-        - cmake
+        - cmake  # [not (linux and ppc64le)]
         - make  # [unix]
         - {{ compiler('c') }}
         # Tried to use enable_language(C) to avoid needing this. It does not work.
         - {{ compiler('cxx') }}
       files:
         - tests/distutils/*
-        - tests/cmake/*
+        - tests/cmake/*  # [not (linux and ppc64le)]
         - tests/cython/*
         - tests/embedding-interpreter/*
         - tests/processpoolexecutor-max_workers-61/*
@@ -296,10 +296,10 @@ outputs:
         -   pushd embedding-interpreter  # [unix]
         -     bash build-and-test.sh  # [unix]
         -   popd  # [unix]
-        -   pushd cmake
+        -   pushd cmake  # [not (linux and ppc64le)]
         -     run_cmake_test.bat {{ version }}  # [win]
-        -     bash run_cmake_test.sh {{ version }}  # [not win]
-        -   popd
+        -     bash run_cmake_test.sh {{ version }}  # [not (win or (linux and ppc64le))]
+        -   popd  # [not (linux and ppc64le)]
         -   pushd processpoolexecutor-max_workers-61
         -     python ppe.py
         -   popd
