@@ -94,7 +94,7 @@ source:
 
 build:
   # Work around conda not caring about subdirs very much (the package cache for example).
-  number: 3
+  number: 4
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:
@@ -206,9 +206,9 @@ test:
   files:
     - tests/distutils/*
     - tests/distutils.cext/*
-    - tests/cmake/*
+    - tests/cmake/*  # [not (linux and ppc64le)]
     - tests/cython/*
-    - tests/prefix-replacement/*
+    - tests/embedding-interpreter/*
     - tests/processpoolexecutor-max_workers-61/*
   commands:
     - python -V
@@ -216,7 +216,7 @@ test:
     - 2to3 -h
     - pydoc -h
     - python3-config --help  # [not win]
-    - python -m venv %%TEMP%%\venv  # [win]
+    - python -m venv test-venv
     - python -c "import sysconfig; print(sysconfig.get_config_var('CC'))"  # [not win]
     -  _CONDA_PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata_x86_64_conda_cos6_linux_gnu python -c "import sysconfig; print(sysconfig.get_config_var('CC'))"  # [linux64]
     # check for unreplaced @ symbols in sysconfig files
@@ -234,26 +234,23 @@ test:
     -     python -v -v -v -c "import greet"
     -     python -v -v -v -c "import greet; greet.greet('Python user')" | rg "Hello Python"
     -   popd
-    -   pushd prefix-replacement  # [unix]
+    -   pushd embedding-interpreter  # [unix]
     -     bash build-and-test.sh  # [unix]
     -   popd  # [unix]
+    -   pushd cmake  # [not (linux and ppc64le)]
+    -     run_cmake_test.bat {{ version }}  # [win]
+    -     bash run_cmake_test.sh {{ version }}  # [not (win or (linux and ppc64le))]
+    -   popd  # [not (linux and ppc64le)]
+
     # This used to fail on Windows.
     -   pushd processpoolexecutor-max_workers-61
     -     python ppe.py
     -   popd
-    -   pushd cmake
-    # -     set CMAKE_DBG=trace --debug-output --debug-trycompile  # [win]
-    -     set CMAKE_DBG=  # [win]
-    -     cmake -GNinja -DPY_VER={{ version }} -DPython_ROOT_DIR=%PREFIX% %CMAKE_DBG% .  # [win]
-    # -     export CMAKE_DBG="trace --debug-output --debug-trycompile"  # [not win]
-    -     export CMAKE_DBG=  # [not win]
-    -     cmake -GNinja -DPY_VER={{ version }} -DPython_ROOT_DIR=${PREFIX} ${CMAKE_DBG} .  # [not win]
-    -   popd
     - popd
 
 about:
-  home: http://www.python.org/
-  license: PSF
+  home: https://www.python.org/
+  license: Python-2.0
   license_file: LICENSE
   summary: General purpose programming language
   description: |
