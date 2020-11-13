@@ -439,16 +439,23 @@ pushd "${PREFIX}"/lib/python${VER}
   # So we can see if anything has significantly diverged by looking in a built package.
   cp ${recorded_name} ${recorded_name}.orig
   cp ${recorded_name} sysconfigfile
+  cp sysconfigfile ${our_compilers_name}.orig.0
   # fdebug-prefix-map for python work dir is useless for extensions
   sed -i.bak "s@-fdebug-prefix-map=$SRC_DIR=/usr/local/src/conda/python-$PKG_VERSION@@g" sysconfigfile
+  cp sysconfigfile ${our_compilers_name}.orig.1
   sed -i.bak "s@-fdebug-prefix-map=$PREFIX=/usr/local/src/conda-prefix@@g" sysconfigfile
+  cp sysconfigfile ${our_compilers_name}.orig.2
   # Append the conda-forge zoneinfo to the end
   sed -i.bak "s@zoneinfo'@zoneinfo:$PREFIX/share/tzinfo'@g" sysconfigfile
+  cp sysconfigfile ${our_compilers_name}.orig.3
   # Remove osx sysroot as it depends on the build machine
   sed -i.bak "s@-isysroot @@g" sysconfigfile
+  cp sysconfigfile ${old_compiler_name}.orig.4
   sed -i.bak "s@$CONDA_BUILD_SYSROOT @@g" sysconfigfile
+  cp sysconfigfile ${our_compilers_name}.orig.5
   # Remove unfilled config option
   sed -i.bak "s/@SGI_ABI@//g" sysconfigfile
+  cp sysconfigfile ${our_compilers_name}.orig.6
   cp sysconfigfile ${our_compilers_name}
 
   sed -i.bak "s@${HOST}@${OLD_HOST}@g" sysconfigfile
@@ -474,7 +481,7 @@ pushd "${PREFIX}"/lib/python${VER}
     sed -i.bak "s@$flag@@g" sysconfigfile
   done
   # Cleanup some extra spaces from above
-  sed -i.bak "s@' [ ]*@'@g" sysconfigfile
+  sed -i.bak "s@ +@ @g." sysconfigfile
   cp sysconfigfile $recorded_name
 
   rm sysconfigfile
