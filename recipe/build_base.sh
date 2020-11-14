@@ -87,7 +87,7 @@ if [[ ${target_platform} == osx-* ]]; then
 else
   CC=$(basename "${GCC}")
 fi
-_CCACHE=$(type -P ccache)
+_CCACHE=$(type -P ccache) || true
 if [[ ${_CCACHE} =~ ${BUILD_PREFIX}.* ]]; then
   CC="${_CCACHE} ${CC}"
 fi
@@ -191,25 +191,29 @@ if [[ -n ${HOST} ]]; then
   fi
 fi
 
-if [[ ${target_platform} == osx-64 ]]; then
+if [[ ${target_platform} =~ osx-.* ]]; then
   export MACHDEP=darwin
   export ac_sys_system=Darwin
-  export ac_sys_release=13.4.0
-  export MACOSX_DEFAULT_ARCH=x86_64
+  echo '#!/bin/bash' > $BUILD_PREFIX/bin/$HOST-llvm-ar
   # TODO: check with LLVM 12 if the following hack is needed.
   # https://reviews.llvm.org/D76461 may have fixed the need for the following hack.
-  echo '#!/bin/bash' > $BUILD_PREFIX/bin/$HOST-llvm-ar
   echo "$BUILD_PREFIX/bin/llvm-ar --format=darwin" '"$@"' >> $BUILD_PREFIX/bin/$HOST-llvm-ar
   chmod +x $BUILD_PREFIX/bin/$HOST-llvm-ar
+  echo "WARNING :: For some reason, configure finds libintl (gettext) in the BUILD_PREFIX on macOS."
+  echo "WARNING :: to prevent this, removing BUILD_PREFIX/include/libintl.h"
+  echo "WARNING :: and also setting ac_cv_lib_intl_textdomain=no"
+  rm ${BUILD_PREFIX}/include/libintl.h
+  export ac_cv_lib_intl_textdomain=no
+fi
+
+if [[ ${target_platform} == osx-64 ]]; then
+  export ac_sys_release=13.4.0
+  export MACOSX_DEFAULT_ARCH=x86_64
   export ARCHFLAGS="-arch x86_64"
+  export CFLAGS="$CFLAGS $ARCHFLAGS"
 elif [[ ${target_platform} == osx-arm64 ]]; then
-  export MACHDEP=darwin
-  export ac_sys_system=Darwin
   export ac_sys_release=20.0.0
   export MACOSX_DEFAULT_ARCH=arm64
-  echo '#!/bin/bash' > $BUILD_PREFIX/bin/$HOST-llvm-ar
-  echo "$BUILD_PREFIX/bin/llvm-ar --format=darwin" '"$@"' >> $BUILD_PREFIX/bin/$HOST-llvm-ar
-  chmod +x $BUILD_PREFIX/bin/$HOST-llvm-ar
   export ARCHFLAGS="-arch arm64"
   export CFLAGS="$CFLAGS $ARCHFLAGS"
 elif [[ ${target_platform} == linux-* ]]; then
