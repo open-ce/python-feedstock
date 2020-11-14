@@ -204,7 +204,9 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
+        - {{ ccache('native') }}  # [unix]
         - ripgrep
+        - sed  # [unix]
         - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
         - {{ cdt('libx11-devel') }}  # [linux]
         - {{ cdt('libuuid-devel') }}  # [linux and not (ppc64le or aarch64)]
@@ -326,6 +328,7 @@ outputs:
 {% if from_source_control == 'yes' %}
         - git
 {% endif %}
+        - {{ ccache('native') }}  # [unix]
       host:
         - {{ pin_subpackage('python', exact=True) }}
       run:
