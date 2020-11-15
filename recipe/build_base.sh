@@ -351,20 +351,26 @@ make -j${CPU_COUNT} -C ${_buildd_shared} \
 make -C ${_buildd_static} install
 
 declare -a _FLAGS_REPLACE=()
+if [[ -n ${_CCACHE} ]]; then
+  _FLAGS_REPLACE+=("${_CCACHE}"); _FLAGS_REPLACE+=("")
+fi
+_FLAGS_REPLACE+=("-L."); _FLAGS_REPLACE+=("")
+# 3 entries as this can be split over two lines.
+_FLAGS_REPLACE+=("-isysroot ${CONDA_BUILD_SYSROOT}"); _FLAGS_REPLACE+=("")
+_FLAGS_REPLACE+=("-isysroot"); _FLAGS_REPLACE+=("")
+_FLAGS_REPLACE+=("${CONDA_BUILD_SYSROOT}"); _FLAGS_REPLACE+=("")
+  # fdebug-prefix-map for python work dir is useless for extensions
+_FLAGS_REPLACE+=("-fdebug-prefix-map=$SRC_DIR=/usr/local/src/conda/python-$PKG_VERSION"); _FLAGS_REPLACE+=("")
+_FLAGS_REPLACE+=("-fdebug-prefix-map=$PREFIX=/usr/local/src/conda-prefix"); _FLAGS_REPLACE+=("")
 if [[ ${_OPTIMIZED} == yes ]]; then
-  _FLAGS_REPLACE+=(-O3)
-  _FLAGS_REPLACE+=(-O2)
-  _FLAGS_REPLACE+=("-fprofile-use")
-  _FLAGS_REPLACE+=("")
-  _FLAGS_REPLACE+=("-fprofile-correction")
-  _FLAGS_REPLACE+=("")
-  _FLAGS_REPLACE+=("-L.")
-  _FLAGS_REPLACE+=("")
+  _FLAGS_REPLACE+=("-O3"); _FLAGS_REPLACE+=("-O2")
+  _FLAGS_REPLACE+=("-fprofile-use"); _FLAGS_REPLACE+=("")
+  _FLAGS_REPLACE+=("-fprofile-correction"); _FLAGS_REPLACE+=("")
   for _LTO_CFLAG in "${LTO_CFLAGS[@]}"; do
-    _FLAGS_REPLACE+=(${_LTO_CFLAG})
-    _FLAGS_REPLACE+=("")
+    _FLAGS_REPLACE+=("${_LTO_CFLAG}"); _FLAGS_REPLACE+=("")
   done
 fi
+
 # Install the shared library (for people who embed Python only, e.g. GDB).
 # Linking module extensions to this on Linux is redundant (but harmless).
 # Linking module extensions to this on Darwin is harmful (multiply defined symbols).
@@ -447,14 +453,10 @@ pushd "${PREFIX}"/lib/python${VER}
   # So we can see if anything has significantly diverged by looking in a built package.
   cp ${recorded_name} ${recorded_name}.orig
   cp ${recorded_name} sysconfigfile
-  # fdebug-prefix-map for python work dir is useless for extensions
-  sed -i.bak "s@-fdebug-prefix-map=$SRC_DIR=/usr/local/src/conda/python-$PKG_VERSION@@g" sysconfigfile
-  sed -i.bak "s@-fdebug-prefix-map=$PREFIX=/usr/local/src/conda-prefix@@g" sysconfigfile
   # Append the conda-forge zoneinfo to the end
   sed -i.bak "s@zoneinfo'@zoneinfo:$PREFIX/share/tzinfo'@g" sysconfigfile
   # Remove osx sysroot as it depends on the build machine
-  sed -i.bak "s@-isysroot@@g" sysconfigfile
-  sed -i.bak 's@$CONDA_BUILD_SYSROOT @ @g' sysconfigfile
+  # sed -i.bak "s@-isysroot ${CONDA_BUILD_SYSROOT}@@g" sysconfigfile
   # Remove unfilled config option
   sed -i.bak "s/@SGI_ABI@//g" sysconfigfile
   cp sysconfigfile ${our_compilers_name}

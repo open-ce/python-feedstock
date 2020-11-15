@@ -2,10 +2,6 @@
 
 PYVER=$(${CONDA_PREFIX}/bin/python -c 'import sys; sys.stdout.write("{}.{}".format(sys.version_info[0], sys.version_info[1]))')
 
-echo "CARMEN 1 :: PYVER ${PYVER}, CONDA_BUILD_SYSROOT=${CONDA_BUILD_SYSROOT}"
-env
-echo "CARMEN 2 :: PYVER ${PYVER}"
-
 if [[ $(uname) == Darwin ]]; then
   # The macOS linker does not work like this. If you want a single archive to get linked in then you need to
   # identify it to the linker with the full path.
