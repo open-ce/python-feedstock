@@ -12,11 +12,9 @@ cp $BUILD_PREFIX/share/libtool/build-aux/config.* .
 # .. but upstream regrtest.py now has --pgo (since >= 3.6) and skips tests that are:
 # "not helpful for PGO".
 
-VERFULL=${PKG_VERSION}
 VER=${PKG_VERSION%.*}
-VERNODOTS=${VER//./}
 TCLTK_VER=${tk}
-# Disables some PGO/LTO
+# Disables some PGO/LTO but not optimizations.
 QUICK_BUILD=no
 
 _buildd_static=build-static
@@ -191,12 +189,13 @@ if [[ -n ${HOST} ]]; then
   fi
 fi
 
-if [[ ${target_platform} =~ osx-.* ]]; then
-  export MACHDEP=darwin
+if [[ ${target_platform} == osx-64 ]]; then
   export ac_sys_system=Darwin
-  echo '#!/bin/bash' > $BUILD_PREFIX/bin/$HOST-llvm-ar
+  export ac_sys_release=13.4.0
+  export MACOSX_DEFAULT_ARCH=x86_64
   # TODO: check with LLVM 12 if the following hack is needed.
   # https://reviews.llvm.org/D76461 may have fixed the need for the following hack.
+  echo '#!/bin/bash' > $BUILD_PREFIX/bin/$HOST-llvm-ar
   echo "$BUILD_PREFIX/bin/llvm-ar --format=darwin" '"$@"' >> $BUILD_PREFIX/bin/$HOST-llvm-ar
   chmod +x $BUILD_PREFIX/bin/$HOST-llvm-ar
   echo "WARNING :: For some reason, configure finds libintl (gettext) in the BUILD_PREFIX on macOS."
@@ -207,13 +206,19 @@ if [[ ${target_platform} =~ osx-.* ]]; then
 fi
 
 if [[ ${target_platform} == osx-64 ]]; then
+  export MACHDEP=darwin
   export ac_sys_release=13.4.0
   export MACOSX_DEFAULT_ARCH=x86_64
   export ARCHFLAGS="-arch x86_64"
   export CFLAGS="$CFLAGS $ARCHFLAGS"
 elif [[ ${target_platform} == osx-arm64 ]]; then
+  export MACHDEP=darwin
+  export ac_sys_system=Darwin
   export ac_sys_release=20.0.0
   export MACOSX_DEFAULT_ARCH=arm64
+  echo '#!/bin/bash' > $BUILD_PREFIX/bin/$HOST-llvm-ar
+  echo "$BUILD_PREFIX/bin/llvm-ar --format=darwin" '"$@"' >> $BUILD_PREFIX/bin/$HOST-llvm-ar
+  chmod +x $BUILD_PREFIX/bin/$HOST-llvm-ar
   export ARCHFLAGS="-arch arm64"
   export CFLAGS="$CFLAGS $ARCHFLAGS"
 elif [[ ${target_platform} == linux-* ]]; then
@@ -263,9 +268,8 @@ if [[ ${_OPTIMIZED} == yes ]]; then
     _MAKE_TARGET=profile-opt
     # To speed up build times during testing (1):
     if [[ ${QUICK_BUILD} == yes ]]; then
-      # TODO :: It seems this is just profiling everything, on Windows, only 40 odd tests are
-      #         run while on Unix, all 400+ are run, making this slower and less well curated
-      _PROFILE_TASK+=(PROFILE_TASK="-m test --pgo")
+	    echo "WARNING :: Setting empty PROFILE_TASK as QUICK_BUILD set"
+      _PROFILE_TASK+=(PROFILE_TASK="")
     else
       # From talking to Steve Dower, who implemented pgo/pgo-extended, it is really not worth
       # it to run pgo-extended (which runs the whole test-suite). The --pgo set of tests are
@@ -301,10 +305,17 @@ fi
 
 mkdir -p ${_buildd_shared}
 pushd ${_buildd_shared}
+  set +e
   ${SRC_DIR}/configure "${_common_configure_args[@]}" \
                        "${_dbg_opts[@]}" \
                        --oldincludedir=${BUILD_PREFIX}/${HOST}/sysroot/usr/include \
                        --enable-shared
+  if [[ $? != 0 ]]; then
+    echo "ERROR :: configure of shared python failed. config.log contains:"
+	cat config.log
+	exit 1
+  fi
+  set +e
 popd
 
 mkdir -p ${_buildd_static}
@@ -402,12 +413,21 @@ fi
 ln -s ${PREFIX}/bin/python${VER} ${PREFIX}/bin/python
 ln -s ${PREFIX}/bin/pydoc${VER} ${PREFIX}/bin/pydoc
 
-# Remove test data to save space
-# Though keep `support` as some things use that.
+# Exclude test data from the base package to save space
+# though keep `support` as some things use that.
 # TODO :: Make a subpackage for this once we implement multi-level testing.
 pushd ${PREFIX}/lib/python${VER}
   mkdir test_keep
   mv test/__init__.py test/support test/test_support* test/test_script_helper* test_keep/
+  # This will be put into the regr-testsuite package.
+  mkdir ${SRC_DIR}/test.backup || true
+  mv test ${SRC_DIR}/test.backup/
+  if [[ $(uname) == Darwin ]]; then
+    rsync */test ${SRC_DIR}/test.backup/
+  else
+    cp -rnf --parents */test ${SRC_DIR}/test.backup/
+  fi
+  cp -rf */test ${SRC_DIR}/test.backup/
   rm -rf test */test
   mv test_keep test
 popd
@@ -453,6 +473,9 @@ pushd "${PREFIX}"/lib/python${VER}
   # So we can see if anything has significantly diverged by looking in a built package.
   cp ${recorded_name} ${recorded_name}.orig
   cp ${recorded_name} sysconfigfile
+  # fdebug-prefix-map for python work dir is useless for extensions
+  sed -i.bak "s@-fdebug-prefix-map=$SRC_DIR=/usr/local/src/conda/python-$PKG_VERSION@@g" sysconfigfile
+  sed -i.bak "s@-fdebug-prefix-map=$PREFIX=/usr/local/src/conda-prefix@@g" sysconfigfile
   # Append the conda-forge zoneinfo to the end
   sed -i.bak "s@zoneinfo'@zoneinfo:$PREFIX/share/tzinfo'@g" sysconfigfile
   # Remove osx sysroot as it depends on the build machine
