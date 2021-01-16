@@ -385,6 +385,8 @@ if [[ -n ${HOST} ]]; then
           PY_ARCH=powerpc64le
         elif [[ ${HOST} =~ aarch64.* ]]; then
           PY_ARCH=aarch64
+	elif [[ ${HOST} =~ s390x.* ]]; then
+	  PY_ARCH=s390x
         else
           echo "ERROR: Cannot determine PY_ARCH for host ${HOST}"
           exit 1
