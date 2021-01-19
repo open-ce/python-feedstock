@@ -148,6 +148,7 @@ outputs:
         - gxx_linux-64  # [linux64]
         - gxx_linux-aarch64  # [linuxaarch64]
         - gxx_linux-ppc64le  # [linuxppc64le]
+        - gxx_linux-s390x    # [linuxs390x]
       # Disabled until verified to work correctly
       detect_binary_files_with_prefix: True
       # detect_binary_files_with_prefix: False
