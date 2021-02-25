@@ -16,11 +16,6 @@ QUICK_BUILD=yes
 # Remove once: https://github.com/mingwandroid/conda-build/commit/c68a7d100866df7a3e9c0e3177fc7ef0ff76def9
 CONDA_FORGE=no
 
-if [ `uname -m` == aarch64 ]; then
-    # necessary for Graviton
-    export LDFLAGS="$LDFLAGS -L/usr/lib64"
-fi
-
 _buildd_static=build-static
 _buildd_shared=build-shared
 _ENABLE_SHARED=--enable-shared
@@ -85,6 +80,11 @@ if [[ ${HOST} =~ .*darwin.* ]] && [[ -n ${CONDA_BUILD_SYSROOT} ]]; then
   CFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${CFLAGS}
   LDFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${LDFLAGS}
   CPPFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${CPPFLAGS}
+fi
+
+if [[ `uname -m` == aarch64 ]]; then
+    # necessary for Graviton
+    LDFLAGS="$LDFLAGS -L/usr/lib64"
 fi
 
 # Debian uses -O3 then resets it at the end to -O2 in _sysconfigdata.py
