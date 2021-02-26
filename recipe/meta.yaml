@@ -213,7 +213,7 @@ test:
     -     python -v -v -v -c "import greet; greet.greet('Python user')" | rg "Hello Python"
     -   popd
     -   pushd prefix-replacement  # [unix]
-    -     bash build-and-test.sh  # [unix]
+    -     bash build-and-test.sh  # [unix and not (linux and aarch64)]
     -   popd  # [unix]
     # This used to fail on Windows.
     -   pushd processpoolexecutor-max_workers-61
@@ -221,7 +221,7 @@ test:
     -   popd
     -   pushd cmake
     # -     cmake -GNinja -DPY_VER={{ version }} -DPython_ROOT_DIR=%PREFIX% --trace --debug-output --debug-trycompile .  # [win]
-    -     cmake -GNinja -DPY_VER={{ version }} -DPython_ROOT_DIR=${PREFIX} --trace --debug-output --debug-trycompile .  # [not win]
+    -     cmake -GNinja -DPY_VER={{ version }} -DPython_ROOT_DIR=${PREFIX} --trace --debug-output --debug-trycompile .  # [not win and not (linux and aarch64)]
     -   popd
     - popd
 
