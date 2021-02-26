@@ -198,6 +198,7 @@ test:
   requires:
     - ripgrep
     - cmake
+    - make
     - ninja
     - cython
     - setuptools
@@ -240,7 +241,7 @@ test:
     -   popd  # [unix]
     -   pushd cmake  # [not (linux and ppc64le)]
     -     run_cmake_test.bat {{ version }}  # [win]
-    -     bash run_cmake_test.sh {{ version }}  # [not (win or (linux and (ppc64le or aarch64)))]
+    -     bash run_cmake_test.sh {{ version }}  # [not (win or (linux and (ppc64le)))]
     -   popd  # [not (linux and ppc64le)]
 
     # This used to fail on Windows.
