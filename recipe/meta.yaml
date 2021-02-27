@@ -223,8 +223,7 @@ test:
     -     python ppe.py
     -   popd
     -   pushd cmake
-    # -     cmake -GNinja -DPY_VER={{ version }} -DPython_ROOT_DIR=%PREFIX% --trace --debug-output --debug-trycompile .  # [win]
-    -     cmake -GNinja -DPY_VER={{ version }} -DPython_ROOT_DIR=${PREFIX} --trace --debug-output --debug-trycompile .  # [not win and not (linux and aarch64)]
+    -     cmake -GNinja -DPY_VER={{ version }} -DPython_ROOT_DIR=%PREFIX% --trace --debug-output --debug-trycompile .  # [win]
     -   popd
     - popd
 
