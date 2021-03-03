@@ -4,6 +4,9 @@ set -ex
 # Get an updated config.sub and config.guess
 cp $BUILD_PREFIX/share/libtool/build-aux/config.* .
 
+# Migrate old CDTs to new location:
+cp -rf $BUILD_PREFIX/x86_64-conda_cos6-linux-gnu/* $BUILD_PREFIX/x86_64-conda-linux-gnu
+
 # The LTO/PGO information was sourced from @pitrou and the Debian rules file in:
 # http://http.debian.net/debian/pool/main/p/python3.6/python3.6_3.6.2-2.debian.tar.xz
 # https://packages.debian.org/source/sid/python3.6
@@ -26,7 +29,7 @@ _DISABLE_SHARED=--disable-shared
 # .. hack because we just build it shared in both the build-static and
 # build-shared directories.
 # Yes this hack is a bit confusing, sorry about that.
-if [[ ${PY_INTERP_LINKAGE_NATURE} == shared ]]; then
+if [[ ${PY_INTERP_LINKAGE_NATURE} != static ]]; then
   _DISABLE_SHARED=--enable-shared
   _ENABLE_SHARED=--enable-shared
 fi
@@ -316,63 +319,82 @@ else
   _MAKE_TARGET=
 fi
 
-mkdir -p ${_buildd_shared}
-pushd ${_buildd_shared}
-  set +e
-  ${SRC_DIR}/configure "${_common_configure_args[@]}" \
-                       "${_dbg_opts[@]}" \
-                       --oldincludedir=${BUILD_PREFIX}/${HOST}/sysroot/usr/include \
-                       --enable-shared
-  if [[ $? != 0 ]]; then
-    echo "ERROR :: configure of shared python failed. config.log contains:"
-	cat config.log
-	exit 1
+if [[ ${PY_INTERP_LINKAGE_NATURE} != static ]]; then
+  mkdir .${_buildd_shared}
+  cp -rf ${SRC_DIR}/* .${_buildd_shared}/
+  mv .${_buildd_shared} ${_buildd_shared}
+  pushd ${_buildd_shared}
+    ./configure \
+      "${_common_configure_args[@]}" \
+      "${_dbg_opts[@]}" \
+      --oldincludedir=${BUILD_PREFIX}/${HOST}/sysroot/usr/include \
+      --enable-shared
+    if [[ $? != 0 ]]; then
+      echo "ERROR :: configure of shared python failed. config.log contains:"
+      cat config.log
+      exit 1
+    fi
+  popd
+  if [[ ${target_platform} == linux-ppc64le ]]; then
+    # Travis has issues with long logs
+    make -j${CPU_COUNT} -C ${_buildd_shared} \
+            EXTRA_CFLAGS="${EXTRA_CFLAGS}" 2>&1 >make-shared.log
+  else
+    make -j${CPU_COUNT} -C ${_buildd_shared} \
+            EXTRA_CFLAGS="${EXTRA_CFLAGS}" 2>&1 | tee make-shared.log
   fi
-  set +e
-popd
-
-mkdir -p ${_buildd_static}
-pushd ${_buildd_static}
-  ${SRC_DIR}/configure "${_common_configure_args[@]}" \
-                       "${_dbg_opts[@]}" \
-                       -oldincludedir=${BUILD_PREFIX}/${HOST}/sysroot/usr/include \
-                       ${_DISABLE_SHARED} "${_PROFILE_TASK[@]}"
-popd
-
-if [[ ${target_platform} == linux-ppc64le ]]; then
-  # Travis has issues with long logs
-  make -j${CPU_COUNT} -C ${_buildd_static} \
-       EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
-       ${_MAKE_TARGET} "${_PROFILE_TASK[@]}" 2>&1 >make-static.log
-else
-  make -j${CPU_COUNT} -C ${_buildd_static} \
-       EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
-       ${_MAKE_TARGET} "${_PROFILE_TASK[@]}" 2>&1 | tee make-static.log
-fi
-if rg "Failed to build these modules" make-static.log; then
-  echo "(static) :: Failed to build some modules, check the log"
-  exit 1
+  if rg "Failed to build these modules" make-shared.log; then
+    echo "(shared) :: Failed to build some modules, check the log"
+    exit 1
+  fi
+  # build a static library with PIC objects and without LTO/PGO
+  make -j${CPU_COUNT} \
+    -C ${_buildd_shared} \
+    EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
+    LIBRARY=libpython${VERABI}-pic.a libpython${VERABI}-pic.a
 fi
 
-if [[ ${target_platform} == linux-ppc64le ]]; then
-  # Travis has issues with long logs
-  make -j${CPU_COUNT} -C ${_buildd_shared} \
-          EXTRA_CFLAGS="${EXTRA_CFLAGS}" 2>&1 >make-shared.log
-else
-  make -j${CPU_COUNT} -C ${_buildd_shared} \
-          EXTRA_CFLAGS="${EXTRA_CFLAGS}" 2>&1 | tee make-shared.log
-fi
-if rg "Failed to build these modules" make-shared.log; then
-  echo "(shared) :: Failed to build some modules, check the log"
-  exit 1
+if [[ ${PY_INTERP_LINKAGE_NATURE} != shared ]]; then
+  mkdir .${_buildd_static}
+  cp -rf ${SRC_DIR}/* .${_buildd_static}/
+  mv .${_buildd_static} ${_buildd_static}
+  pushd ${_buildd_static}
+  cp -rf ${SRC_DIR}/* .
+    ./configure \
+      "${_common_configure_args[@]}" \
+      "${_dbg_opts[@]}" \
+      -oldincludedir=${BUILD_PREFIX}/${HOST}/sysroot/usr/include \
+      ${_DISABLE_SHARED} "${_PROFILE_TASK[@]}"
+  popd
+
+  if [[ ${target_platform} == linux-ppc64le ]]; then
+    # Travis has issues with long logs
+    make -j${CPU_COUNT} \
+         -C ${_buildd_static} \
+         EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
+         ${_MAKE_TARGET} "${_PROFILE_TASK[@]}" 2>&1 >make-static.log
+  else
+    make -j${CPU_COUNT} \
+      -C ${_buildd_static} \
+      EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
+      ${_MAKE_TARGET} "${_PROFILE_TASK[@]}" 2>&1 | tee make-static.log
+  fi
+  if rg "Failed to build these modules" make-static.log; then
+    echo "(static) :: Failed to build some modules, check the log"
+    exit 1
+  fi
+  make -C ${_buildd_static} install
+  # Finally install the shared library (for people who embed Python only, e.g. GDB).
+  # Linking module extensions to this on Linux is redundant (but harmless).
+  # Linking module extensions to this on Darwin is harmful (multiply defined symbols).
+  if [[ ${PY_INTERP_LINKAGE_NATURE} == both ]]; then
+    cp -pf ${_buildd_shared}/libpython*${SHLIB_EXT}* ${PREFIX}/lib/
+    if [[ ${target_platform} =~ .*linux.* ]]; then
+      ln -sf ${PREFIX}/lib/libpython${VERABI}${SHLIB_EXT}.1.0 ${PREFIX}/lib/libpython${VERABI}${SHLIB_EXT}
+    fi
+  fi
 fi
 
-# build a static library with PIC objects and without LTO/PGO
-make -j${CPU_COUNT} -C ${_buildd_shared} \
-        EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
-        LIBRARY=libpython${VERABI}-pic.a libpython${VERABI}-pic.a
-
-make -C ${_buildd_static} install
 
 declare -a _FLAGS_REPLACE=()
 if [[ -n ${_CCACHE} ]]; then
@@ -395,15 +417,13 @@ if [[ ${_OPTIMIZED} == yes ]]; then
   done
 fi
 
-# Install the shared library (for people who embed Python only, e.g. GDB).
-# Linking module extensions to this on Linux is redundant (but harmless).
-# Linking module extensions to this on Darwin is harmful (multiply defined symbols).
-cp -pf ${_buildd_shared}/libpython*${SHLIB_EXT}* ${PREFIX}/lib/
-if [[ ${target_platform} =~ .*linux.* ]]; then
-  ln -sf ${PREFIX}/lib/libpython${VERABI}${SHLIB_EXT}.1.0 ${PREFIX}/lib/libpython${VERABI}${SHLIB_EXT}
+if [[ ${PY_INTERP_LINKAGE_NATURE} == shared ]]; then
+  _BUILDD=${_buildd_shared}
+else
+  _BUILDD=${_buildd_static}
 fi
 
-SYSCONFIG=$(find ${_buildd_static}/$(cat ${_buildd_static}/pybuilddir.txt) -name "_sysconfigdata*.py" -print0)
+SYSCONFIG=$(find ${_BUILDD}/$(cat ${_BUILDD}/pybuilddir.txt) -name "_sysconfigdata*.py" -print0)
 cat ${SYSCONFIG} | ${SYS_PYTHON} "${RECIPE_DIR}"/replace-word-pairs.py \
   "${_FLAGS_REPLACE[@]}"  \
     > ${PREFIX}/lib/python${VER}/$(basename ${SYSCONFIG})
@@ -458,13 +478,13 @@ pushd ${PREFIX}
   fi
 popd
 
-# OLD_HOST is with CentOS version in them. When building this recipe
-# with the compilers from conda-forge OLD_HOST != HOST, but when building
-# with the compilers from defaults OLD_HOST == HOST. Both cases are handled in the
-# code below
+# OLD_HOST is with CentOS versions in them for old compilers.
 case "$target_platform" in
   linux-64)
     OLD_HOST=$(echo ${HOST} | sed -e 's/-conda-/-conda_cos6-/g')
+    if [[ ${OLD_HOST} == ${HOST} ]]; then
+      echo "WARNING :: Using an older linux compiler with a baked in distro version"
+    fi
     ;;
   linux-*)
     OLD_HOST=$(echo ${HOST} | sed -e 's/-conda-/-conda_cos7-/g')

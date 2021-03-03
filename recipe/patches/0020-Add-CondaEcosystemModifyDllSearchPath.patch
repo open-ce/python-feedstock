@@ -1,7 +1,7 @@
-From 9eb3eea71dcbe3c9c2649169bd35614998b1c650 Mon Sep 17 00:00:00 2001
+From db950d39082bdacd79b3bd75d31b2f39d3ebb0b1 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 24 Dec 2019 18:37:17 +0100
-Subject: [PATCH 20/30] Add CondaEcosystemModifyDllSearchPath()
+Subject: [PATCH 20/28] Add CondaEcosystemModifyDllSearchPath()
 
 This changes the DLL search order so that C:\Windows\System32 does not
 get searched in before entries in PATH.
@@ -40,7 +40,7 @@ index 4afa4ebd42..83fc43d874 100644
          class _FuncPtr(_CFuncPtr):
              _flags_ = flags
 diff --git a/Modules/main.c b/Modules/main.c
-index 4a76f4461b..10343115b8 100644
+index 2cc891f61a..2b6b9855c4 100644
 --- a/Modules/main.c
 +++ b/Modules/main.c
 @@ -17,6 +17,10 @@
@@ -72,7 +72,7 @@ index 4a76f4461b..10343115b8 100644
      if (config->site_import) {
          fprintf(stderr, "%s\n", COPYRIGHT);
      }
-@@ -687,10 +693,402 @@ Py_RunMain(void)
+@@ -691,10 +697,402 @@ Py_RunMain(void)
      return exitcode;
  }
  
@@ -496,5 +496,5 @@ index 8431c5b3b2..1b3e275614 100644
  
          /* restore old error mode settings */
 -- 
-2.23.0
+2.24.3 (Apple Git-128)
 

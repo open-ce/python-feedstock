@@ -1,7 +1,7 @@
-From b00423aa4195fc140328219d36b12cee4d24e17f Mon Sep 17 00:00:00 2001
+From ef82824db327b91b2b4ccb6d5bbc85d9e82ff23c Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Fri, 2 Oct 2020 00:03:12 +0200
-Subject: [PATCH 25/30] cross compile darwin
+Subject: [PATCH 25/28] cross compile darwin
 
 By Isuru Fernando.
 ---
@@ -11,7 +11,7 @@ By Isuru Fernando.
  3 files changed, 13 insertions(+), 4 deletions(-)
 
 diff --git a/Lib/platform.py b/Lib/platform.py
-index e9f50ab622..408587d36c 100755
+index 6258827d0e..848d92a2b6 100755
 --- a/Lib/platform.py
 +++ b/Lib/platform.py
 @@ -409,7 +409,12 @@ def win32_ver(release='', version='', csd='', ptype=''):
@@ -29,7 +29,7 @@ index e9f50ab622..408587d36c 100755
      try:
          import plistlib
 diff --git a/configure b/configure
-index a8e2400a15..f13bc8cbe0 100755
+index 5acfc64835..d605e918f5 100755
 --- a/configure
 +++ b/configure
 @@ -3339,6 +3339,8 @@ fi
@@ -58,7 +58,7 @@ index a8e2400a15..f13bc8cbe0 100755
  	;;
      esac
  fi
-@@ -9326,7 +9329,7 @@ rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
+@@ -9356,7 +9359,7 @@ rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
    conftest.$ac_objext conftest.beam conftest.$ac_ext
  fi
  
@@ -67,7 +67,7 @@ index a8e2400a15..f13bc8cbe0 100755
      if test "${ac_osx_32bit}" = "yes"; then
      	case `/usr/bin/arch` in
      	i386)
-@@ -9353,6 +9356,7 @@ fi
+@@ -9386,6 +9389,7 @@ fi
      	esac
  
      fi
@@ -76,10 +76,10 @@ index a8e2400a15..f13bc8cbe0 100755
      LIBTOOL_CRUFT=$LIBTOOL_CRUFT" -lSystem -lSystemStubs -arch_only ${MACOSX_DEFAULT_ARCH}"
      LIBTOOL_CRUFT=$LIBTOOL_CRUFT' -install_name $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)'
 diff --git a/setup.py b/setup.py
-index f2769081e8..a95162b43a 100644
+index 91435d3e96..677d2964db 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -61,7 +61,7 @@ CROSS_COMPILING = ("_PYTHON_HOST_PLATFORM" in os.environ)
+@@ -62,7 +62,7 @@ CROSS_COMPILING = ("_PYTHON_HOST_PLATFORM" in os.environ)
  HOST_PLATFORM = get_platform()
  MS_WINDOWS = (HOST_PLATFORM == 'win32')
  CYGWIN = (HOST_PLATFORM == 'cygwin')
@@ -89,5 +89,5 @@ index f2769081e8..a95162b43a 100644
  VXWORKS = ('vxworks' in HOST_PLATFORM)
  
 -- 
-2.23.0
+2.24.3 (Apple Git-128)
 

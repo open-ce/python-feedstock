@@ -1,7 +1,7 @@
-From d2bec7fa299be363c0c6dab461b6d3172539675b Mon Sep 17 00:00:00 2001
+From dc41e8ceb4b3cdba036363eb74d7858099cad140 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sun, 12 Apr 2020 18:22:21 +0200
-Subject: [PATCH 00/30] Fix off-by-one-error in
+Subject: [PATCH 00/28] Fix off-by-one-error in
  _winapi_WaitForMultipleObjects_impl
 
 ---
@@ -22,5 +22,5 @@ index e1672c4785..4206bb6c49 100644
                       "need at most %zd handles, got a sequence of length %zd",
                       MAXIMUM_WAIT_OBJECTS - 1, nhandles);
 -- 
-2.23.0
+2.24.3 (Apple Git-128)
 

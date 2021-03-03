@@ -11,12 +11,16 @@ fi
 VER=${PKG_VERSION%.*}
 VERABI=${VER}${DBG}
 
+# OLD_HOST is with CentOS versions in them for old compilers.
 case "$target_platform" in
   linux-64)
-    OLD_HOST=$(echo ${HOST} | sed -e 's/-conda_cos6//g')
+    OLD_HOST=$(echo ${HOST} | sed -e 's/-conda-/-conda_cos6-/g')
+    if [[ ${OLD_HOST} == ${HOST} ]]; then
+      echo "WARNING :: Using an older linux compiler with a baked in distro version"
+    fi
     ;;
   linux-*)
-    OLD_HOST=$(echo ${HOST} | sed -e 's/-conda_cos7//g')
+    OLD_HOST=$(echo ${HOST} | sed -e 's/-conda-/-conda_cos7-/g')
     ;;
   *)
     OLD_HOST=$HOST

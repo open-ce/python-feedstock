@@ -1,7 +1,7 @@
-From 135a70dc89bfd6f498f9f00c697d24014f1f8dd5 Mon Sep 17 00:00:00 2001
+From b1b4bb49a900bedc11649a82eb8ef45bf6f712a3 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 15 Aug 2017 22:34:16 +0100
-Subject: [PATCH 33/33] Add Anaconda Distribution version logic
+Subject: [PATCH 28/28] Add Anaconda Distribution version logic
 
 ---
  Include/pylifecycle.h |  1 +
@@ -11,10 +11,10 @@ Subject: [PATCH 33/33] Add Anaconda Distribution version logic
  4 files changed, 50 insertions(+), 1 deletion(-)
 
 diff --git a/Include/pylifecycle.h b/Include/pylifecycle.h
-index c5368b3c5e..06cb88ee9c 100644
+index 783fcb455e..3056ddaa28 100644
 --- a/Include/pylifecycle.h
 +++ b/Include/pylifecycle.h
-@@ -52,6 +52,7 @@ int _Py_CheckPython3(void);
+@@ -54,6 +54,7 @@ int _Py_CheckPython3(void);
  #endif
  
  /* In their own files */
@@ -23,10 +23,10 @@ index c5368b3c5e..06cb88ee9c 100644
  PyAPI_FUNC(const char *) Py_GetPlatform(void);
  PyAPI_FUNC(const char *) Py_GetCopyright(void);
 diff --git a/Lib/platform.py b/Lib/platform.py
-index 408587d36c..a32fefcebb 100755
+index 848d92a2b6..a5ec6be7f0 100755
 --- a/Lib/platform.py
 +++ b/Lib/platform.py
-@@ -963,6 +963,7 @@ def processor():
+@@ -976,6 +976,7 @@ def processor():
  
  _sys_version_parser = re.compile(
      r'([\w.+]+)\s*'  # "version<space>"

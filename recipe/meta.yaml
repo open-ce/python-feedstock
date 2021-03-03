@@ -16,12 +16,14 @@
 {% endif %}
 {% set linkage_nature = os.environ.get('PY_INTERP_LINKAGE_NATURE', '') %}
 {% if linkage_nature != '' %}
+  {% if linkage_nature == 'shared' %}
+    {% set linkage_nature_env = 'shared' %}
+  {% elif linkage_nature == 'static' %}
+    {% set linkage_nature_env = 'static' %}
+  {% endif %}
   {% set linkage_nature = "_" ~ linkage_nature %}
-{% endif %}
-{% if linkage_nature == 'shared' %}
-  {% set linkage_nature_env = 'shared' %}
 {% else %}
-  {% set linkage_nature_env = 'static' %}
+  {% set linkage_nature_env = 'both' %}
 {% endif %}
 {% set dbg_abi = '' %}
 {% set debug = os.environ.get('PY_INTERP_DEBUG', '') %}
@@ -74,8 +76,8 @@ source:
       - patches/0023-egg-debugging-with-Windows-debug-builds.patch
       - patches/0024-Add-CONDA_DLL_SEARCH_MODIFICATION_KEEP_GIL-to-aid-de.patch
       - patches/0025-cross-compile-darwin.patch
-      - patches/0032-Fix-TZPATH-on-windows.patch
-      - patches/0033-gh24324.patch
+      - patches/0026-Fix-TZPATH-on-windows.patch
+      - patches/0027-Make-dyld-search-work-with-SYSTEM_VERSION_COMPAT-1.patch
 {% if 'conda-forge' not in channel_targets %}
       - patches/9999-Add-Anaconda-Distribution-version-logic.patch
 {% endif %}
