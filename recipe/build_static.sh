@@ -26,10 +26,23 @@ case "$target_platform" in
     OLD_HOST=$HOST
     ;;
 esac
+NOCONDA_HOST=$(echo ${HOST} | sed -e 's/-conda-/-/g')
+USED_HOST=${OLD_HOST}
+if [[ -d ${PREFIX}/lib/python${VERABI}/config-${VERABI}-${OLD_HOST} ]]; then
+  echo "INFO :: config-${VERABI}-${OLD_HOST} exists"
+else
+  echo "INFO :: config-${VERABI}-${OLD_HOST} does not exist"
+fi
+if [[ -d ${PREFIX}/lib/python${VERABI}/config-${VERABI}-${NOCONDA_HOST} ]]; then
+  USED_HOST=${NOCONDA_HOST}
+  echo "INFO :: config-${VERABI}-${NOCONDA_HOST} exists"
+else
+  echo "INFO :: config-${VERABI}-${NOCONDA_HOST} does not exist"
+fi
 
 cp -pf ${_buildd_static}/libpython${VERABI}.a ${PREFIX}/lib/libpython${VERABI}.a
 if [[ ${HOST} =~ .*linux.* ]]; then
-  pushd ${PREFIX}/lib/python${VERABI}/config-${VERABI}-${OLD_HOST}
+  pushd ${PREFIX}/lib/python${VERABI}/config-${VERABI}-${USED_HOST}
 elif [[ ${HOST} =~ .*darwin.* ]]; then
   pushd ${PREFIX}/lib/python${VERABI}/config-${VERABI}-darwin
 fi

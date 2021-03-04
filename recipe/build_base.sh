@@ -5,7 +5,9 @@ set -ex
 cp $BUILD_PREFIX/share/libtool/build-aux/config.* .
 
 # Migrate old CDTs to new location:
-cp -rf $BUILD_PREFIX/x86_64-conda_cos6-linux-gnu/* $BUILD_PREFIX/x86_64-conda-linux-gnu
+if [[ -d $BUILD_PREFIX/x86_64-conda_cos6-linux-gnu ]]; then
+  cp -rf $BUILD_PREFIX/x86_64-conda_cos6-linux-gnu/* $BUILD_PREFIX/x86_64-conda-linux-gnu
+fi
 
 # The LTO/PGO information was sourced from @pitrou and the Debian rules file in:
 # http://http.debian.net/debian/pool/main/p/python3.6/python3.6_3.6.2-2.debian.tar.xz
@@ -22,17 +24,6 @@ QUICK_BUILD=no
 
 _buildd_static=build-static
 _buildd_shared=build-shared
-_ENABLE_SHARED=--enable-shared
-# We *still* build a shared lib here for non-static embedded use cases
-_DISABLE_SHARED=--disable-shared
-# Hack to allow easily comparing static vs shared interpreter performance
-# .. hack because we just build it shared in both the build-static and
-# build-shared directories.
-# Yes this hack is a bit confusing, sorry about that.
-if [[ ${PY_INTERP_LINKAGE_NATURE} != static ]]; then
-  _DISABLE_SHARED=--enable-shared
-  _ENABLE_SHARED=--enable-shared
-fi
 
 # For debugging builds, set this to no to disable profile-guided optimization
 if [[ ${DEBUG_C} == yes ]]; then
@@ -320,11 +311,12 @@ else
 fi
 
 if [[ ${PY_INTERP_LINKAGE_NATURE} != static ]]; then
-  mkdir .${_buildd_shared}
-  cp -rf ${SRC_DIR}/* .${_buildd_shared}/
-  mv .${_buildd_shared} ${_buildd_shared}
+  # mkdir .${_buildd_shared}
+  # cp -rf ${SRC_DIR_PRISTINE}/* .${_buildd_shared}/
+  # mv .${_buildd_shared} ${_buildd_shared}
+  mkdir ${_buildd_shared} || true
   pushd ${_buildd_shared}
-    ./configure \
+    ../configure \
       "${_common_configure_args[@]}" \
       "${_dbg_opts[@]}" \
       --oldincludedir=${BUILD_PREFIX}/${HOST}/sysroot/usr/include \
@@ -337,34 +329,37 @@ if [[ ${PY_INTERP_LINKAGE_NATURE} != static ]]; then
   popd
   if [[ ${target_platform} == linux-ppc64le ]]; then
     # Travis has issues with long logs
-    make -j${CPU_COUNT} -C ${_buildd_shared} \
-            EXTRA_CFLAGS="${EXTRA_CFLAGS}" 2>&1 >make-shared.log
+    make -j${CPU_COUNT} \
+      -C ${_buildd_shared} \
+      EXTRA_CFLAGS="${EXTRA_CFLAGS}" 2>&1 >make-shared.log
   else
-    make -j${CPU_COUNT} -C ${_buildd_shared} \
-            EXTRA_CFLAGS="${EXTRA_CFLAGS}" 2>&1 | tee make-shared.log
+    make -j${CPU_COUNT} \
+      -C ${_buildd_shared} \
+      EXTRA_CFLAGS="${EXTRA_CFLAGS}" 2>&1 | tee make-shared.log
   fi
   if rg "Failed to build these modules" make-shared.log; then
     echo "(shared) :: Failed to build some modules, check the log"
     exit 1
   fi
   # build a static library with PIC objects and without LTO/PGO
-  make -j${CPU_COUNT} \
+  make \
+    -j${CPU_COUNT} \
     -C ${_buildd_shared} \
     EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
     LIBRARY=libpython${VERABI}-pic.a libpython${VERABI}-pic.a
 fi
 
 if [[ ${PY_INTERP_LINKAGE_NATURE} != shared ]]; then
-  mkdir .${_buildd_static}
-  cp -rf ${SRC_DIR}/* .${_buildd_static}/
-  mv .${_buildd_static} ${_buildd_static}
+  # mkdir .${_buildd_static}
+  # cp -rf ${SRC_DIR_PRISTINE}/* .${_buildd_static}/
+  # mv .${_buildd_static} ${_buildd_static}
+  mkdir ${_buildd_static} || true
   pushd ${_buildd_static}
-  cp -rf ${SRC_DIR}/* .
-    ./configure \
+    ../configure \
       "${_common_configure_args[@]}" \
       "${_dbg_opts[@]}" \
       -oldincludedir=${BUILD_PREFIX}/${HOST}/sysroot/usr/include \
-      ${_DISABLE_SHARED} "${_PROFILE_TASK[@]}"
+      --disable-shared "${_PROFILE_TASK[@]}"
   popd
 
   if [[ ${target_platform} == linux-ppc64le ]]; then
@@ -420,6 +415,7 @@ fi
 if [[ ${PY_INTERP_LINKAGE_NATURE} == shared ]]; then
   _BUILDD=${_buildd_shared}
 else
+   # == static or == both (prefer static)
   _BUILDD=${_buildd_static}
 fi
 
