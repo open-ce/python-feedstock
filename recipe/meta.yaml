@@ -197,7 +197,7 @@ test:
   requires:
     - ripgrep
     - cmake
-    - make
+    - make        # [not win]
     - ninja
     - cython
     - setuptools
