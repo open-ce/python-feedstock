@@ -94,7 +94,7 @@ source:
 
 build:
   # Work around conda not caring about subdirs very much (the package cache for example).
-  number: 4
+  number: 5
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:
@@ -197,7 +197,7 @@ test:
   requires:
     - ripgrep
     - cmake
-    - make
+    - make        # [not win]
     - ninja
     - cython
     - setuptools
