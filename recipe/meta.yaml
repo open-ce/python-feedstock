@@ -59,7 +59,6 @@ source:
       - patches/0024-Doing-d1trimfile.patch
       - patches/0025-egg-debugging-with-Windows-debug-builds.patch
       - patches/0026-Revert-part-of-https-bugs.python.org-issue33895-http.patch
-      - patches/0027-crypt-aarch64.patch  # [linux and aarch64]
 
   # TODO :: Depend on our own packages for these:
   - url: https://github.com/python/cpython-source-deps/archive/xz-5.2.2.zip          # [win]
@@ -94,7 +93,7 @@ source:
 
 build:
   # Work around conda not caring about subdirs very much (the package cache for example).
-  number: 5
+  number: 6
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:
@@ -149,9 +148,10 @@ build:
 # {% else %}
 #      - CONDA_FORGE=no
 # {% endif %}
-  missing_dso_whitelist:  # [win]
-    - '**/MSVCR71.dll'  # [win]
-    - '**/MSVCR80.dll'  # [win]
+  missing_dso_whitelist:
+    - '**/MSVCR71.dll'   # [win]
+    - '**/MSVCR80.dll'   # [win]
+    - '**libcrypt.so.1'  # [aarch64]
 
 requirements:
   build:
