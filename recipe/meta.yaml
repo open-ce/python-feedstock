@@ -48,7 +48,6 @@ source:
       - patches/0020-venv-Revert-a-change-from-https-github.com-python-cp.patch
       - patches/0021-Add-CondaEcosystemModifyDllSearchPath.patch
       - patches/0022-Use-ranlib-from-env-if-env-variable-is-set.patch
-      - patches/0023-crypt-aarch64.patch      # [linux and aarch64]
 
   # TODO :: Depend on our own packages for these:
   - url: https://github.com/python/cpython-source-deps/archive/xz-5.2.2.zip          # [win]
@@ -79,7 +78,9 @@ source:
     sha256: de3c87b26a80e789986d8e6950c6304175d3829afe9c6c7211eb7257266ab0ac         # [win]
 
 build:
-  number: 0
+  # 4/20/2021: Bumped build number from 0 to 2 because there was a build number "1" for aarch64
+  # that was not previously commited to this branch.
+  number: 2
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:
@@ -134,9 +135,10 @@ build:
 # {% else %}
 #      - CONDA_FORGE=no
 # {% endif %}
-  missing_dso_whitelist:  # [win]
+  missing_dso_whitelist:
   - '**/MSVCR71.dll'      # [win]
   - '**/MSVCR80.dll'      # [win]
+  - '**libcrypt.so.1'     # [aarch64]
 
 requirements:
   build:
