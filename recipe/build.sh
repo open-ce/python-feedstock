@@ -83,7 +83,8 @@ if [[ ${HOST} =~ .*darwin.* ]] && [[ -n ${CONDA_BUILD_SYSROOT} ]]; then
 fi
 
 if [[ `uname -m` == aarch64 ]]; then
-    # necessary for Graviton
+    # Necessary for Graviton2 because shared objects like "libcrypt.so"
+    # are stored in the /usr/lib64 directory.
     LDFLAGS="$LDFLAGS -L/usr/lib64"
 fi
 
