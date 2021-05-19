@@ -1,4 +1,4 @@
-{% set version = "3.8.8" %}
+{% set version = "3.8.10" %}
 {% set ver2 = '.'.join(version.split('.')[0:2]) %}
 {% set ver2nd = ''.join(version.split('.')[0:2]) %}
 {% set ver3nd = ''.join(version.split('.')[0:3]) %}
@@ -13,7 +13,7 @@
   {% set debug = "_dbg" %}
   {% set dbg_abi = "d" %}  # [win]
 {% endif %}
-
+{% set channel_targets = 'defaults' %}
 
 package:
   name: python
@@ -26,7 +26,7 @@ source:
 {% else %}
   - url: https://www.python.org/ftp/python/{{ version }}/Python-{{ version }}.tar.xz
     # md5 from: https://www.python.org/downloads/release/python-{{ ver3nd }}/
-    md5: 23e6b769857233c1ac07b6be7442eff4
+    md5: d9eee4b20155553830a2025e4dcaa7b3
 {% endif %}
     patches:
       - patches/0000-Fix-off-by-one-error-in-_winapi_WaitForMultipleObjec.patch
