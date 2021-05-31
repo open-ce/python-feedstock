@@ -93,7 +93,7 @@ source:
 
 build:
   # Work around conda not caring about subdirs very much (the package cache for example).
-  number: 7
+  number: 8
   # Windows has issues updating python if conda is using files itself.
   # Copy rather than link.
   no_link:
@@ -219,7 +219,8 @@ test:
     - python3-config --help  # [not win]
     - python -m venv test-venv
     - python -c "import sysconfig; print(sysconfig.get_config_var('CC'))"  # [not win]
-    -  _CONDA_PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata_x86_64_conda_cos6_linux_gnu python -c "import sysconfig; print(sysconfig.get_config_var('CC'))"  # [linux64]
+    # disable this test as it will fail with os-update
+    # -  _CONDA_PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata_x86_64_conda_cos6_linux_gnu python -c "import sysconfig; print(sysconfig.get_config_var('CC'))"  # [linux64]
     # check for unreplaced @ symbols in sysconfig files
     - for f in ${CONDA_PREFIX}/lib/python*/_sysconfig*.py; do echo "Checking $f:"; if [[ `rg @ $f` ]]; then echo "FAILED ON $f"; cat $f; exit 1; fi; done  # [linux64 or osx]
     - pushd tests
