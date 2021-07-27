@@ -140,6 +140,14 @@ build:
   - '**/MSVCR71.dll'      # [win]
   - '**/MSVCR80.dll'      # [win]
   - '**libcrypt.so.1'     # [aarch64]
+  # -=- libs that come from the sysroot.
+  - '$RPATH/libc.so.6'        # [linux64]
+  - '$RPATH/libcrypt.so.1'    # [linux64]
+  - '$RPATH/libdl.so.2'       # [linux64]
+  - '$RPATH/libm.so.6'        # [linux64]
+  - '$RPATH/libnsl.so.1'      # [linux64]
+  - '$RPATH/libpthread.so.0'  # [linux64]
+  - '$RPATH/libutil.so.1'     # [linux64]
 
 requirements:
   build:
