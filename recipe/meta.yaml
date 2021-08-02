@@ -1,64 +1,52 @@
-{% set version = "3.8.10" %}
-{% set ver2 = '.'.join(version.split('.')[0:2]) %}
-{% set ver2nd = ''.join(version.split('.')[0:2]) %}
-{% set ver3nd = ''.join(version.split('.')[0:3]) %}
-{% set from_source_control = 'no' %}
+{% set version = "3.8.11" %}
 {% set linkage_nature = os.environ.get('PY_INTERP_LINKAGE_NATURE', '') %}
+{% set debug = os.environ.get('PY_INTERP_DEBUG', '') %}
 {% if linkage_nature != '' %}
   {% set linkage_nature = "_" ~ linkage_nature %}
 {% endif %}
-{% set dbg_abi = '' %}
-{% set debug = os.environ.get('PY_INTERP_DEBUG', '') %}
+{% set channel_targets = () %}
 {% if debug != '' %}
-  {% set debug = "_dbg" %}
-  {% set dbg_abi = "d" %}  # [win]
+  {% set debug = "_d" ~ debug %}
 {% endif %}
-{% set channel_targets = 'defaults' %}
 
 package:
-  name: python
+  name: python-split
   version: {{ version }}
 
 source:
-{% if from_source_control == 'yes' %}
-  - git_url: https://github.com/python/CPython.git
-    git_ref: {{ version }}
-{% else %}
   - url: https://www.python.org/ftp/python/{{ version }}/Python-{{ version }}.tar.xz
-    # md5 from: https://www.python.org/downloads/release/python-{{ ver3nd }}/
-    md5: d9eee4b20155553830a2025e4dcaa7b3
-{% endif %}
+    # md5 from: https://www.python.org/downloads/release/python-388/
+    md5: 5840ba601128f48fee4e7c98fbdac65d
     patches:
-      - patches/0000-Fix-off-by-one-error-in-_winapi_WaitForMultipleObjec.patch
+      - patches/0001-Fix-off-by-one-error-in-_winapi_WaitForMultipleObjec.patch
 {% if 'conda-forge' not in channel_targets %}
-      - patches/0001-Add-Anaconda-Distribution-version-logic.patch
+      - patches/0002-Add-Anaconda-Distribution-version-logic.patch
 {% endif %}
-      - patches/0002-Darwin-Add-arch-x86_64-to-UnicCCompiler-ld_args.patch
-      - patches/0003-Win32-Change-FD_SETSIZE-from-512-to-2048.patch
-      - patches/0004-Win32-distutils-Add-support-to-cygwinccompiler-for-V.patch
-      - patches/0005-Do-not-pass-g-to-GCC-when-not-Py_DEBUG.patch
-      - patches/0006-Support-cross-compiling-byte-code.patch
-      - patches/0007-Win32-Fixes-for-Windows-GCC-interop-needed-by-RPy2-a.patch
-      - patches/0008-Darwin-Look-in-sysroot-usr-lib-include-if-sysroot-is.patch
-      - patches/0009-runtime_library_dir_option-Use-1st-word-of-CC-as-com.patch
-      - patches/0010-Win32-Do-not-download-externals.patch
-      - patches/0011-Add-support-for-_CONDA_PYTHON_SYSCONFIGDATA_NAME-if-.patch
-      - patches/0012-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch
-      - patches/0013-Disable-new-dtags-in-unixccompiler.py.patch
-      - patches/0014-Fix-cross-compilation-on-Debian-based-distros.patch
-      - patches/0015-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
-      - patches/0016-Unvendor-openssl.patch
-      - patches/0017-Unvendor-sqlite3.patch
+      - patches/0003-Darwin-Add-arch-x86_64-to-UnicCCompiler-ld_args.patch
+      - patches/0004-Win32-Change-FD_SETSIZE-from-512-to-2048.patch
+      - patches/0005-Win32-distutils-Add-support-to-cygwinccompiler-for-V.patch
+      - patches/0006-Do-not-pass-g-to-GCC-when-not-Py_DEBUG.patch
+      - patches/0007-Support-cross-compiling-byte-code.patch
+      - patches/0008-Win32-Fixes-for-Windows-GCC-interop-needed-by-RPy2-a.patch
+      - patches/0009-Darwin-Look-in-sysroot-usr-lib-include-if-sysroot-is.patch
+      - patches/0010-runtime_library_dir_option-Use-1st-word-of-CC-as-com.patch
+      - patches/0011-Win32-Do-not-download-externals.patch
+      - patches/0012-Add-support-for-_CONDA_PYTHON_SYSCONFIGDATA_NAME-if-.patch
+      - patches/0013-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch
+      - patches/0014-Disable-new-dtags-in-unixccompiler.py.patch
+      - patches/0015-Fix-cross-compilation-on-Debian-based-distros.patch
+      - patches/0016-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
+      - patches/0017-Unvendor-openssl.patch
+      - patches/0018-Unvendor-sqlite3.patch
       # https://bugs.python.org/issue35644
-      - patches/0018-venv-Revert-a-change-from-https-github.com-python-cp.patch
-      - patches/0019-Win-Add-back-the-DLLSuffix-used-to-find-the-openssl-.patch
-      - patches/0020-Use-ranlib-from-env-if-env-variable-is-set.patch
-      # Python 3.8 is pretty broken without this, please port it carefully.
+      - patches/0019-venv-Revert-a-change-from-https-github.com-python-cp.patch
+      - patches/0020-Win-Add-back-the-DLLSuffix-used-to-find-the-openssl-.patch
+      - patches/0021-Use-ranlib-from-env-if-env-variable-is-set.patch
+      # Python 3.8 is pretty broken without this.
       - patches/0022-Add-CondaEcosystemModifyDllSearchPath.patch
-      - patches/0023-Add-d1trimfile-SRC_DIR-to-make-pdbs-more-relocatable.patch
-      - patches/0024-Doing-d1trimfile.patch
-      - patches/0025-egg-debugging-with-Windows-debug-builds.patch
-      - patches/0026-Revert-part-of-https-bugs.python.org-issue33895-http.patch
+      - patches/0023-Revert-part-of-https-bugs.python.org-issue33895-http.patch
+      - patches/0024-cross-compile-darwin.patch.patch
+      - patches/0032-ctypes-link-to-coreFoundation.patch
 
   # TODO :: Depend on our own packages for these:
   - url: https://github.com/python/cpython-source-deps/archive/xz-5.2.2.zip          # [win]
@@ -92,163 +80,168 @@ source:
     sha256: 4872e72e188a5aa1124db0c3b163a4163e84ead359a514d86dd7c6fa2d2ff02a         # [win]
 
 build:
-  # Work around conda not caring about subdirs very much (the package cache for example).
-  number: 8
-  # Windows has issues updating python if conda is using files itself.
-  # Copy rather than link.
-  no_link:
-    - DLLs/_ctypes.pyd  # [win]
-  ignore_run_exports:  # [unix]
-    # We delete the shared libraries here.
-    - bzip2  # [unix]
-    # C++ only installed so CXX is defined for distutils/sysconfig.
-    - libcxx  # [osx]
-    - libcxxabi  # [osx]
-    - libstdcxx-ng  # [linux]
-  detect_binary_files_with_prefix: False
-  binary_has_prefix_files:
-    # - lib/libpython{{ ver2 }}.*.1.0
-    # - bin/python{{ ver2 }}  # [linux]
-    # - lib/libpython{{ ver2 }}.a  # [linux]
-    # - lib/libpython{{ ver2 }}.nolto.a  # [linux]
-    # - lib/libpython3.so  # [linux]
-    # - lib/python{{ ver2 }}/lib-dynload/_hashlib.cpython-{{ ver2nd }}-x86_64-linux-gnu.so  # [linux]
-    - lib/libpython3.dylib  # [osx]
-  # match python.org compiler standard
-  skip: True  # [win and int(float(vc)) < 14]
-{% if 'conda-forge' in channel_targets %}
-  string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}_cpython{{ debug }}
-{% else %}
-  string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}{{ debug }}
-{% endif %}
-{% if 'conda-forge' in channel_targets %}
-  run_exports:
-    noarch:
-      - python
-    weak:
-      - python_abi {{ ver2 }}.* *_cp{{ ver2nd }}{{ dbg_abi }}
-{% else %}
-  # run_exports:
-  #   noarch:
-  #     - python
-  #   weak:
-  #     - python
-{% endif %}
+  number: 0
   script_env:
-   - PY_INTERP_LINKAGE_NATURE
-   - PY_INTERP_DEBUG
-   # Putting these here means they get emitted to build_env_setup.{sh,bat} meaning we can launch IDEs
-   # after sourcing or calling that script without examine the contents of conda_build.{sh,bat} for
-   # important env. vars.
-   - 'OPENSSL_DIR=%PREFIX%\Library'  # [win]
-   - 'SQLITE3_DIR=%PREFIX%\Library'  # [win]
-# Not until: https://github.com/mingwandroid/conda-build/commit/c68a7d100866df7a3e9c0e3177fc7ef0ff76def9
-# {% if 'conda-forge' in channel_targets %}
-#      - CONDA_FORGE=yes
-# {% else %}
-#      - CONDA_FORGE=no
-# {% endif %}
-  missing_dso_whitelist:
-    - '**/MSVCR71.dll'   # [win]
-    - '**/MSVCR80.dll'   # [win]
-    - '**libcrypt.so.1'  # [aarch64]
+    - PY_INTERP_LINKAGE_NATURE
+    - PY_INTERP_DEBUG
 
-requirements:
-  build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
-    - {{ cdt('libx11-devel') }}  # [linux]
-    - {{ cdt('libuuid-devel') }}  # [linux and not (ppc64le or aarch64)]
-{% if from_source_control == 'yes' %}
-    - git
-{% else %}
-    - patch  # [not win]
-    - m2-patch  # [win]
-    - m2-gcc-libs  # [win]
-{% endif %}
-    - make  # [not win]
-    - pkg-config  # [not win]
-    - ld_impl_{{target_platform}}  # [linux]
-{% if 'conda-forge' in channel_targets %}
-    # configure script looks for llvm-ar for lto (make it a dep of the compiler activation script?)
-    - llvm-tools  # [osx]
-    - binutils_impl_{{target_platform}} >=2.33.1  # [linux]
-{% endif %}
-  host:
-    - bzip2  # [not win]
-    - sqlite
-    - xz  # [not win]
-    - zlib  # [not win]
-    - openssl
-    - readline  # [not win]
-    - tk  # [not win]
-    - ncurses  # [not win]
-    - libffi  # [not win]
-    - ld_impl_{{target_platform}}  # [linux]
-  run:
-    - ld_impl_{{target_platform}}  # [linux]
-{% if 'conda-forge' in channel_targets %}
-  run_constrained:
-    - python_abi {{ ver2 }}.* *_cp{{ ver2nd }}{{ dbg_abi }}
-{% endif %}
-
-test:
-  requires:
-    - ripgrep
-    - cmake
-    - make        # [not win]
-    - ninja
-    - cython
-    - setuptools
-    - {{ compiler('c') }}
-    # Tried to use enable_language(C) to avoid needing this. It does not work.
-    - {{ compiler('cxx') }}
-  files:
-    - tests/distutils/*
-    - tests/distutils.cext/*
-    - tests/cmake/*  # [not (linux and ppc64le)]
-    - tests/cython/*
-    - tests/embedding-interpreter/*
-    - tests/processpoolexecutor-max_workers-61/*
-  commands:
-    - python -V
-    - python3 -V            # [not win]
-    - 2to3 -h
-    - pydoc -h
-    - python3-config --help  # [not win]
-    - python -m venv test-venv
-    - python -c "import sysconfig; print(sysconfig.get_config_var('CC'))"  # [not win]
-    # disable this test as it will fail with os-update
-    # -  _CONDA_PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata_x86_64_conda_cos6_linux_gnu python -c "import sysconfig; print(sysconfig.get_config_var('CC'))"  # [linux64]
-    # check for unreplaced @ symbols in sysconfig files
-    - for f in ${CONDA_PREFIX}/lib/python*/_sysconfig*.py; do echo "Checking $f:"; if [[ `rg @ $f` ]]; then echo "FAILED ON $f"; cat $f; exit 1; fi; done  # [linux64 or osx]
-    - pushd tests
-    -   pushd distutils
-    -     python setup.py install -v -v
-    -     python -c "import foobar"
-    -   popd
-    -   pushd distutils.cext
-    # --single-version-externally-managed because .egg files with compiled code do not work on Windows (Python 3.8) when Py_DEBUG (this should be investigated)
-    # .. an egg might be possible in debug if we use "build -g install" instead of "install" when debugging.
-    -     python setup.py install -v -v  # [(not win) or environ.get('PY_INTERP_DEBUG') == '']
-    -     python setup.py install --single-version-externally-managed --record=record.txt -v -v  # [win and environ.get('PY_INTERP_DEBUG') != '']
-    -     python -v -v -v -c "import greet"
-    -     python -v -v -v -c "import greet; greet.greet('Python user')" | rg "Hello Python"
-    -   popd
-    -   pushd embedding-interpreter  # [unix]
-    -     bash build-and-test.sh  # [unix and not (linux and aarch64)]
-    -   popd  # [unix]
-    -   pushd cmake  # [not (linux and ppc64le)]
-    -     run_cmake_test.bat {{ version }}  # [win]
-    -     bash run_cmake_test.sh {{ version }}  # [not (win or (linux and (ppc64le)))]
-    -   popd  # [not (linux and ppc64le)]
-
-    # This used to fail on Windows.
-    -   pushd processpoolexecutor-max_workers-61
-    -     python ppe.py
-    -   popd
-    - popd
+outputs:
+  - name: python
+    build:
+      activate_in_script: True
+      # Windows has issues updating python if conda is using files itself.
+      # Copy rather than link.
+      no_link:
+        - DLLs/_ctypes.pyd  # [win]
+      # We delete the shared libraries.
+      ignore_run_exports:   # [unix]
+        - bzip2             # [unix]
+      # Disabled until new conda-build release
+      detect_binary_files_with_prefix: True
+      # detect_binary_files_with_prefix: False
+      # binary_has_prefix_files:
+      #   - lib/libpython3.8.*.1.0
+      #   - bin/python3.8  # [linux]
+      #   - lib/libpython3.8.a  # [linux]
+      #   - lib/libpython3.8.nolto.a  # [linux]
+      #   - lib/libpython3.so  # [linux]
+      #   - lib/python3.8/lib-dynload/_hashlib.cpython-38-x86_64-linux-gnu.so  # [linux]
+      #   - lib/libpython3.dylib  # [osx]
+      # match python.org compiler standard
+      skip: True            # [win and int(float(vc)) < 14]
+      # skip_compile_pyc:
+      #  - '*.py'            # [osx and arm64]
+      # Would like to be able to append to the calculated build string here, ping @msarahan, is this possible?
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}{{ debug }}_cpython
+      run_exports:
+        noarch:
+          - python
+    # Not until: https://github.com/mingwandroid/conda-build/commit/c68a7d100866df7a3e9c0e3177fc7ef0ff76def9
+    # {% if 'conda-forge' not in channel_targets %}
+    #      - CONDA_FORGE=yes
+    # {% else %}
+    #      - CONDA_FORGE=no
+    # {% endif %}
+    script: build_base.sh  # [unix]
+    script: build_base.bat  # [win]
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
+        - {{ cdt('libx11-devel') }}  # [linux]
+        - {{ cdt('libuuid-devel') }}  # [linux and not (ppc64le or aarch64)]
+        - make  # [not win]
+        - pkg-config  # [not win]
+        # configure script looks for llvm-ar for lto
+        - llvm-tools  # [osx]
+        - patch  # [not win]
+        - m2-patch  # [win]
+        - posix  # [win]
+        - ld_impl_{{ target_platform }} >=2.34  # [linux]
+        - binutils_impl_{{ target_platform }} >=2.34  # [linux]
+        - libtool  # [unix]
+      host:
+        - bzip2  # [not win]
+        - sqlite
+        - xz  # [not win]
+        - zlib  # [not win]
+        - openssl
+        - readline  # [not win]
+        - tk  # [not win]
+        - ncurses  # [linux]
+        - libffi  # [not win]
+        - ld_impl_{{ target_platform }} >=2.34  # [linux]
+      run:
+        - ld_impl_{{ target_platform }} >=2.34  # [linux]
+    test:
+      requires:
+        - ripgrep
+        - cmake
+        - ninja
+        - cython
+        - setuptools
+        - {{ compiler('c') }}
+        # Tried to use enable_language(C) to avoid needing this. It does not work.
+        - {{ compiler('cxx') }}
+      files:
+        - tests/distutils/*
+        - tests/distutils.cext/*
+        - tests/cmake/*
+        - tests/cython/*
+        - tests/prefix-replacement/*
+      commands:
+        - echo on  # [win]
+        - set  # [win]
+        - python -V
+        - python3 -V            # [not win]
+        - 2to3 -h
+        - pydoc -h
+        - python3-config --help  # [not win]
+        - set "PIP_NO_BUILD_ISOLATION=False"  # [win]
+        - set "PIP_NO_DEPENDENCIES=True"  # [win]
+        - set "PIP_IGNORE_INSTALLED=True"  # [win]
+        - set "PIP_NO_INDEX=True"  # [win]
+        - set "PIP_CACHE_DIR=%CONDA_PREFIX%/pip_cache"  # [win]
+        - set "TEMP=%CONDA_PREFIX%/tmp"  # [win]
+        - mkdir "%TEMP%"  # [win]
+        - python -Im ensurepip --upgrade --default-pip  # [win]
+        - python -m venv test-venv
+        - python -c "import sysconfig; print(sysconfig.get_config_var('CC'))"  # [not win]
+        -  _CONDA_PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata_x86_64_conda_cos6_linux_gnu python -c "import sysconfig; print(sysconfig.get_config_var('CC'))"  # [linux64]
+        # check for unreplaced @ symbols in sysconfig files
+        - for f in ${CONDA_PREFIX}/lib/python*/_sysconfig*.py; do echo "Checking $f:"; if [[ `rg @ $f` ]]; then echo "FAILED ON $f"; cat $f; exit 1; fi; done  # [linux64 or osx]
+        - test ! -f ${PREFIX}/lib/libpython${PKG_VERSION%.*}.a  # [unix]
+        - test ! -f ${PREFIX}/lib/libpython${PKG_VERSION%.*}.nolto.a  # [unix]
+        # https://github.com/conda-forge/python-feedstock/issues/384
+        - if exist %PREFIX%\\Scripts\\pydoc exit 1  # [win]
+        - if exist %PREFIX%\\Scripts\\idle exit 1  # [win]
+        - if exist %PREFIX%\\Scripts\\2to3 exit 1  # [win]
+        - if not exist %PREFIX%\\Scripts\\pydoc-script.py exit 1  # [win]
+        - if not exist %PREFIX%\\Scripts\\idle-script.py exit 1  # [win]
+        - if not exist %PREFIX%\\Scripts\\2to3-script.py exit 1  # [win]
+        - if not exist %PREFIX%\\Scripts\\idle.exe exit 1  # [win]
+        - if not exist %PREFIX%\\Scripts\\2to3.exe exit 1  # [win]
+        - if not exist %PREFIX%\\Scripts\\pydoc.exe exit 1  # [win]
+        - pushd tests
+        -   pushd distutils
+        -     python setup.py install -v -v
+        -     python -c "import foobar"
+        -   popd
+        -   pushd distutils.cext
+        -     python setup.py install -v -v
+        -     python -c "import greet; greet.greet('Python user')" | rg "Hello Python"
+        -   popd
+        -   pushd prefix-replacement  # [unix]
+        -     bash build-and-test.sh  # [unix]
+        -   popd  # [unix]
+        -   pushd cmake
+        -     cmake -GNinja -DPY_VER={{ version }}
+              # --trace --debug-output --debug-trycompile .
+        -   popd
+        - popd
+        - test ! -f default.profraw   # [osx]
+  - name: libpython-static
+    build:
+      activate_in_script: True
+      # Would like to be able to append to the calculated build string here, ping @msarahan, is this possible?
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}{{ debug }}_cpython
+    script: build_static.sh  # [unix]
+    script: build_static.bat  # [win]
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - posix  # [win]
+      host:
+        - {{ pin_subpackage('python', exact=True) }}
+      run:
+        - {{ pin_subpackage('python', exact=True) }}
+    test:
+      commands:
+        - test -f ${PREFIX}/lib/libpython${PKG_VERSION%.*}.a  # [unix]
+        - test -f ${PREFIX}/lib/libpython${PKG_VERSION%.*}.nolto.a  # [unix]
+        - test -f ${PREFIX}/lib/python${PKG_VERSION%.*}/config-${PKG_VERSION%.*}-darwin/libpython${PKG_VERSION%.*}.a  # [osx]
 
 about:
   home: https://www.python.org/
@@ -267,10 +260,10 @@ about:
   dev_url: https://docs.python.org/devguide/
 
 extra:
+  feedstock-name: python
   recipe-maintainers:
     - isuruf
     - jakirkham
-    - jjhelmus
     - mingwandroid
     - msarahan
     - pelson

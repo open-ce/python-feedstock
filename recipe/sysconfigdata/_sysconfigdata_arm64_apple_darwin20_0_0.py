@@ -3,60 +3,90 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'AC_APPLE_UNIVERSAL_BUILD': 0,
  'AIX_GENUINE_CPLUSPLUS': 0,
  'ANDROID_API_LEVEL': 0,
- 'AR': 'ar',
- 'ARFLAGS': 'rc',
- 'BASECFLAGS': '-Wno-unused-result -Wsign-compare -Wunreachable-code',
- 'BASECPPFLAGS': '',
+ 'AR': 'arm64-apple-darwin20.0.0-ar',
+ 'ARFLAGS': 'rcs',
+ 'BASECFLAGS': '-fno-strict-aliasing -Wsign-compare -Wunreachable-code',
+ 'BASECPPFLAGS': '-IObjects -IInclude -IPython',
  'BASEMODLIBS': '',
  'BINDIR': '/opt/anaconda1anaconda2anaconda3/bin',
  'BINLIBDEST': '/opt/anaconda1anaconda2anaconda3/lib/python@PYVER@',
- 'BLDLIBRARY': '-L. -lpython@PYVER@@ABIFLAGS@',
- 'BLDSHARED': 'gcc -bundle -undefined dynamic_lookup '
-              '-L/opt/anaconda1anaconda2anaconda3/lib  '
-              '-arch @ARCH@ '
-              '-L/opt/anaconda1anaconda2anaconda3/lib  '
-              '-arch @ARCH@',
+ 'BLDLIBRARY': 'libpython@PYVER@@ABIFLAGS@.a',
+ 'BLDSHARED': 'arm64-apple-darwin20.0.0-clang -bundle -undefined '
+              'dynamic_lookup -Wl,-pie -Wl,-headerpad_max_install_names '
+              '-Wl,-dead_strip_dylibs '
+              '-Wl,-rpath,/opt/anaconda1anaconda2anaconda3/lib '
+              '-L/opt/anaconda1anaconda2anaconda3/lib '
+              '-flto -Wl,-export_dynamic -Wl,-pie '
+              '-Wl,-headerpad_max_install_names -Wl,-dead_strip_dylibs '
+              '-Wl,-rpath,/opt/anaconda1anaconda2anaconda3/lib '
+              '-L/opt/anaconda1anaconda2anaconda3/lib',
  'BUILDEXE': '.exe',
  'BUILDPYTHON': 'python.exe',
- 'BUILD_GNU_TYPE': '@ARCH@-apple-darwin13.4.0',
+ 'BUILD_GNU_TYPE': 'arm64-apple-darwin20.0.0',
  'BYTESTR_DEPS': '\\',
- 'CC': 'gcc',
+ 'CC': 'arm64-apple-darwin20.0.0-clang',
  'CCSHARED': '',
- 'CFLAGS': '-Wno-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g '
-           '-fwrapv -O3 -Wall -Wstrict-prototypes '
-           '-I/opt/anaconda1anaconda2anaconda3/include  '
-           '-arch @ARCH@ '
-           '-I/opt/anaconda1anaconda2anaconda3/include  '
-           '-arch @ARCH@',
+ 'CFLAGS': '-fno-strict-aliasing -Wsign-compare -Wunreachable-code -DNDEBUG '
+           '-fwrapv -O3 -Wall -Wstrict-prototypes -arch arm64 '
+           '-ftree-vectorize -fPIC -fPIE -fstack-protector-strong -O3 '
+           '-pipe  '
+           '-fdebug-prefix-map=${SRC_DIR}=/usr/local/src/conda/${PKG_NAME}-${PKG_VERSION} '
+           '-fdebug-prefix-map=/opt/anaconda1anaconda2anaconda3=/usr/local/src/conda-prefix '
+           '-flto -Wl,-export_dynamic '
+           '-ftree-vectorize -fPIC -fPIE -fstack-protector-strong -O3 ',
  'CFLAGSFORSHARED': '',
  'CFLAGS_ALIASING': '-fno-strict-aliasing',
- 'CFLAGS_NODIST': '',
  'CONFIGFILES': 'configure configure.ac acconfig.h pyconfig.h.in '
                 'Makefile.pre.in',
- 'CONFIGURE_CFLAGS': '-I/opt/anaconda1anaconda2anaconda3/include  '
-                     '-arch @ARCH@',
- 'CONFIGURE_CFLAGS_NODIST': '-std=c99 -Wextra -Wno-unused-result '
-                            '-Wno-unused-parameter '
-                            '-Wno-missing-field-initializers',
- 'CONFIGURE_CPPFLAGS': '',
- 'CONFIGURE_LDFLAGS': '-L/opt/anaconda1anaconda2anaconda3/lib  '
-                      '-arch @ARCH@',
- 'CONFIG_ARGS': "'--enable-shared' '--enable-ipv6' '--with-ensurepip=no' "
-                "'--prefix=/opt/anaconda1anaconda2anaconda3' "
-                "'CFLAGS=-I/opt/anaconda1anaconda2anaconda3/include  "
-                "-arch @ARCH@' "
-                "'LDFLAGS=-L/opt/anaconda1anaconda2anaconda3/lib  "
-                "-arch @ARCH@' "
+ 'CONFIGURE_CFLAGS': '-ftree-vectorize '
+                     '-fPIC -fPIE -fstack-protector-strong -O3 -pipe  '
+                     '-fdebug-prefix-map=${SRC_DIR}=/usr/local/src/conda/${PKG_NAME}-${PKG_VERSION} '
+                     '-fdebug-prefix-map=/opt/anaconda1anaconda2anaconda3=/usr/local/src/conda-prefix '
+                     '-flto -Wl,-export_dynamic',
+ 'CONFIGURE_CFLAGS_NODIST': '-std=c99 -Werror=implicit-function-declaration',
+ 'CONFIGURE_CPPFLAGS': '-D_FORTIFY_SOURCE=2 -mmacosx-version-min=11.0 '
+                       '-I/opt/anaconda1anaconda2anaconda3/include',
+ 'CONFIGURE_LDFLAGS': '-Wl,-pie -Wl,-headerpad_max_install_names '
+                      '-Wl,-dead_strip_dylibs '
+                      '-Wl,-rpath,/opt/anaconda1anaconda2anaconda3/lib '
+                      '-L/opt/anaconda1anaconda2anaconda3/lib '
+                      '-flto -Wl,-export_dynamic',
+ 'CONFIG_ARGS': "'--prefix=/opt/anaconda1anaconda2anaconda3' "
+                "'--build=arm64-apple-darwin20.0.0' "
+                "'--host=arm64-apple-darwin20.0.0' '--enable-ipv6' "
+                "'--with-ensurepip=no' '--with-computed-gotos' "
+                "'--with-system-ffi' '--enable-loadable-sqlite-extensions' "
+                "'--with-tcltk-includes=-I/opt/anaconda1anaconda2anaconda3/include' "
+                "'--with-tcltk-libs=-L/opt/anaconda1anaconda2anaconda3/lib "
+                "-ltcl@TCLTK_VER@ -ltk@TCLTK_VER@' '--enable-optimizations' '--with-lto' "
+                "'--disable-shared' 'build_alias=arm64-apple-darwin20.0.0' "
+                "'host_alias=arm64-apple-darwin20.0.0' "
+                "'CC=arm64-apple-darwin20.0.0-clang' 'CFLAGS="
+                '-ftree-vectorize -fPIC -fPIE '
+                '-fstack-protector-strong -O3 -pipe  '
+                '-fdebug-prefix-map=${SRC_DIR}=/usr/local/src/conda/${PKG_NAME}-${PKG_VERSION} '
+                '-fdebug-prefix-map=/opt/anaconda1anaconda2anaconda3=/usr/local/src/conda-prefix '
+                "-flto' 'LDFLAGS=-Wl,-pie -Wl,-headerpad_max_install_names "
+                '-Wl,-dead_strip_dylibs '
+                '-Wl,-rpath,/opt/anaconda1anaconda2anaconda3/lib '
+                "-L/opt/anaconda1anaconda2anaconda3/lib' "
+                "'CPPFLAGS=-D_FORTIFY_SOURCE=2 -mmacosx-version-min=11.0 "
+                "-I/opt/anaconda1anaconda2anaconda3/include' "
                 "'PKG_CONFIG_PATH=/opt/anaconda1anaconda2anaconda3/lib/pkgconfig'",
  'CONFINCLUDEDIR': '/opt/anaconda1anaconda2anaconda3/include',
  'CONFINCLUDEPY': '/opt/anaconda1anaconda2anaconda3/include/python@PYVER@@ABIFLAGS@',
- 'COREPYTHONPATH': ':',
- 'COVERAGE_INFO': '/opt/anaconda1anaconda2anaconda3/../work/Python-@PYVERFULL@/coverage.info',
- 'COVERAGE_REPORT': '/opt/anaconda1anaconda2anaconda3/../work/Python-@PYVERFULL@/lcov-report',
+ 'COREPYTHONPATH': '',
+ 'COVERAGE_INFO': '${SRC_DIR}/build-static/coverage.info',
+ 'COVERAGE_REPORT': '${SRC_DIR}/build-static/lcov-report',
  'COVERAGE_REPORT_OPTIONS': '--no-branch-coverage --title "CPython lcov '
                             'report"',
- 'CPPFLAGS': '-I. -I./Include',
- 'CXX': 'g++',
+ 'CPPFLAGS': '-IObjects -IInclude -IPython -I. '
+             '-I${SRC_DIR}/Include '
+             '-D_FORTIFY_SOURCE=2 -mmacosx-version-min=11.0 '
+             '-I/opt/anaconda1anaconda2anaconda3/include '
+             '-D_FORTIFY_SOURCE=2 -mmacosx-version-min=11.0 '
+             '-I/opt/anaconda1anaconda2anaconda3/include',
+ 'CXX': 'arm64-apple-darwin20.0.0-clang++',
  'DESTDIRS': '/opt/anaconda1anaconda2anaconda3 '
              '/opt/anaconda1anaconda2anaconda3/lib '
              '/opt/anaconda1anaconda2anaconda3/lib/python@PYVER@ '
@@ -66,10 +96,10 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'DESTSHARED': '/opt/anaconda1anaconda2anaconda3/lib/python@PYVER@/lib-dynload',
  'DFLAGS': '',
  'DIRMODE': 755,
- 'DIST': 'README ChangeLog configure configure.ac acconfig.h pyconfig.h.in '
+ 'DIST': 'README.rst ChangeLog configure configure.ac acconfig.h pyconfig.h.in '
          'Makefile.pre.in Include Lib Misc Ext-dummy',
  'DISTDIRS': 'Include Lib Misc Ext-dummy',
- 'DISTFILES': 'README ChangeLog configure configure.ac acconfig.h '
+ 'DISTFILES': 'README.rst ChangeLog configure configure.ac acconfig.h '
               'pyconfig.h.in Makefile.pre.in',
  'DLINCLDIR': '.',
  'DLLLIBRARY': '',
@@ -85,9 +115,7 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'ENSUREPIP': 'no',
  'EXE': '',
  'EXEMODE': 755,
- 'EXTRAMACHDEPPATH': '',
  'EXTRATESTOPTS': '',
- 'EXTRA_CFLAGS': '',
  'EXT_SUFFIX': '.cpython-@PYVERNODOTS@@ABIFLAGS@-darwin.so',
  'FILEMODE': 644,
  'FLOCK_NEEDS_LIBBSD': 0,
@@ -130,12 +158,21 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'HAVE_CONFSTR': 1,
  'HAVE_CONIO_H': 0,
  'HAVE_COPYSIGN': 1,
+ 'HAVE_CRYPT_H': 0,
  'HAVE_CTERMID': 1,
  'HAVE_CTERMID_R': 1,
+ 'HAVE_CURSES_FILTER': 1,
  'HAVE_CURSES_H': 1,
+ 'HAVE_CURSES_HAS_KEY': 1,
+ 'HAVE_CURSES_IMMEDOK': 1,
+ 'HAVE_CURSES_IS_PAD': 1,
  'HAVE_CURSES_IS_TERM_RESIZED': 1,
  'HAVE_CURSES_RESIZETERM': 1,
  'HAVE_CURSES_RESIZE_TERM': 1,
+ 'HAVE_CURSES_SYNCOK': 1,
+ 'HAVE_CURSES_TYPEAHEAD': 1,
+ 'HAVE_CURSES_USE_ENV': 1,
+ 'HAVE_CURSES_WCHGAT': 1,
  'HAVE_DECL_ISFINITE': 1,
  'HAVE_DECL_ISINF': 1,
  'HAVE_DECL_ISNAN': 1,
@@ -143,6 +180,7 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'HAVE_DECL_RTLD_GLOBAL': 1,
  'HAVE_DECL_RTLD_LAZY': 1,
  'HAVE_DECL_RTLD_LOCAL': 1,
+ 'HAVE_DECL_RTLD_MEMBER': 0,
  'HAVE_DECL_RTLD_NODELETE': 1,
  'HAVE_DECL_RTLD_NOLOAD': 1,
  'HAVE_DECL_RTLD_NOW': 1,
@@ -197,8 +235,8 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'HAVE_GAI_STRERROR': 1,
  'HAVE_GAMMA': 1,
  'HAVE_GCC_ASM_FOR_MC68881': 0,
- 'HAVE_GCC_ASM_FOR_X64': 1,
- 'HAVE_GCC_ASM_FOR_X87': 1,
+ 'HAVE_GCC_ASM_FOR_X64': 0,
+ 'HAVE_GCC_ASM_FOR_X87': 0,
  'HAVE_GCC_UINT128_T': 1,
  'HAVE_GETADDRINFO': 1,
  'HAVE_GETC_UNLOCKED': 1,
@@ -269,6 +307,7 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'HAVE_LINUX_NETLINK_H': 0,
  'HAVE_LINUX_RANDOM_H': 0,
  'HAVE_LINUX_TIPC_H': 0,
+ 'HAVE_LINUX_VM_SOCKETS_H': 0,
  'HAVE_LOCKF': 1,
  'HAVE_LOG1P': 1,
  'HAVE_LOG2': 1,
@@ -277,7 +316,6 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'HAVE_LUTIMES': 1,
  'HAVE_MAKEDEV': 1,
  'HAVE_MBRTOWC': 1,
- 'HAVE_MEMMOVE': 1,
  'HAVE_MEMORY_H': 1,
  'HAVE_MEMRCHR': 0,
  'HAVE_MKDIRAT': 0,
@@ -303,12 +341,15 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'HAVE_POLL_H': 1,
  'HAVE_POSIX_FADVISE': 0,
  'HAVE_POSIX_FALLOCATE': 0,
+ 'HAVE_POSIX_SPAWN': 1,
  'HAVE_PREAD': 1,
+ 'HAVE_PREADV': 0,
+ 'HAVE_PREADV2': 0,
  'HAVE_PRLIMIT': 0,
  'HAVE_PROCESS_H': 0,
  'HAVE_PROTOTYPES': 1,
- 'HAVE_PTHREAD_ATFORK': 1,
  'HAVE_PTHREAD_DESTRUCTOR': 0,
+ 'HAVE_PTHREAD_GETCPUCLOCKID': 0,
  'HAVE_PTHREAD_H': 1,
  'HAVE_PTHREAD_INIT': 0,
  'HAVE_PTHREAD_KILL': 1,
@@ -316,18 +357,19 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'HAVE_PTY_H': 0,
  'HAVE_PUTENV': 1,
  'HAVE_PWRITE': 1,
+ 'HAVE_PWRITEV': 0,
+ 'HAVE_PWRITEV2': 0,
  'HAVE_READLINK': 1,
  'HAVE_READLINKAT': 0,
  'HAVE_READV': 1,
  'HAVE_REALPATH': 1,
  'HAVE_RENAMEAT': 0,
  'HAVE_RL_APPEND_HISTORY': 1,
- 'HAVE_RL_CALLBACK': 1,
- 'HAVE_RL_CATCH_SIGNAL': 0,
+ 'HAVE_RL_CATCH_SIGNAL': 1,
  'HAVE_RL_COMPLETION_APPEND_CHARACTER': 1,
  'HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK': 1,
  'HAVE_RL_COMPLETION_MATCHES': 1,
- 'HAVE_RL_COMPLETION_SUPPRESS_APPEND': 0,
+ 'HAVE_RL_COMPLETION_SUPPRESS_APPEND': 1,
  'HAVE_RL_PRE_INPUT_HOOK': 1,
  'HAVE_RL_RESIZE_TERMINAL': 1,
  'HAVE_ROUND': 1,
@@ -337,7 +379,6 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'HAVE_SCHED_SETAFFINITY': 0,
  'HAVE_SCHED_SETPARAM': 0,
  'HAVE_SCHED_SETSCHEDULER': 0,
- 'HAVE_SELECT': 1,
  'HAVE_SEM_GETVALUE': 1,
  'HAVE_SEM_OPEN': 1,
  'HAVE_SEM_TIMEDWAIT': 0,
@@ -363,6 +404,7 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'HAVE_SHADOW_H': 0,
  'HAVE_SIGACTION': 1,
  'HAVE_SIGALTSTACK': 1,
+ 'HAVE_SIGINFO_T_SI_BAND': 1,
  'HAVE_SIGINTERRUPT': 1,
  'HAVE_SIGNAL_H': 1,
  'HAVE_SIGPENDING': 1,
@@ -429,6 +471,7 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'HAVE_SYS_STATVFS_H': 1,
  'HAVE_SYS_STAT_H': 1,
  'HAVE_SYS_SYSCALL_H': 1,
+ 'HAVE_SYS_SYSMACROS_H': 0,
  'HAVE_SYS_SYS_DOMAIN_H': 1,
  'HAVE_SYS_TERMIO_H': 0,
  'HAVE_SYS_TIMES_H': 1,
@@ -463,6 +506,10 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'HAVE_UTIMENSAT': 0,
  'HAVE_UTIMES': 1,
  'HAVE_UTIME_H': 1,
+ 'HAVE_UUID_CREATE': 0,
+ 'HAVE_UUID_GENERATE_TIME_SAFE': 0,
+ 'HAVE_UUID_H': 0,
+ 'HAVE_UUID_UUID_H': 1,
  'HAVE_WAIT3': 1,
  'HAVE_WAIT4': 1,
  'HAVE_WAITID': 1,
@@ -474,9 +521,10 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'HAVE_WMEMCMP': 1,
  'HAVE_WORKING_TZSET': 1,
  'HAVE_WRITEV': 1,
+ 'HAVE_X509_VERIFY_PARAM_SET1_HOST': 1,
  'HAVE_ZLIB_COPY': 1,
  'HAVE__GETPTY': 0,
- 'HOST_GNU_TYPE': '@ARCH@-apple-darwin13.4.0',
+ 'HOST_GNU_TYPE': 'arm64-apple-darwin20.0.0',
  'INCLDIRSTOMAKE': '/opt/anaconda1anaconda2anaconda3/include '
                    '/opt/anaconda1anaconda2anaconda3/include '
                    '/opt/anaconda1anaconda2anaconda3/include/python@PYVER@@ABIFLAGS@ '
@@ -488,27 +536,35 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'INSTALL_PROGRAM': '/usr/bin/install -c',
  'INSTALL_SCRIPT': '/usr/bin/install -c',
  'INSTALL_SHARED': '/usr/bin/install -c -m 555',
- 'INSTSONAME': 'libpython@PYVER@@ABIFLAGS@.dylib',
+ 'INSTSONAME': 'libpython@PYVER@@ABIFLAGS@.a',
  'IO_H': 'Modules/_io/_iomodule.h',
  'IO_OBJS': '\\',
- 'LDCXXSHARED': 'g++ -bundle -undefined dynamic_lookup',
- 'LDFLAGS': '-L/opt/anaconda1anaconda2anaconda3/lib  '
-            '-arch @ARCH@ '
-            '-L/opt/anaconda1anaconda2anaconda3/lib  '
-            '-arch @ARCH@',
+ 'LDCXXSHARED': 'arm64-apple-darwin20.0.0-clang++ -bundle -undefined '
+                'dynamic_lookup',
+ 'LDFLAGS': '-Wl,-pie -Wl,-headerpad_max_install_names -Wl,-dead_strip_dylibs '
+            '-Wl,-rpath,/opt/anaconda1anaconda2anaconda3/lib '
+            '-L/opt/anaconda1anaconda2anaconda3/lib '
+            '-flto -Wl,-export_dynamic -Wl,-pie '
+            '-Wl,-headerpad_max_install_names -Wl,-dead_strip_dylibs '
+            '-Wl,-rpath,/opt/anaconda1anaconda2anaconda3/lib '
+            '-L/opt/anaconda1anaconda2anaconda3/lib',
  'LDLAST': '',
- 'LDLIBRARY': 'libpython@PYVER@@ABIFLAGS@.dylib',
+ 'LDLIBRARY': 'libpython@PYVER@@ABIFLAGS@.a',
  'LDLIBRARYDIR': '',
- 'LDSHARED': 'gcc -bundle -undefined dynamic_lookup '
-             '-L/opt/anaconda1anaconda2anaconda3/lib  '
-             '-arch @ARCH@ '
-             '-L/opt/anaconda1anaconda2anaconda3/lib  '
-             '-arch @ARCH@',
+ 'LDSHARED': 'arm64-apple-darwin20.0.0-clang -bundle -undefined '
+             'dynamic_lookup -Wl,-pie -Wl,-headerpad_max_install_names '
+             '-Wl,-dead_strip_dylibs '
+             '-Wl,-rpath,/opt/anaconda1anaconda2anaconda3/lib '
+             '-L/opt/anaconda1anaconda2anaconda3/lib '
+             '-flto -Wl,-export_dynamic -Wl,-pie '
+             '-Wl,-headerpad_max_install_names -Wl,-dead_strip_dylibs '
+             '-Wl,-rpath,/opt/anaconda1anaconda2anaconda3/lib '
+             '-L/opt/anaconda1anaconda2anaconda3/lib',
  'LDVERSION': '@PYVER@@ABIFLAGS@',
  'LIBC': '',
  'LIBDEST': '/opt/anaconda1anaconda2anaconda3/lib/python@PYVER@',
  'LIBDIR': '/opt/anaconda1anaconda2anaconda3/lib',
- 'LIBFFI_INCLUDEDIR': '',
+ 'LIBFFI_INCLUDEDIR': '/opt/anaconda1anaconda2anaconda3/include',
  'LIBM': '',
  'LIBOBJDIR': 'Python/',
  'LIBOBJS': '',
@@ -519,51 +575,55 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'LIBRARY_OBJS_OMIT_FROZEN': '\\',
  'LIBS': '-ldl  -framework CoreFoundation',
  'LIBSUBDIRS': 'tkinter tkinter/test tkinter/test/test_tkinter \\',
- 'LINKCC': 'gcc',
+ 'LINKCC': 'arm64-apple-darwin20.0.0-clang',
  'LINKFORSHARED': '-Wl,-stack_size,1000000  -framework CoreFoundation',
  'LIPO_32BIT_FLAGS': '',
  'LLVM_PROF_ERR': 'no',
  'LLVM_PROF_FILE': 'LLVM_PROFILE_FILE="code-%p.profclangr"',
- 'LLVM_PROF_MERGER': '/usr/bin/xcrun llvm-profdata merge '
-                     '-output=code.profclangd *.profclangr',
+ 'LLVM_PROF_MERGER': '/opt/conda/conda-bld/python_1524823838194/_build_env/bin/llvm-profdata '
+                     'merge -output=code.profclangd *.profclangr',
  'LN': 'ln',
  'LOCALMODLIBS': '',
  'LOG1P_DROPS_ZERO_SIGN': 0,
  'MACHDEP': 'darwin',
- 'MACHDEPPATH': ':',
  'MACHDEP_OBJS': '',
  'MACHDESTLIB': '/opt/anaconda1anaconda2anaconda3/lib/python@PYVER@',
- 'MACOSX_DEPLOYMENT_TARGET': '@MACOSX_DEPLOYMENT_TARGET@',
- 'MAINCC': 'gcc',
+ 'MACOSX_DEPLOYMENT_TARGET': '11.0',
+ 'MAINCC': 'arm64-apple-darwin20.0.0-clang',
  'MAJOR_IN_MKDEV': 0,
  'MAJOR_IN_SYSMACROS': 0,
- 'MAKESETUP': './Modules/makesetup',
+ 'MAKESETUP': '${SRC_DIR}/Modules/makesetup',
  'MANDIR': '/opt/anaconda1anaconda2anaconda3/share/man',
- 'MKDIR_P': './install-sh -c -d',
+ 'MKDIR_P': '${SRC_DIR}/install-sh -c -d',
+ 'MODBUILT_NAMES': 'posix  errno  pwd  _sre  _codecs  _weakref  _functools  '
+                   '_operator  _collections  _abc  itertools  atexit  _signal  '
+                   '_stat  time  _thread  _locale  _io  zipimport  '
+                   'faulthandler  _tracemalloc  _symtable  xxsubtype',
+ 'MODDISABLED_NAMES': '',
  'MODLIBS': '',
- 'MODNAMES': '_thread posix errno pwd _sre _codecs _weakref _functools '
-             '_operator _collections itertools atexit _signal _stat time '
-             '_locale _io zipimport faulthandler _tracemalloc _symtable '
-             'xxsubtype',
- 'MODOBJS': 'Modules/_threadmodule.o  Modules/posixmodule.o  '
-            'Modules/errnomodule.o  Modules/pwdmodule.o  Modules/_sre.o  '
-            'Modules/_codecsmodule.o  Modules/_weakref.o  '
-            'Modules/_functoolsmodule.o  Modules/_operator.o  '
-            'Modules/_collectionsmodule.o  Modules/itertoolsmodule.o  '
+ 'MODOBJS': 'Modules/posixmodule.o  Modules/errnomodule.o  '
+            'Modules/pwdmodule.o  Modules/_sre.o  Modules/_codecsmodule.o  '
+            'Modules/_weakref.o  Modules/_functoolsmodule.o  '
+            'Modules/_operator.o  Modules/_collectionsmodule.o  '
+            'Modules/_abc.o  Modules/itertoolsmodule.o  '
             'Modules/atexitmodule.o  Modules/signalmodule.o  Modules/_stat.o  '
-            'Modules/timemodule.o  Modules/_localemodule.o  '
-            'Modules/_iomodule.o Modules/iobase.o Modules/fileio.o '
-            'Modules/bytesio.o Modules/bufferedio.o Modules/textio.o '
-            'Modules/stringio.o  Modules/zipimport.o  Modules/faulthandler.o  '
-            'Modules/_tracemalloc.o Modules/hashtable.o  '
-            'Modules/symtablemodule.o  Modules/xxsubtype.o',
+            'Modules/timemodule.o  Modules/_threadmodule.o  '
+            'Modules/_localemodule.o  Modules/_iomodule.o Modules/iobase.o '
+            'Modules/fileio.o Modules/bytesio.o Modules/bufferedio.o '
+            'Modules/textio.o Modules/stringio.o  Modules/zipimport.o  '
+            'Modules/faulthandler.o  Modules/_tracemalloc.o '
+            'Modules/hashtable.o  Modules/symtablemodule.o  '
+            'Modules/xxsubtype.o',
  'MODULE_OBJS': '\\',
  'MULTIARCH': 'darwin',
  'MULTIARCH_CPPFLAGS': '-DMULTIARCH=\\"darwin\\"',
  'MVWDELCH_IS_EXPRESSION': 1,
  'NO_AS_NEEDED': '',
  'OBJECT_OBJS': '\\',
- 'OPT': '-DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes',
+ 'OPENSSL_INCLUDES': '-I/opt/anaconda1anaconda2anaconda3/include',
+ 'OPENSSL_LDFLAGS': '-L/opt/anaconda1anaconda2anaconda3/lib',
+ 'OPENSSL_LIBS': '-lssl -lcrypto',
+ 'OPT': '-DNDEBUG -fwrapv -O3 -Wall -Wstrict-prototypes',
  'OTHER_LIBTOOL_OPT': '',
  'PACKAGE_BUGREPORT': 0,
  'PACKAGE_NAME': 0,
@@ -578,10 +638,10 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'PGOBJS': '\\',
  'PGO_PROF_GEN_FLAG': '-fprofile-instr-generate',
  'PGO_PROF_USE_FLAG': '-fprofile-instr-use=code.profclangd',
- 'PLATDIR': '',
  'POBJS': '\\',
  'POSIX_SEMAPHORES_NOT_ENABLED': 0,
  'PROFILE_TASK': '-m test.regrtest --pgo',
+ 'PTHREAD_KEY_T_IS_COMPATIBLE_WITH_INT': 0,
  'PTHREAD_SYSTEM_SCHED_SUPPORTED': 1,
  'PURIFY': '',
  'PY3LIBRARY': '',
@@ -591,45 +651,84 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'PYTHONFRAMEWORKDIR': 'no-framework',
  'PYTHONFRAMEWORKINSTALLDIR': '',
  'PYTHONFRAMEWORKPREFIX': '',
- 'PYTHONPATH': ':',
+ 'PYTHONPATH': '',
  'PYTHON_FOR_BUILD': './python.exe -E',
- 'PYTHON_FOR_REGEN': 'python',
+ 'PYTHON_FOR_REGEN': 'python3',
  'PYTHON_HEADERS': '\\',
  'PYTHON_OBJS': '\\',
- 'PY_CFLAGS': '-Wno-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG '
-              '-g -fwrapv -O3 -Wall -Wstrict-prototypes '
-              '-I/opt/anaconda1anaconda2anaconda3/include  '
-              '-arch @ARCH@ '
-              '-I/opt/anaconda1anaconda2anaconda3/include  '
-              '-arch @ARCH@',
- 'PY_CFLAGS_NODIST': '-std=c99 -Wextra -Wno-unused-result '
-                     '-Wno-unused-parameter -Wno-missing-field-initializers',
- 'PY_CORE_CFLAGS': '-Wno-unused-result -Wsign-compare -Wunreachable-code '
-                   '-DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes '
+ 'PY_BUILD_ENVIRON': '',
+ 'PY_CFLAGS': '-fno-strict-aliasing -Wsign-compare -Wunreachable-code -DNDEBUG '
+              '-fwrapv -O3 -Wall -Wstrict-prototypes '
+              '-ftree-vectorize -fPIC -fPIE '
+              '-fstack-protector-strong -O3 -pipe  '
+              '-fdebug-prefix-map=${SRC_DIR}=/usr/local/src/conda/${PKG_NAME}-${PKG_VERSION} '
+              '-fdebug-prefix-map=/opt/anaconda1anaconda2anaconda3=/usr/local/src/conda-prefix '
+              '-flto -flto -Wl,-export_dynamic '
+              '-ftree-vectorize -fPIC -fPIE -fstack-protector-strong '
+              '-O3 -pipe  '
+              '-fdebug-prefix-map=${SRC_DIR}=/usr/local/src/conda/${PKG_NAME}-${PKG_VERSION} '
+              '-fdebug-prefix-map=/opt/anaconda1anaconda2anaconda3=/usr/local/src/conda-prefix '
+              '-flto',
+ 'PY_CFLAGS_NODIST': '-std=c99 -Werror=implicit-function-declaration '
+                     '-ftree-vectorize '
+                     '-fPIC -fPIE -fstack-protector-strong -O3 -pipe  '
+                     '-fdebug-prefix-map=${SRC_DIR}=/usr/local/src/conda/${PKG_NAME}-${PKG_VERSION} '
+                     '-fdebug-prefix-map=/opt/anaconda1anaconda2anaconda3=/usr/local/src/conda-prefix '
+                     '-flto -fprofile-instr-use=code.profclangd',
+ 'PY_COERCE_C_LOCALE': 1,
+ 'PY_CORE_CFLAGS': '-fno-strict-aliasing -Wsign-compare -Wunreachable-code '
+                   '-DNDEBUG -fwrapv -O3 -Wall -Wstrict-prototypes '
+                   '-ftree-vectorize -fPIC '
+                   '-fPIE -fstack-protector-strong -O3 -pipe  '
+                   '-fdebug-prefix-map=${SRC_DIR}=/usr/local/src/conda/${PKG_NAME}-${PKG_VERSION} '
+                   '-fdebug-prefix-map=/opt/anaconda1anaconda2anaconda3=/usr/local/src/conda-prefix '
+                   '-flto -flto -Wl,-export_dynamic '
+                   '-ftree-vectorize -fPIC -fPIE '
+                   '-fstack-protector-strong -O3 -pipe  '
+                   '-fdebug-prefix-map=${SRC_DIR}=/usr/local/src/conda/${PKG_NAME}-${PKG_VERSION} '
+                   '-fdebug-prefix-map=/opt/anaconda1anaconda2anaconda3=/usr/local/src/conda-prefix '
+                   '-flto -std=c99 -Werror=implicit-function-declaration '
+                   '-ftree-vectorize -fPIC '
+                   '-fPIE -fstack-protector-strong -O3 -pipe  '
+                   '-fdebug-prefix-map=${SRC_DIR}=/usr/local/src/conda/${PKG_NAME}-${PKG_VERSION} '
+                   '-fdebug-prefix-map=/opt/anaconda1anaconda2anaconda3=/usr/local/src/conda-prefix '
+                   '-flto -fprofile-instr-use=code.profclangd -IObjects '
+                   '-IInclude -IPython -I. '
+                   '-I${SRC_DIR}/Include '
+                   '-D_FORTIFY_SOURCE=2 -mmacosx-version-min=11.0 '
+                   '-I/opt/anaconda1anaconda2anaconda3/include '
+                   '-D_FORTIFY_SOURCE=2 -mmacosx-version-min=11.0 '
                    '-I/opt/anaconda1anaconda2anaconda3/include  '
-                   '-arch @ARCH@ '
-                   '-I/opt/anaconda1anaconda2anaconda3/include  '
-                   '-arch @ARCH@ -std=c99 -Wextra -Wno-unused-result '
-                   '-Wno-unused-parameter -Wno-missing-field-initializers -I. '
-                   '-I./Include  -DPy_BUILD_CORE',
- 'PY_CPPFLAGS': '-I. -I./Include',
+                   '-DPy_BUILD_CORE',
+ 'PY_CPPFLAGS': '-IObjects -IInclude -IPython -I. '
+                '-I${SRC_DIR}/Include '
+                '-D_FORTIFY_SOURCE=2 -mmacosx-version-min=11.0 '
+                '-I/opt/anaconda1anaconda2anaconda3/include '
+                '-D_FORTIFY_SOURCE=2 -mmacosx-version-min=11.0 '
+                '-I/opt/anaconda1anaconda2anaconda3/include',
  'PY_FORMAT_SIZE_T': '"z"',
- 'PY_LDFLAGS': '-L/opt/anaconda1anaconda2anaconda3/lib  '
-               '-arch @ARCH@ '
-               '-L/opt/anaconda1anaconda2anaconda3/lib  '
-               '-arch @ARCH@',
+ 'PY_LDFLAGS': '-Wl,-pie -Wl,-headerpad_max_install_names '
+               '-Wl,-dead_strip_dylibs '
+               '-Wl,-rpath,/opt/anaconda1anaconda2anaconda3/lib '
+               '-L/opt/anaconda1anaconda2anaconda3/lib '
+               '-flto -Wl,-export_dynamic -Wl,-pie '
+               '-Wl,-headerpad_max_install_names -Wl,-dead_strip_dylibs '
+               '-Wl,-rpath,/opt/anaconda1anaconda2anaconda3/lib '
+               '-L/opt/anaconda1anaconda2anaconda3/lib',
+ 'PY_SSL_DEFAULT_CIPHERS': 1,
+ 'PY_SSL_DEFAULT_CIPHER_STRING': 0,
+ 'PY_WARN_ON_C_LOCALE': 1,
  'Py_DEBUG': 0,
  'Py_ENABLE_SHARED': 0,
  'Py_HASH_ALGORITHM': 0,
  'QUICKTESTOPTS': '-x test_subprocess test_io test_lib2to3 \\',
- 'RANLIB': 'ranlib',
  'READELF': ':',
  'RESSRCDIR': 'Mac/Resources/framework',
  'RETSIGTYPE': 'void',
- 'RUNSHARED': 'DYLD_LIBRARY_PATH=/opt/anaconda1anaconda2anaconda3/../work/Python-@PYVERFULL@',
+ 'RUNSHARED': '',
  'SCRIPTDIR': '/opt/anaconda1anaconda2anaconda3/lib',
  'SETPGRP_HAVE_ARG': 0,
- 'SGI_ABI': '',
+ 'SGI_ABI': '@SGI_ABI@',
  'SHELL': '/bin/sh',
  'SHLIBS': '-ldl  -framework CoreFoundation',
  'SHLIB_SUFFIX': '.so',
@@ -644,6 +743,7 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'SIZEOF_LONG_LONG': 8,
  'SIZEOF_OFF_T': 8,
  'SIZEOF_PID_T': 4,
+ 'SIZEOF_PTHREAD_KEY_T': 8,
  'SIZEOF_PTHREAD_T': 8,
  'SIZEOF_SHORT': 2,
  'SIZEOF_SIZE_T': 8,
@@ -653,8 +753,8 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'SIZEOF_WCHAR_T': 4,
  'SIZEOF__BOOL': 1,
  'SOABI': 'cpython-@PYVERNODOTS@@ABIFLAGS@-darwin',
- 'SRCDIRS': 'Parser Grammar Objects Python Modules Mac Programs',
- 'SRC_GDB_HOOKS': './Tools/gdb/libpython.py',
+ 'SRCDIRS': 'Parser Objects Python Modules Programs',
+ 'SRC_GDB_HOOKS': '${SRC_DIR}/Tools/gdb/libpython.py',
  'STDC_HEADERS': 1,
  'STRICT_SYSV_CURSES': "/* Don't use ncurses extensions */",
  'STRIPFLAG': '-s',
@@ -663,40 +763,39 @@ build_time_vars = {'ABIFLAGS': '@ABIFLAGS@',
  'SYSLIBS': '',
  'SYS_SELECT_WITH_SYS_TIME': 1,
  'TANH_PRESERVES_ZERO_SIGN': 1,
- 'TCLTK_INCLUDES': '',
- 'TCLTK_LIBS': '',
+ 'TCLTK_INCLUDES': '-I/opt/anaconda1anaconda2anaconda3/include',
+ 'TCLTK_LIBS': '-L/opt/anaconda1anaconda2anaconda3/lib '
+               '-ltcl@TCLTK_VER@ -ltk@TCLTK_VER@',
  'TESTOPTS': '',
  'TESTPATH': '',
- 'TESTPYTHON': 'DYLD_LIBRARY_PATH=/opt/anaconda1anaconda2anaconda3/../work/Python-@PYVERFULL@ '
-               './python.exe',
+ 'TESTPYTHON': './python.exe',
  'TESTPYTHONOPTS': '',
- 'TESTRUNNER': 'DYLD_LIBRARY_PATH=/opt/anaconda1anaconda2anaconda3/../work/Python-@PYVERFULL@ '
-               './python.exe ./Tools/scripts/run_tests.py',
+ 'TESTRUNNER': './python.exe '
+               '${SRC_DIR}/Tools/scripts/run_tests.py',
  'TESTTIMEOUT': 1200,
- 'THREADOBJ': 'Python/thread.o',
  'TIMEMODULE_LIB': 0,
  'TIME_WITH_SYS_TIME': 1,
  'TM_IN_SYS_TIME': 0,
  'UNICODE_DEPS': '\\',
  'UNIVERSALSDK': '',
- 'USE_COMPUTED_GOTOS': 0,
- 'USE_INLINE': 1,
+ 'UPDATE_FILE': 'python3 '
+                '${SRC_DIR}/Tools/scripts/update_file.py',
+ 'USE_COMPUTED_GOTOS': 1,
  'VERSION': '@PYVER@',
- 'WANT_SIGFPE_HANDLER': 0,
- 'WINDOW_HAS_FLAGS': 0,
+ 'VPATH': '${SRC_DIR}',
+ 'WINDOW_HAS_FLAGS': 1,
  'WITH_DOC_STRINGS': 1,
  'WITH_DTRACE': 0,
  'WITH_DYLD': 1,
  'WITH_LIBINTL': 0,
  'WITH_NEXT_FRAMEWORK': 0,
  'WITH_PYMALLOC': 1,
- 'WITH_THREAD': 1,
  'WITH_VALGRIND': 0,
  'X87_DOUBLE_ROUNDING': 0,
  'XMLLIBSUBDIRS': 'xml xml/dom xml/etree xml/parsers xml/sax',
- 'abs_builddir': '/opt/anaconda1anaconda2anaconda3/../work/Python-@PYVERFULL@',
- 'abs_srcdir': '/opt/anaconda1anaconda2anaconda3/../work/Python-@PYVERFULL@',
+ 'abs_builddir': '${SRC_DIR}/build-static',
+ 'abs_srcdir': '${SRC_DIR}',
  'datarootdir': '/opt/anaconda1anaconda2anaconda3/share',
  'exec_prefix': '/opt/anaconda1anaconda2anaconda3',
  'prefix': '/opt/anaconda1anaconda2anaconda3',
- 'srcdir': '.'}
+ 'srcdir': '${SRC_DIR}'}
