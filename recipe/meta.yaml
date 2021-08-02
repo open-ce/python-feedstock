@@ -138,8 +138,8 @@ outputs:
         - patch  # [not win]
         - m2-patch  # [win]
         - posix  # [win]
-        - ld_impl_{{ target_platform }} >=2.34  # [linux]
-        - binutils_impl_{{ target_platform }} >=2.34  # [linux]
+        - ld_impl_{{ target_platform }}        # [linux]
+        - binutils_impl_{{ target_platform }}  # [linux]
         - libtool  # [unix]
       host:
         - bzip2  # [not win]
@@ -151,9 +151,9 @@ outputs:
         - tk  # [not win]
         - ncurses  # [linux]
         - libffi  # [not win]
-        - ld_impl_{{ target_platform }} >=2.34  # [linux]
+        - ld_impl_{{ target_platform }}  # [linux]
       run:
-        - ld_impl_{{ target_platform }} >=2.34  # [linux]
+        - ld_impl_{{ target_platform }}  # [linux]
     test:
       requires:
         - ripgrep
