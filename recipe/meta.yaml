@@ -122,6 +122,10 @@ outputs:
     # {% else %}
     #      - CONDA_FORGE=no
     # {% endif %}
+      missing_dso_whitelist:
+        - '**/MSVCR71.dll'   # [win]
+        - '**/MSVCR80.dll'   # [win]
+        - '**libcrypt.so.1'  # [aarch64]
     script: build_base.sh  # [unix]
     script: build_base.bat  # [win]
     requirements:
