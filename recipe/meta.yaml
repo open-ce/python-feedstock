@@ -153,7 +153,7 @@ outputs:
         - openssl
         - readline  # [not win]
         - tk  # [not win]
-        - ncurses  # [linux]
+        - ncurses  # [unix]
         - libffi  # [not win]
         - ld_impl_{{ target_platform }}  # [linux]
       run:
