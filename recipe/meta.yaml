@@ -112,7 +112,7 @@ outputs:
       # skip_compile_pyc:
       #  - '*.py'            # [osx and arm64]
       # Would like to be able to append to the calculated build string here, ping @msarahan, is this possible?
-      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}{{ debug }}_cpython
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}{{ debug }}
       run_exports:
         noarch:
           - python
@@ -229,7 +229,7 @@ outputs:
     build:
       activate_in_script: True
       # Would like to be able to append to the calculated build string here, ping @msarahan, is this possible?
-      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}{{ debug }}_cpython
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}{{ debug }}
     script: build_static.sh  # [unix]
     script: build_static.bat  # [win]
     requirements:

@@ -13,7 +13,7 @@ VERABI=${VER}${DBG}
 
 case "${target_platform}" in
   linux-64)
-    OLD_HOSt=$(echo ${HOST} | sed -e 's/-conda_cos6//g')
+    OLD_HOST=$(echo ${HOST} | sed -e 's/-conda_cos6//g')
     OLD_HOST=$(echo ${OLD_HOST} | sed -e 's/-conda_cos7//g')
     OLD_HOST=$(echo ${OLD_HOST} | sed -e 's/-conda//g')
     ;;
