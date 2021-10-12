@@ -19,6 +19,7 @@ if "%ARCH%"=="64" (
 :: mixes now old and new version ... so copy lib that everything is satisfied ...
 copy externals\libffi\%BUILD_PATH%\libffi-8.lib externals\libffi\%BUILD_PATH%\libffi-7.lib
 if errorlevel 1 exit 1
+copy externals\libffi\%BUILD_PATH%\libffi-8.dll externals\libffi\%BUILD_PATH%\libffi-7.dll
 
 set "OPENSSL_DIR=%LIBRARY_PREFIX%"
 set "SQLITE3_DIR=%LIBRARY_PREFIX%"
