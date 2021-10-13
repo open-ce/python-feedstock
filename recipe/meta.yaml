@@ -1,4 +1,4 @@
-{% set version = "3.8.11" %}
+{% set version = "3.8.12" %}
 {% set linkage_nature = os.environ.get('PY_INTERP_LINKAGE_NATURE', '') %}
 {% set debug = os.environ.get('PY_INTERP_DEBUG', '') %}
 {% if linkage_nature != '' %}
@@ -16,7 +16,7 @@ package:
 source:
   - url: https://www.python.org/ftp/python/{{ version }}/Python-{{ version }}.tar.xz
     # md5 from: https://www.python.org/downloads/release/python-388/
-    md5: 5840ba601128f48fee4e7c98fbdac65d
+    md5: 9dd8f82e586b776383c82e27923f8795
     patches:
       - patches/0001-Fix-off-by-one-error-in-_winapi_WaitForMultipleObjec.patch
 {% if 'conda-forge' not in channel_targets %}
@@ -77,13 +77,19 @@ source:
     sha256: de3c87b26a80e789986d8e6950c6304175d3829afe9c6c7211eb7257266ab0ac         # [win]
   - url: https://github.com/python/cpython-bin-deps/archive/libffi.zip               # [win]
     folder: externals/libffi                                                         # [win]
-    sha256: 4872e72e188a5aa1124db0c3b163a4163e84ead359a514d86dd7c6fa2d2ff02a         # [win]
+    sha256: 346978268569d63cecf668e031d56908019b4098cdad18729d1d5af495d34641         # [win]
 
 build:
-  number: 1
+  number: 0
   script_env:
     - PY_INTERP_LINKAGE_NATURE
     - PY_INTERP_DEBUG
+
+requirements:
+  build:
+    - git
+    - patch  # [not win]
+    - m2-patch  # [win]
 
 outputs:
   - name: python
@@ -125,7 +131,14 @@ outputs:
       missing_dso_whitelist:
         - '**/MSVCR71.dll'   # [win]
         - '**/MSVCR80.dll'   # [win]
-        - '**libcrypt.so.1'  # [aarch64]
+        - '$RPATH/libcrypt.so.1'  # [linux]
+        - '$RPATH/libpthread.so.0'  # [linux]
+        - '$RPATH/libc.so.6'  # [linux]
+        - '$RPATH/libdl.so.2'  # [linux]
+        - '$RPATH/libutil.so.1'  # [linux]
+        - '$RPATH/libm.so.6'  # [linux]
+        - '$RPATH/librt.so.1'  # [linux]
+        - '$RPATH/libnsl.so.1'  # [linux]
     script: build_base.sh  # [unix]
     script: build_base.bat  # [win]
     requirements:
@@ -139,8 +152,6 @@ outputs:
         - pkg-config  # [not win]
         # configure script looks for llvm-ar for lto
         - llvm-tools  # [osx]
-        - patch  # [not win]
-        - m2-patch  # [win]
         - posix  # [win]
         - ld_impl_{{ target_platform }}        # [linux]
         - binutils_impl_{{ target_platform }}  # [linux]
