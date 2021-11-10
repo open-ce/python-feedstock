@@ -179,6 +179,7 @@ outputs:
         # configure script looks for llvm-ar for lto
         - llvm-tools  # [osx]
         - ld_impl_{{ target_platform }}  # [linux]
+        - binutils  # [aarch64 or s390x]
 {% if 'conda-forge' in channel_targets %}
         - binutils_impl_{{ target_platform }}  # [linux]
 {% endif %}
