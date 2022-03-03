@@ -451,7 +451,10 @@ pushd "${PREFIX}"/lib/python${VER}
   sed -i.bak "s@zoneinfo'@zoneinfo:$PREFIX/share/tzinfo'@g" sysconfigfile
   # Remove osx sysroot as it depends on the build machine
   sed -i.bak "s@-isysroot @@g" sysconfigfile
-  sed -i.bak "s@$CONDA_BUILD_SYSROOT @@g" sysconfigfile
+  # make sure $CONDA_BUILD_SYSROOT is not empty ...
+  if [[ ${HOST} =~ .*darwin.* ]] && [[ -n ${CONDA_BUILD_SYSROOT} ]]; then 
+    sed -i.bak "s@$CONDA_BUILD_SYSROOT @@g" sysconfigfile
+  fi
   # Remove unfilled config option
   sed -i.bak "s/@SGI_ABI@//g" sysconfigfile
   sed -i.bak "s@$BUILD_PREFIX/bin/${HOST}-llvm-ar@${HOST}-ar@g" sysconfigfile
