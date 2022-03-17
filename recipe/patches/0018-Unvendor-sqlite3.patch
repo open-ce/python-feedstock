@@ -12,8 +12,8 @@ Subject: [PATCH 18/31] Unvendor sqlite3
 
 diff --git a/PCbuild/_sqlite3.vcxproj b/PCbuild/_sqlite3.vcxproj
 index 7e0062692b..3e7b2262e8 100644
---- a/PCbuild/_sqlite3.vcxproj
-+++ b/PCbuild/_sqlite3.vcxproj
+--- a/PCbuild/_sqlite3.vcxproj	2022-03-17 15:50:38.330149283 +0300
++++ b/PCbuild/_sqlite3.vcxproj	2022-03-17 15:51:04.246997457 +0300
 @@ -93,9 +93,12 @@
    </PropertyGroup>
    <ItemDefinitionGroup>
@@ -41,9 +41,9 @@ index 7e0062692b..3e7b2262e8 100644
    <ImportGroup Label="ExtensionTargets">
 diff --git a/PCbuild/pcbuild.sln b/PCbuild/pcbuild.sln
 index 6dc0139bc4..2f58d8ab24 100644
---- a/PCbuild/pcbuild.sln
-+++ b/PCbuild/pcbuild.sln
-@@ -57,8 +57,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bdist_wininst", "..\PC\bdis
+--- a/PCbuild/pcbuild.sln	2022-03-17 15:50:38.330149283 +0300
++++ b/PCbuild/pcbuild.sln	2022-03-17 15:51:04.250997588 +0300
+@@ -57,8 +57,6 @@
  EndProject
  Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_hashlib", "_hashlib.vcxproj", "{447F05A8-F581-4CAC-A466-5AC7936E207E}"
  EndProject
@@ -54,21 +54,21 @@ index 6dc0139bc4..2f58d8ab24 100644
  Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python3dll", "python3dll.vcxproj", "{885D4898-D08D-4091-9C40-C700CFE3FC5A}"
 diff --git a/PCbuild/python.props b/PCbuild/python.props
 index 9c2838b162..2360417748 100644
---- a/PCbuild/python.props
-+++ b/PCbuild/python.props
+--- a/PCbuild/python.props	2022-03-17 15:50:25.901736238 +0300
++++ b/PCbuild/python.props	2022-03-17 15:52:08.677034013 +0300
 @@ -56,7 +56,7 @@
      <ExternalsDir>$(EXTERNALS_DIR)</ExternalsDir>
      <ExternalsDir Condition="$(ExternalsDir) == ''">$([System.IO.Path]::GetFullPath(`$(PySourcePath)externals`))</ExternalsDir>
      <ExternalsDir Condition="!HasTrailingSlash($(ExternalsDir))">$(ExternalsDir)\</ExternalsDir>
 -    <sqlite3Dir>$(ExternalsDir)sqlite-3.35.5.0\</sqlite3Dir>
 +    <sqlite3Dir>$(SQLITE3_DIR)\</sqlite3Dir>
-     <bz2Dir>$(ExternalsDir)bzip2-1.0.6\</bz2Dir>
+     <bz2Dir>$(ExternalsDir)bzip2-1.0.8\</bz2Dir>
      <lzmaDir>$(ExternalsDir)xz-5.2.2\</lzmaDir>
-     <libffiDir>$(ExternalsDir)libffi\</libffiDir>
+     <libffiDir>$(ExternalsDir)libffi-3.3.0\</libffiDir>
 diff --git a/PCbuild/sqlite3.vcxproj b/PCbuild/sqlite3.vcxproj
 index 90b4d3108f..6deeafd422 100644
---- a/PCbuild/sqlite3.vcxproj
-+++ b/PCbuild/sqlite3.vcxproj
+--- a/PCbuild/sqlite3.vcxproj	2022-03-17 15:50:38.330149283 +0300
++++ b/PCbuild/sqlite3.vcxproj	2022-03-17 15:51:04.250997588 +0300
 @@ -88,12 +88,12 @@
    <PropertyGroup Label="UserMacros" />
    <PropertyGroup>
@@ -88,6 +88,3 @@ index 90b4d3108f..6deeafd422 100644
    </PropertyGroup>
    <ItemDefinitionGroup>
      <ClCompile>
--- 
-2.28.0
-

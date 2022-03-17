@@ -10,9 +10,9 @@ Subject: [PATCH 09/31] Darwin: Look in ${sysroot}/usr/{lib,include} if sysroot
 
 diff --git a/setup.py b/setup.py
 index 6340669fff..021d5d142e 100644
---- a/setup.py
-+++ b/setup.py
-@@ -675,7 +675,13 @@ class PyBuildExt(build_ext):
+--- a/setup.py	2022-03-17 15:13:02.354882279 +0300
++++ b/setup.py	2022-03-17 15:13:15.622886420 +0300
+@@ -660,7 +660,13 @@
          # lib_dirs and inc_dirs are used to search for files;
          # if a file is found in one of those directories, it can
          # be assumed that no additional -I,-L directives are needed.
@@ -27,6 +27,3 @@ index 6340669fff..021d5d142e 100644
              self.lib_dirs = self.compiler.library_dirs + system_lib_dirs
              self.inc_dirs = self.compiler.include_dirs + system_include_dirs
          else:
--- 
-2.28.0
-
