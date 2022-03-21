@@ -12,9 +12,9 @@ Subject: [PATCH 33/33] Add Anaconda Distribution version logic
 
 diff --git a/Include/pylifecycle.h b/Include/pylifecycle.h
 index c5368b3c5e..06cb88ee9c 100644
---- a/Include/pylifecycle.h
-+++ b/Include/pylifecycle.h
-@@ -52,6 +52,7 @@ int _Py_CheckPython3(void);
+--- a/Include/pylifecycle.h	2022-03-21 11:03:42.132273076 +0300
++++ b/Include/pylifecycle.h	2022-03-21 11:03:49.096407850 +0300
+@@ -54,6 +54,7 @@
  #endif
  
  /* In their own files */
@@ -24,9 +24,9 @@ index c5368b3c5e..06cb88ee9c 100644
  PyAPI_FUNC(const char *) Py_GetCopyright(void);
 diff --git a/Lib/platform.py b/Lib/platform.py
 index 408587d36c..a32fefcebb 100755
---- a/Lib/platform.py
-+++ b/Lib/platform.py
-@@ -963,6 +963,7 @@ def processor():
+--- a/Lib/platform.py	2022-03-21 11:03:42.132273076 +0300
++++ b/Lib/platform.py	2022-03-21 11:03:49.096407850 +0300
+@@ -978,6 +978,7 @@
  
  _sys_version_parser = re.compile(
      r'([\w.+]+)\s*'  # "version<space>"
@@ -36,9 +36,9 @@ index 408587d36c..a32fefcebb 100755
      r'(?:,\s*([\w :]*))?)?\)\s*'  # ", buildtime)<space>"
 diff --git a/Modules/main.c b/Modules/main.c
 index 2b6b9855c4..5c4fcef424 100644
---- a/Modules/main.c
-+++ b/Modules/main.c
-@@ -198,7 +198,7 @@ pymain_header(const PyConfig *config)
+--- a/Modules/main.c	2022-03-21 11:03:42.132273076 +0300
++++ b/Modules/main.c	2022-03-21 11:03:49.096407850 +0300
+@@ -198,7 +198,7 @@
          return;
      }
  
@@ -49,8 +49,8 @@ index 2b6b9855c4..5c4fcef424 100644
      }
 diff --git a/Python/getversion.c b/Python/getversion.c
 index c32b6f9d60..b5dfffb606 100644
---- a/Python/getversion.c
-+++ b/Python/getversion.c
+--- a/Python/getversion.c	2022-03-21 11:03:42.132273076 +0300
++++ b/Python/getversion.c	2022-03-21 11:03:49.100407927 +0300
 @@ -2,9 +2,56 @@
  /* Return the full version string. */
  
@@ -108,6 +108,3 @@ index c32b6f9d60..b5dfffb606 100644
  const char *
  Py_GetVersion(void)
  {
--- 
-2.24.3 (Apple Git-128)
-

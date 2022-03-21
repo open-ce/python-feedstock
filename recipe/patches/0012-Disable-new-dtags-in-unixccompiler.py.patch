@@ -22,9 +22,9 @@ itself, MSVC).
 
 diff --git a/Lib/distutils/tests/test_unixccompiler.py b/Lib/distutils/tests/test_unixccompiler.py
 index eef702cf01..2d8d61df03 100644
---- a/Lib/distutils/tests/test_unixccompiler.py
-+++ b/Lib/distutils/tests/test_unixccompiler.py
-@@ -59,7 +59,7 @@ class UnixCCompilerTestCase(unittest.TestCase):
+--- a/Lib/distutils/tests/test_unixccompiler.py	2022-03-21 10:38:37.004992406 +0300
++++ b/Lib/distutils/tests/test_unixccompiler.py	2022-03-21 10:38:47.421225509 +0300
+@@ -59,7 +59,7 @@
              elif v == 'GNULD':
                  return 'yes'
          sysconfig.get_config_var = gcv
@@ -33,7 +33,7 @@ index eef702cf01..2d8d61df03 100644
  
          # GCC non-GNULD
          sys.platform = 'bar'
-@@ -69,7 +69,7 @@ class UnixCCompilerTestCase(unittest.TestCase):
+@@ -69,7 +69,7 @@
              elif v == 'GNULD':
                  return 'no'
          sysconfig.get_config_var = gcv
@@ -44,9 +44,9 @@ index eef702cf01..2d8d61df03 100644
          # see #7617
 diff --git a/Lib/distutils/unixccompiler.py b/Lib/distutils/unixccompiler.py
 index 84a421767d..12a9f777fe 100644
---- a/Lib/distutils/unixccompiler.py
-+++ b/Lib/distutils/unixccompiler.py
-@@ -248,12 +248,12 @@ class UnixCCompiler(CCompiler):
+--- a/Lib/distutils/unixccompiler.py	2022-03-21 10:38:37.004992406 +0300
++++ b/Lib/distutils/unixccompiler.py	2022-03-21 10:38:47.421225509 +0300
+@@ -250,12 +250,12 @@
                  # use it anyway.  Since distutils has always passed in
                  # -Wl whenever gcc was used in the past it is probably
                  # safest to keep doing so.
@@ -62,6 +62,3 @@ index 84a421767d..12a9f777fe 100644
              else:
                  # No idea how --enable-new-dtags would be passed on to
                  # ld if this system was using GNU ld.  Don't know if a
--- 
-2.23.0
-

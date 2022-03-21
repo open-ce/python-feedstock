@@ -14,9 +14,9 @@ Also, on Anaconda Distribution, python.exe lives in sys.prefix.
 
 diff --git a/Lib/venv/__init__.py b/Lib/venv/__init__.py
 index 8009deb3ea..e4fd6db818 100644
---- a/Lib/venv/__init__.py
-+++ b/Lib/venv/__init__.py
-@@ -220,7 +220,12 @@ class EnvBuilder:
+--- a/Lib/venv/__init__.py	2022-03-21 10:56:11.539903117 +0300
++++ b/Lib/venv/__init__.py	2022-03-21 10:56:19.880049661 +0300
+@@ -234,7 +234,12 @@
                      basename = 'venvwlauncher'
                  src = os.path.join(os.path.dirname(src), basename + ext)
              else:
@@ -30,7 +30,7 @@ index 8009deb3ea..e4fd6db818 100644
              if not os.path.exists(src):
                  if not bad_src:
                      logger.warning('Unable to copy %r', src)
-@@ -238,9 +243,9 @@ class EnvBuilder:
+@@ -252,9 +257,9 @@
          binpath = context.bin_path
          path = context.env_exe
          copier = self.symlink_or_copy
@@ -41,6 +41,3 @@ index 8009deb3ea..e4fd6db818 100644
              if not os.path.islink(path):
                  os.chmod(path, 0o755)
              for suffix in ('python', 'python3', f'python3.{sys.version_info[1]}'):
--- 
-2.23.0
-

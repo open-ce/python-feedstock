@@ -15,9 +15,9 @@ manually).
 
 diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
 index 37feae5df7..f56ebe6c3a 100644
---- a/Lib/distutils/sysconfig.py
-+++ b/Lib/distutils/sysconfig.py
-@@ -439,11 +439,13 @@ def _init_posix():
+--- a/Lib/distutils/sysconfig.py	2022-03-21 10:36:06.101636961 +0300
++++ b/Lib/distutils/sysconfig.py	2022-03-21 10:36:17.505888822 +0300
+@@ -439,11 +439,13 @@
      """Initialize the module as appropriate for POSIX systems."""
      # _sysconfigdata is generated at build time, see the sysconfig module
      name = os.environ.get('_PYTHON_SYSCONFIGDATA_NAME',
@@ -38,9 +38,9 @@ index 37feae5df7..f56ebe6c3a 100644
      global _config_vars
 diff --git a/Lib/sysconfig.py b/Lib/sysconfig.py
 index bf04ac541e..3c971b82c2 100644
---- a/Lib/sysconfig.py
-+++ b/Lib/sysconfig.py
-@@ -341,13 +341,21 @@ def get_makefile_filename():
+--- a/Lib/sysconfig.py	2022-03-21 10:36:06.101636961 +0300
++++ b/Lib/sysconfig.py	2022-03-21 10:36:17.505888822 +0300
+@@ -351,13 +351,21 @@
      return os.path.join(get_path('stdlib'), config_dir_name, 'Makefile')
  
  
@@ -69,7 +69,7 @@ index bf04ac541e..3c971b82c2 100644
  
  
  def _generate_posix_vars():
-@@ -416,7 +424,7 @@ def _generate_posix_vars():
+@@ -426,7 +434,7 @@
  def _init_posix(vars):
      """Initialize the module as appropriate for POSIX systems."""
      # _sysconfigdata is generated at build time, see _generate_posix_vars()
@@ -78,6 +78,3 @@ index bf04ac541e..3c971b82c2 100644
      _temp = __import__(name, globals(), locals(), ['build_time_vars'], 0)
      build_time_vars = _temp.build_time_vars
      vars.update(build_time_vars)
--- 
-2.23.0
-
