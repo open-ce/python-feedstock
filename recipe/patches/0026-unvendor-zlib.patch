@@ -10,8 +10,8 @@ Subject: [PATCH] unvendor zlib
 
 diff --git a/PCbuild/pythoncore.vcxproj b/PCbuild/pythoncore.vcxproj
 index 8da161b446..8f9852511a 100644
---- a/PCbuild/pythoncore.vcxproj
-+++ b/PCbuild/pythoncore.vcxproj
+--- a/PCbuild/pythoncore.vcxproj	2022-03-21 14:10:57.381547240 +0300
++++ b/PCbuild/pythoncore.vcxproj	2022-03-21 14:12:14.642806567 +0300
 @@ -82,7 +82,7 @@
    <PropertyGroup>
      <KillPython>true</KillPython>
@@ -31,7 +31,7 @@ index 8da161b446..8f9852511a 100644
        <PreprocessorDefinitions Condition="$(IncludeExternals)">_Py_HAVE_ZLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
      </ClCompile>
      <Link>
--      <AdditionalDependencies>version.lib;shlwapi.lib;ws2_32.lib;pathcch.lib;%(AdditionalDependencies)</AdditionalDependencies>
+-      <AdditionalDependencies>version.lib;ws2_32.lib;pathcch.lib;%(AdditionalDependencies)</AdditionalDependencies>
 +      <AdditionalDependencies>version.lib;shlwapi.lib;ws2_32.lib;pathcch.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
 +      <AdditionalLibraryDirectories>$(condaDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
      </Link>
@@ -77,8 +77,8 @@ index 8da161b446..8f9852511a 100644
      <ClCompile Include="..\PC\dl_nt.c" />
 diff --git a/PCbuild/pythoncore.vcxproj.filters b/PCbuild/pythoncore.vcxproj.filters
 index 55b57ef29d..2fc1a57161 100644
---- a/PCbuild/pythoncore.vcxproj.filters
-+++ b/PCbuild/pythoncore.vcxproj.filters
+--- a/PCbuild/pythoncore.vcxproj.filters	2022-03-21 14:10:57.381547240 +0300
++++ b/PCbuild/pythoncore.vcxproj.filters	2022-03-21 14:11:06.061689122 +0300
 @@ -606,39 +606,6 @@
      <ClInclude Include="..\Include\internal\pycore_unionobject.h">
        <Filter>Include\internal</Filter>
@@ -159,6 +159,3 @@ index 55b57ef29d..2fc1a57161 100644
      <ClCompile Include="..\Python\hamt.c">
        <Filter>Python</Filter>
      </ClCompile>
--- 
-2.30.2
-

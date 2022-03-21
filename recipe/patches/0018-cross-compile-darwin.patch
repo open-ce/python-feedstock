@@ -11,11 +11,57 @@ By Isuru Fernando.
  setup.py        | 6 +++---
  4 files changed, 17 insertions(+), 6 deletions(-)
 
+diff --git a/configure b/configure
+index f227dd88c0..2e2a4a6628 100755
+--- a/configure	2022-03-21 14:06:54.541526845 +0300
++++ b/configure	2022-03-21 14:07:04.705697427 +0300
+@@ -3393,6 +3393,9 @@
+ 			_host_cpu=$host_cpu
+ 		esac
+ 		;;
++	*-*-darwin*)
++		_host_cpu=$host_cpu
++		;;
+ 	*-*-cygwin*)
+ 		_host_cpu=
+ 		;;
+@@ -6250,7 +6253,7 @@
+   fi
+ fi
+ 
+-if test "$cross_compiling" = yes; then
++if test "$cross_compiling" = yes -a "$ac_sys_system" != "Darwin"; then
+     case "$READELF" in
+ 	readelf|:)
+ 	as_fn_error $? "readelf for the host is required for cross builds" "$LINENO" 5
+diff --git a/configure.ac b/configure.ac
+index f70a69b2f9..f58eb5c607 100644
+--- a/configure.ac	2022-03-21 14:06:54.545526912 +0300
++++ b/configure.ac	2022-03-21 14:07:04.705697427 +0300
+@@ -448,6 +448,9 @@
+ 			_host_cpu=$host_cpu
+ 		esac
+ 		;;
++	*-*-darwin*)
++		_host_cpu=$host_cpu
++		;;
+ 	*-*-cygwin*)
+ 		_host_cpu=
+ 		;;
+@@ -1211,7 +1214,7 @@
+ fi
+ 
+ AC_CHECK_TOOLS([READELF], [readelf], [:])
+-if test "$cross_compiling" = yes; then
++if test "$cross_compiling" = yes -a "$ac_sys_system" != "Darwin"; then
+     case "$READELF" in
+ 	readelf|:)
+ 	AC_MSG_ERROR([readelf for the host is required for cross builds])
 diff --git a/Lib/platform.py b/Lib/platform.py
 index 134fbae6b1..fbf27ac7d3 100755
---- a/Lib/platform.py
-+++ b/Lib/platform.py
-@@ -411,7 +411,12 @@ def win32_ver(release='', version='', csd='', ptype=''):
+--- a/Lib/platform.py	2022-03-21 14:06:54.541526845 +0300
++++ b/Lib/platform.py	2022-03-21 14:07:04.701697360 +0300
+@@ -411,7 +411,12 @@
  def _mac_ver_xml():
      fn = '/System/Library/CoreServices/SystemVersion.plist'
      if not os.path.exists(fn):
@@ -29,57 +75,11 @@ index 134fbae6b1..fbf27ac7d3 100755
  
      try:
          import plistlib
-diff --git a/configure b/configure
-index f227dd88c0..2e2a4a6628 100755
---- a/configure
-+++ b/configure
-@@ -3383,6 +3383,9 @@ if test "$cross_compiling" = yes; then
- 			_host_cpu=$host_cpu
- 		esac
- 		;;
-+	*-*-darwin*)
-+		_host_cpu=$host_cpu
-+		;;
- 	*-*-cygwin*)
- 		_host_cpu=
- 		;;
-@@ -6227,7 +6230,7 @@ esac
-   fi
- fi
- 
--if test "$cross_compiling" = yes; then
-+if test "$cross_compiling" = yes -a "$ac_sys_system" != "Darwin"; then
-     case "$READELF" in
- 	readelf|:)
- 	as_fn_error $? "readelf for the host is required for cross builds" "$LINENO" 5
-diff --git a/configure.ac b/configure.ac
-index f70a69b2f9..f58eb5c607 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -448,6 +448,9 @@ if test "$cross_compiling" = yes; then
- 			_host_cpu=$host_cpu
- 		esac
- 		;;
-+	*-*-darwin*)
-+		_host_cpu=$host_cpu
-+		;;
- 	*-*-cygwin*)
- 		_host_cpu=
- 		;;
-@@ -1204,7 +1207,7 @@ then
- fi
- 
- AC_CHECK_TOOLS([READELF], [readelf], [:])
--if test "$cross_compiling" = yes; then
-+if test "$cross_compiling" = yes -a "$ac_sys_system" != "Darwin"; then
-     case "$READELF" in
- 	readelf|:)
- 	AC_MSG_ERROR([readelf for the host is required for cross builds])
 diff --git a/setup.py b/setup.py
 index 783d20bdcd..36119d3ba9 100644
---- a/setup.py
-+++ b/setup.py
-@@ -83,7 +83,7 @@ def get_platform():
+--- a/setup.py	2022-03-21 14:06:54.545526912 +0300
++++ b/setup.py	2022-03-21 14:07:04.705697427 +0300
+@@ -83,7 +83,7 @@
  HOST_PLATFORM = get_platform()
  MS_WINDOWS = (HOST_PLATFORM == 'win32')
  CYGWIN = (HOST_PLATFORM == 'cygwin')
@@ -87,8 +87,8 @@ index 783d20bdcd..36119d3ba9 100644
 +MACOS = (HOST_PLATFORM.startswith('darwin'))
  AIX = (HOST_PLATFORM.startswith('aix'))
  VXWORKS = ('vxworks' in HOST_PLATFORM)
- 
-@@ -1079,11 +1079,11 @@ def detect_readline_curses(self):
+ CC = os.environ.get("CC")
+@@ -1078,11 +1078,11 @@
                  readline_lib = 'readline'
              do_readline = self.compiler.find_library_file(self.lib_dirs,
                  readline_lib)
@@ -102,6 +102,3 @@ index 783d20bdcd..36119d3ba9 100644
                  ret = run_command("ldd %s > %s" % (do_readline, tmpfile))
              else:
                  ret = 1
--- 
-2.30.2
-
