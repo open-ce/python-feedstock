@@ -11,9 +11,9 @@ Subject: [PATCH 11/30] Fix find_library so that it looks in sys.prefix/lib
 
 diff --git a/Lib/ctypes/macholib/dyld.py b/Lib/ctypes/macholib/dyld.py
 index 9d86b05876..9ab447c0a1 100644
---- a/Lib/ctypes/macholib/dyld.py
-+++ b/Lib/ctypes/macholib/dyld.py
-@@ -88,6 +88,10 @@ def dyld_executable_path_search(name, executable_path=None):
+--- a/Lib/ctypes/macholib/dyld.py	2022-03-21 10:37:28.471462955 +0300
++++ b/Lib/ctypes/macholib/dyld.py	2022-03-21 10:37:37.051653988 +0300
+@@ -93,6 +93,10 @@
      # If we haven't done any searching and found a library and the
      # dylib_name starts with "@executable_path/" then construct the
      # library name.
@@ -26,9 +26,9 @@ index 9d86b05876..9ab447c0a1 100644
  
 diff --git a/Lib/ctypes/util.py b/Lib/ctypes/util.py
 index 01176bf969..b80dc43b4f 100644
---- a/Lib/ctypes/util.py
-+++ b/Lib/ctypes/util.py
-@@ -70,7 +70,8 @@ if os.name == "nt":
+--- a/Lib/ctypes/util.py	2022-03-21 10:37:28.471462955 +0300
++++ b/Lib/ctypes/util.py	2022-03-21 10:37:37.051653988 +0300
+@@ -70,7 +70,8 @@
  elif os.name == "posix" and sys.platform == "darwin":
      from ctypes.macholib.dyld import dyld_find as _dyld_find
      def find_library(name):
@@ -38,7 +38,7 @@ index 01176bf969..b80dc43b4f 100644
                      '%s.dylib' % name,
                      '%s.framework/%s' % (name, name)]
          for name in possible:
-@@ -324,10 +325,30 @@ elif os.name == "posix":
+@@ -324,10 +325,30 @@
                  pass  # result will be None
              return result
  
@@ -71,6 +71,3 @@ index 01176bf969..b80dc43b4f 100644
  
  ################################################################
  # test code
--- 
-2.23.0
-

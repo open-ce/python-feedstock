@@ -17,9 +17,9 @@ There really isn't any way to get the ProcAddress without allowing static initia
 
 diff --git a/Python/dynload_win.c b/Python/dynload_win.c
 index 1b3e275614..071c2623b1 100644
---- a/Python/dynload_win.c
-+++ b/Python/dynload_win.c
-@@ -179,6 +179,11 @@ dl_funcptr _PyImport_FindSharedFuncptrWindows(const char *prefix,
+--- a/Python/dynload_win.c	2022-03-21 10:59:58.356016840 +0300
++++ b/Python/dynload_win.c	2022-03-21 11:00:08.256201626 +0300
+@@ -182,6 +182,11 @@
      {
          HINSTANCE hDLL = NULL;
          unsigned int old_mode;
@@ -31,7 +31,7 @@ index 1b3e275614..071c2623b1 100644
  
          /* Don't display a message box when Python can't load a DLL */
          old_mode = SetErrorMode(SEM_FAILCRITICALERRORS);
-@@ -191,10 +196,15 @@ dl_funcptr _PyImport_FindSharedFuncptrWindows(const char *prefix,
+@@ -194,10 +199,15 @@
          extern int CondaEcosystemModifyDllSearchPath(int, int);
          CondaEcosystemModifyDllSearchPath(1, 1);
  
@@ -51,6 +51,3 @@ index 1b3e275614..071c2623b1 100644
  
          /* restore old error mode settings */
          SetErrorMode(old_mode);
--- 
-2.23.0
-

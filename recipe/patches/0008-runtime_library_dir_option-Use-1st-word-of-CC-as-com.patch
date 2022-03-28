@@ -13,9 +13,9 @@ not get detected as gcc (or whatever it actually is).
 
 diff --git a/Lib/distutils/unixccompiler.py b/Lib/distutils/unixccompiler.py
 index 3f05cf7f8c..84a421767d 100644
---- a/Lib/distutils/unixccompiler.py
-+++ b/Lib/distutils/unixccompiler.py
-@@ -232,7 +232,7 @@ class UnixCCompiler(CCompiler):
+--- a/Lib/distutils/unixccompiler.py	2022-03-21 10:35:10.256408898 +0300
++++ b/Lib/distutils/unixccompiler.py	2022-03-21 10:35:24.148713509 +0300
+@@ -234,7 +234,7 @@
          # this time, there's no way to determine this information from
          # the configuration data stored in the Python installation, so
          # we use this hack.
@@ -24,6 +24,3 @@ index 3f05cf7f8c..84a421767d 100644
          if sys.platform[:6] == "darwin":
              # MacOSX's linker doesn't understand the -R flag at all
              return "-L" + dir
--- 
-2.23.0
-

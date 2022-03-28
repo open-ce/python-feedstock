@@ -22,9 +22,9 @@ Fix CondaEcosystemModifyDllSearchPath for users of the Python DLL
 
 diff --git a/Lib/ctypes/__init__.py b/Lib/ctypes/__init__.py
 index 4afa4ebd42..83fc43d874 100644
---- a/Lib/ctypes/__init__.py
-+++ b/Lib/ctypes/__init__.py
-@@ -364,6 +364,14 @@ class CDLL(object):
+--- a/Lib/ctypes/__init__.py	2022-03-21 10:57:11.296961962 +0300
++++ b/Lib/ctypes/__init__.py	2022-03-21 10:57:17.649075682 +0300
+@@ -364,6 +364,14 @@
                  if '/' in name or '\\' in name:
                      self._name = nt._getfullpathname(self._name)
                      mode |= nt._LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR
@@ -41,8 +41,8 @@ index 4afa4ebd42..83fc43d874 100644
              _flags_ = flags
 diff --git a/Modules/main.c b/Modules/main.c
 index 4a76f4461b..10343115b8 100644
---- a/Modules/main.c
-+++ b/Modules/main.c
+--- a/Modules/main.c	2022-03-21 10:57:11.296961962 +0300
++++ b/Modules/main.c	2022-03-21 10:57:17.649075682 +0300
 @@ -17,6 +17,10 @@
  #endif
  #ifdef MS_WINDOWS
@@ -63,7 +63,7 @@ index 4a76f4461b..10343115b8 100644
  /* --- pymain_init() ---------------------------------------------- */
  
  static PyStatus
-@@ -192,7 +198,7 @@ pymain_header(const PyConfig *config)
+@@ -192,7 +198,7 @@
          return;
      }
  
@@ -72,7 +72,7 @@ index 4a76f4461b..10343115b8 100644
      if (config->site_import) {
          fprintf(stderr, "%s\n", COPYRIGHT);
      }
-@@ -687,10 +693,402 @@ Py_RunMain(void)
+@@ -691,10 +697,402 @@
      return exitcode;
  }
  
@@ -477,9 +477,9 @@ index 4a76f4461b..10343115b8 100644
          pymain_free();
 diff --git a/Python/dynload_win.c b/Python/dynload_win.c
 index 8431c5b3b2..1b3e275614 100644
---- a/Python/dynload_win.c
-+++ b/Python/dynload_win.c
-@@ -187,10 +187,13 @@ dl_funcptr _PyImport_FindSharedFuncptrWindows(const char *prefix,
+--- a/Python/dynload_win.c	2022-03-21 10:57:11.296961962 +0300
++++ b/Python/dynload_win.c	2022-03-21 10:57:17.649075682 +0300
+@@ -190,10 +190,13 @@
             to avoid DLL preloading attacks and enable use of the
             AddDllDirectory function. We add SEARCH_DLL_LOAD_DIR to
             ensure DLLs adjacent to the PYD are preferred. */
@@ -495,6 +495,3 @@ index 8431c5b3b2..1b3e275614 100644
          Py_END_ALLOW_THREADS
  
          /* restore old error mode settings */
--- 
-2.23.0
-

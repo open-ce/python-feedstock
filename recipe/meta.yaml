@@ -1,4 +1,4 @@
-{% set version = "3.9.7" %}
+{% set version = "3.9.11" %}
 {% set dev = "" %}
 {% set dev_ = "" %}
 {% set ver2 = '.'.join(version.split('.')[0:2]) %}
@@ -44,8 +44,7 @@ source:
     git_tag: v{{ version }}{{ dev }}
 {% else %}
   - url: https://www.python.org/ftp/python/{{ version }}/Python-{{ version }}{{ dev }}.tar.xz
-    # md5 from: https://www.python.org/downloads/release/python-{{ ver3nd }}/
-    md5: fddb060b483bc01850a3f412eea1d954
+    sha256: 66767a35309d724f370df9e503c172b4ee444f49d62b98bc4eca725123e26c49
 {% endif %}
     patches:
       ## - patches/0000-Fix-off-by-one-error-in-_winapi_WaitForMultipleObjec.patch
@@ -93,24 +92,24 @@ source:
   - url: https://github.com/python/cpython-source-deps/archive/tk-8.6.9.0.zip        # [win]
     folder: externals/tk-8.6.9.0                                                     # [win]
     sha256: f3112b6bbc3bd163c877030187e73ce9a113ce03eff559ec5b9df697e3a08fad         # [win]
-  - url: https://github.com/python/cpython-bin-deps/archive/tcltk-8.6.9.0.zip        # [win]
-    folder: externals/tcltk-8.6.9.0                                                  # [win]
-    sha256: 37cd629a75d2a34974a3d771ccab5c9e3caf3d138cea81040f9cdba1aded1cf2         # [win]
+  - url: https://github.com/python/cpython-bin-deps/archive/tcltk-8.6.12.0.zip       # [win]
+    folder: externals/tcltk-8.6.12.0                                                 # [win]
+    sha256: 3a55e9e9fcb754b5a484a22d54841153f7624dd30f7b0c81b1cb05f38e2b5216         # [win]
   - url: https://github.com/python/cpython-source-deps/archive/tix-8.4.3.6.zip       # [win]
     folder: externals/tix-8.4.3.6                                                    # [win]
     sha256: e558e3dc5e67ac0942f8fceafce00ca46b177da9ebeaf38ec7fafd9b9913ac56         # [win]
-  - url: https://github.com/python/cpython-source-deps/archive/bzip2-1.0.6.zip       # [win]
-    folder: externals/bzip2-1.0.6                                                    # [win]
-    sha256: c42fd1432a2667b964a74bc423bb7485059c4a6d5dc92946d59dbf9a6bdb988d         # [win]
+  - url: https://github.com/python/cpython-source-deps/archive/bzip2-1.0.8.zip       # [win]
+    folder: externals/bzip2-1.0.8                                                    # [win]
+    sha256: 12c17d15f99e27235529574a722fb484a4e8fdf2427cef53b1b68bdf07e404a9         # [win]
   - url: https://github.com/python/cpython-source-deps/archive/zlib-1.2.11.zip       # [win]
     folder: externals/zlib-1.2.11                                                    # [win]
     sha256: debb1952945fa6c25817a40abe90641b572c83171f244937b70b9fe156f5a63a         # [win]
   - url: https://github.com/python/cpython-bin-deps/archive/nasm-2.11.06.zip         # [win]
     folder: externals/nasm-2.11.06                                                   # [win]
     sha256: de3c87b26a80e789986d8e6950c6304175d3829afe9c6c7211eb7257266ab0ac         # [win]
-  - url: https://github.com/python/cpython-bin-deps/archive/libffi.zip               # [win]
+  - url: https://github.com/python/cpython-bin-deps/archive/libffi-3.3.0.zip         # [win]
     folder: externals/libffi-3.3.0                                                   # [win]
-    sha256: 346978268569d63cecf668e031d56908019b4098cdad18729d1d5af495d34641         # [win]
+    sha256: 69e3f7235108a75033cb9325a0a3535ba271d144ec66fccefe134eda27d7bcfe         # [win]
 
 build:
   number: {{ build_number }}
@@ -233,11 +232,9 @@ outputs:
         - zlib   # [not win]
         - openssl
         - readline  # [not win]
-        - libiconv  # [osx and arm64]
         - tk  # [not win]
         - ncurses  # [unix]
         - libffi   # [not win]
-        - expat    # [osx and arm64]
         - ld_impl_{{ target_platform }}  # [linux]
       run:
         - ld_impl_{{ target_platform }}  # [linux]
@@ -378,7 +375,8 @@ outputs:
 
 about:
   home: https://www.python.org/
-  license: Python-2.0
+  license: PSF-2.0
+  license_family: PSF
   license_file: LICENSE
   summary: General purpose programming language
   description: |
