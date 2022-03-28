@@ -15,12 +15,6 @@ if "%ARCH%"=="64" (
    set BUILD_PATH=win32
 )
 
-:: libffi is no longer provided as 3.2 compatible, it is now 3.3 variant ... sadly project
-:: mixes now old and new version ... so copy lib that everything is satisfied ...
-copy externals\libffi\%BUILD_PATH%\libffi-8.lib externals\libffi\%BUILD_PATH%\libffi-7.lib
-if errorlevel 1 exit 1
-copy externals\libffi\%BUILD_PATH%\libffi-8.dll externals\libffi\%BUILD_PATH%\libffi-7.dll
-
 set "OPENSSL_DIR=%LIBRARY_PREFIX%"
 set "SQLITE3_DIR=%LIBRARY_PREFIX%"
 for /f "usebackq delims=" %%i in (`conda list -p %PREFIX% sqlite --no-show-channel-urls --json ^| findstr "version"`) do set SQLITE3_VERSION_LINE=%%i
@@ -87,7 +81,7 @@ copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\tcl86t.dll %PREFIX%\DLLs\
 if errorlevel 1 exit 1
 copy /Y %SRC_DIR%\PCbuild\%BUILD_PATH%\tk86t.dll %PREFIX%\DLLs\
 if errorlevel 1 exit 1
-copy /Y %SRC_DIR%\externals\libffi\%BUILD_PATH%\libffi-8.dll %PREFIX%\DLLs\
+copy /Y %SRC_DIR%\externals\libffi-3.3.0\%BUILD_PATH%\libffi-7.dll %PREFIX%\DLLs\
 if errorlevel 1 exit 1
 
 copy /Y %SRC_DIR%\PC\icons\py.ico %PREFIX%\DLLs\

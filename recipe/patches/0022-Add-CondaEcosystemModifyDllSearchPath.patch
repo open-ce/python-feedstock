@@ -16,8 +16,8 @@ Updated a bit to include other directories.
 
 diff --git a/Modules/main.c b/Modules/main.c
 index 5150587a75..6e75e54dfe 100644
---- a/Modules/main.c
-+++ b/Modules/main.c
+--- a/Modules/main.c	2022-03-17 15:57:15.977643722 +0300
++++ b/Modules/main.c	2022-03-17 16:12:55.728649852 +0300
 @@ -20,6 +20,10 @@
  #endif
  #ifdef MS_WINDOWS
@@ -38,7 +38,7 @@ index 5150587a75..6e75e54dfe 100644
  /* --- pymain_init() ---------------------------------------------- */
  
  static PyStatus
-@@ -699,10 +705,388 @@ Py_RunMain(void)
+@@ -703,10 +709,388 @@
      return exitcode;
  }
  
@@ -429,9 +429,9 @@ index 5150587a75..6e75e54dfe 100644
          pymain_free();
 diff --git a/Python/dynload_win.c b/Python/dynload_win.c
 index 4896c6dc8c..cf5cb5cf78 100644
---- a/Python/dynload_win.c
-+++ b/Python/dynload_win.c
-@@ -199,10 +199,13 @@ dl_funcptr _PyImport_FindSharedFuncptrWindows(const char *prefix,
+--- a/Python/dynload_win.c	2022-03-17 15:57:15.977643722 +0300
++++ b/Python/dynload_win.c	2022-03-17 16:12:55.728649852 +0300
+@@ -199,10 +199,13 @@
             to avoid DLL preloading attacks and enable use of the
             AddDllDirectory function. We add SEARCH_DLL_LOAD_DIR to
             ensure DLLs adjacent to the PYD are preferred. */
@@ -447,6 +447,3 @@ index 4896c6dc8c..cf5cb5cf78 100644
          Py_END_ALLOW_THREADS
  #if HAVE_SXS
          _Py_DeactivateActCtx(cookie);
--- 
-2.28.0
-
