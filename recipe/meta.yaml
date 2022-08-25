@@ -198,14 +198,14 @@ outputs:
         # I have no idea why this is not in C:\Windows\System32\downlevel
         - '**/api-ms-win-core-path-l1-1-0.dll'  # [win]
           # -=- libs that come from the sysroot.
-        - '$RPATH/libc.so.6'        # [linux64]
-        - '$RPATH/libcrypt.so.1'    # [linux64]
-        - '$RPATH/libdl.so.2'       # [linux64]
-        - '$RPATH/libm.so.6'        # [linux64]
-        - '$RPATH/libnsl.so.1'      # [linux64]
-        - '$RPATH/libpthread.so.0'  # [linux64]
-        - '$RPATH/librt.so.1'       # [linux64]
-        - '$RPATH/libutil.so.1'     # [linux64]
+        - '$RPATH/libc.so.6'        # [linux64 or ppc64le]
+        - '$RPATH/libcrypt.so.1'    # [linux64 or ppc64le]
+        - '$RPATH/libdl.so.2'       # [linux64 or ppc64le]
+        - '$RPATH/libm.so.6'        # [linux64 or ppc64le]
+        - '$RPATH/libnsl.so.1'      # [linux64 or ppc64le]
+        - '$RPATH/libpthread.so.0'  # [linux64 or ppc64le]
+        - '$RPATH/librt.so.1'       # [linux64 or ppc64le]
+        - '$RPATH/libutil.so.1'     # [linux64 or ppc64le]
     requirements:
       build:
         - {{ compiler('c') }}
