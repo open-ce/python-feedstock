@@ -38,6 +38,12 @@ else
   _OPTIMIZED=yes
 fi
 
+# ppc64le cdt need to be rebuilt with files in powerpc64le-conda-linux-gnu instead of powerpc64le-conda_cos7-linux-gnu. In the mean time:
+if [ "$(uname -m)" = "ppc64le" ]; then
+  cp --force --archive --update --link $BUILD_PREFIX/powerpc64le-conda_cos7-linux-gnu/. $BUILD_PREFIX/powerpc64le-conda-linux-gnu
+fi
+export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-}:${PREFIX}/lib/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/lib64/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/share/pkgconfig
+
 # Since these take very long to build in our emulated ci, disable for now
 if [[ ${CONDA_FORGE} == yes ]]; then
   if [[ ${target_platform} == linux-aarch64 ]]; then
