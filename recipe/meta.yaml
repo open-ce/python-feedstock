@@ -151,20 +151,20 @@ outputs:
 {% else %}
         - CONDA_FORGE=no
 {% endif %}
-      missing_dso_whitelist:   # [win or linux64]
+      missing_dso_whitelist:   # [win or linux]
         - '**/MSVCR71.dll'  # [win]
         - '**/MSVCR80.dll'  # [win]
         # I have no idea why this is not in C:\Windows\System32\downlevel
         - '**/api-ms-win-core-path-l1-1-0.dll'  # [win]
         # -=- libs that come from the sysroot.
-        - '$RPATH/libc.so.6'        # [linux64]
-        - '$RPATH/libcrypt.so.1'    # [linux64]
-        - '$RPATH/libdl.so.2'       # [linux64]
-        - '$RPATH/libm.so.6'        # [linux64]
-        - '$RPATH/libnsl.so.1'      # [linux64]
-        - '$RPATH/libpthread.so.0'  # [linux64]
-        - '$RPATH/librt.so.1'       # [linux64]
-        - '$RPATH/libutil.so.1'     # [linux64]
+        - '$RPATH/libc.so.6'        # [linux]
+        - '$RPATH/libcrypt.so.1'    # [linux]
+        - '$RPATH/libdl.so.2'       # [linux]
+        - '$RPATH/libm.so.6'        # [linux]
+        - '$RPATH/libnsl.so.1'      # [linux]
+        - '$RPATH/libpthread.so.0'  # [linux]
+        - '$RPATH/librt.so.1'       # [linux]
+        - '$RPATH/libutil.so.1'     # [linux]
 
     requirements:
       build:
