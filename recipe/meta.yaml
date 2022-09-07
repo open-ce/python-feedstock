@@ -114,8 +114,8 @@ outputs:
       ignore_run_exports_from:   # [unix]
         # C++ only installed so CXX is defined for distutils/sysconfig.
         - {{ compiler('cxx') }}  # [unix]
-      ignore_run_exports:
-        - tk
+      # ignore_run_exports:
+      #    - tk
       # Disabled until verified to work correctly
       detect_binary_files_with_prefix: true
       # detect_binary_files_with_prefix: False
