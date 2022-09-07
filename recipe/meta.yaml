@@ -277,7 +277,7 @@ outputs:
         - test -d "$PREFIX/lib/python3.1/site-packages"  # [unix]
         - python3.1 --version  # [unix]
 
-{% if target_platform != "linux-aarch64" %}
+{% if "true" != "true" %}
   - name: libpython-static
     script: build_static.sh  # [unix]
     script: build_static.bat  # [win]
