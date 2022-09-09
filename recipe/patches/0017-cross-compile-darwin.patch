@@ -1,7 +1,7 @@
-From 0264f5cfd14e95977ef764e59a45733d28e9bf8c Mon Sep 17 00:00:00 2001
+From d08c785695c93adb486a76c3cd5e3bfe9d76ce20 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Fri, 2 Oct 2020 00:03:12 +0200
-Subject: [PATCH 15/24] cross compile darwin
+Subject: [PATCH 17/25] cross compile darwin
 
 By Isuru Fernando.
 ---
@@ -76,7 +76,7 @@ index 77fb609b74..1d9fa9e4ef 100644
  	readelf|:)
  	AC_MSG_ERROR([readelf for the host is required for cross builds])
 diff --git a/setup.py b/setup.py
-index 25fc167722..1a354d5bd4 100644
+index 1bb48591c6..79dae21c6d 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -81,7 +81,7 @@ def get_platform():
@@ -88,7 +88,7 @@ index 25fc167722..1a354d5bd4 100644
  AIX = (HOST_PLATFORM.startswith('aix'))
  VXWORKS = ('vxworks' in HOST_PLATFORM)
  EMSCRIPTEN = HOST_PLATFORM == 'emscripten-wasm32'
-@@ -1067,11 +1067,11 @@ def detect_readline_curses(self):
+@@ -1064,11 +1064,11 @@ def detect_readline_curses(self):
                  readline_lib = 'readline'
              do_readline = self.compiler.find_library_file(self.lib_dirs,
                  readline_lib)
@@ -103,5 +103,5 @@ index 25fc167722..1a354d5bd4 100644
              else:
                  ret = 1
 -- 
-2.30.2
+2.32.1 (Apple Git-133)
 

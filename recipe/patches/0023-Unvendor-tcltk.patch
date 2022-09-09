@@ -1,7 +1,7 @@
-From 601a2843ef2afef6b9d747d5a7d2079d967c2f20 Mon Sep 17 00:00:00 2001
+From a18bab6405f24e209fa6f75cd8f13aad455064f8 Mon Sep 17 00:00:00 2001
 From: Isuru Fernando <isuruf@gmail.com>
 Date: Fri, 20 Aug 2021 10:23:51 -0700
-Subject: [PATCH 21/24] Unvendor tcltk
+Subject: [PATCH 23/25] Unvendor tcltk
 
 ---
  PCbuild/tcltk.props | 12 +++++-------
@@ -31,5 +31,5 @@ index 7fd43e8279..5d7f07567d 100644
      <tclDLLName>tcl$(TclMajorVersion)$(TclMinorVersion)t$(TclDebugExt).dll</tclDLLName>
      <tclLibName>tcl$(TclMajorVersion)$(TclMinorVersion)t$(TclDebugExt).lib</tclLibName>
 -- 
-2.30.2
+2.32.1 (Apple Git-133)
 

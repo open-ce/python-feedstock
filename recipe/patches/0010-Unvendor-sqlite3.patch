@@ -1,7 +1,7 @@
-From dd315752acb1b108697f37ee0a8df50ffb200085 Mon Sep 17 00:00:00 2001
+From c40d0dc406b41dc06057e6b42b34d12a2d9a6825 Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Mon, 10 Dec 2018 12:22:37 -0600
-Subject: [PATCH 11/25] Unvendor sqlite3
+Subject: [PATCH 10/25] Unvendor sqlite3
 
 ---
  PCbuild/_sqlite3.vcxproj |  9 ++++-----
@@ -10,27 +10,11 @@ Subject: [PATCH 11/25] Unvendor sqlite3
  PCbuild/sqlite3.vcxproj  | 12 ++++++------
  4 files changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/PCbuild/pcbuild.sln b/PCbuild/pcbuild.sln
-index 3507b97279..2b4ac3258c 100644
---- a/PCbuild/pcbuild.sln	2022-03-21 13:56:25.291367619 +0300
-+++ b/PCbuild/pcbuild.sln	2022-03-21 13:58:47.493702086 +0300
-@@ -55,8 +55,6 @@
- EndProject
- Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_hashlib", "_hashlib.vcxproj", "{447F05A8-F581-4CAC-A466-5AC7936E207E}"
- EndProject
--Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqlite3", "sqlite3.vcxproj", "{A1A295E5-463C-437F-81CA-1F32367685DA}"
--EndProject
- Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_multiprocessing", "_multiprocessing.vcxproj", "{9E48B300-37D1-11DD-8C41-005056C00008}"
- EndProject
- Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python3dll", "python3dll.vcxproj", "{885D4898-D08D-4091-9C40-C700CFE3FC5A}"
-diff --git a/PCbuild/python.props b/PCbuild/python.props
-index 4c5c18a81d..7b99766d21 100644
-
 diff --git a/PCbuild/_sqlite3.vcxproj b/PCbuild/_sqlite3.vcxproj
-index 5eb8559d29..fcdee1be60 100644
---- a/PCbuild/_sqlite3.vcxproj	2022-03-21 13:56:25.291367619 +0300
-+++ b/PCbuild/_sqlite3.vcxproj	2022-03-21 13:58:47.493702086 +0300
-@@ -93,8 +93,11 @@
+index 57c7413671..282a65cf75 100644
+--- a/PCbuild/_sqlite3.vcxproj
++++ b/PCbuild/_sqlite3.vcxproj
+@@ -93,9 +93,12 @@
    </PropertyGroup>
    <ItemDefinitionGroup>
      <ClCompile>
@@ -44,7 +28,7 @@ index 5eb8559d29..fcdee1be60 100644
    </ItemDefinitionGroup>
    <ItemGroup>
      <ClInclude Include="..\Modules\_sqlite\connection.h" />
-@@ -126,10 +129,6 @@
+@@ -127,10 +130,6 @@
        <Project>{cf7ac3d1-e2df-41d2-bea6-1e2556cdea26}</Project>
        <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
      </ProjectReference>
@@ -55,14 +39,36 @@ index 5eb8559d29..fcdee1be60 100644
    </ItemGroup>
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
-      </ImportGroup>
--</Project>
-\ No newline at end of file
-+</Project>
+diff --git a/PCbuild/pcbuild.sln b/PCbuild/pcbuild.sln
+index 3629a8508a..94148c9ee3 100644
+--- a/PCbuild/pcbuild.sln
++++ b/PCbuild/pcbuild.sln
+@@ -58,8 +58,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pyexpat", "pyexpat.vcxproj"
+ EndProject
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_hashlib", "_hashlib.vcxproj", "{447F05A8-F581-4CAC-A466-5AC7936E207E}"
+ EndProject
+-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqlite3", "sqlite3.vcxproj", "{A1A295E5-463C-437F-81CA-1F32367685DA}"
+-EndProject
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_multiprocessing", "_multiprocessing.vcxproj", "{9E48B300-37D1-11DD-8C41-005056C00008}"
+ EndProject
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python3dll", "python3dll.vcxproj", "{885D4898-D08D-4091-9C40-C700CFE3FC5A}"
+diff --git a/PCbuild/python.props b/PCbuild/python.props
+index 40af96a349..1d94c59915 100644
+--- a/PCbuild/python.props
++++ b/PCbuild/python.props
+@@ -61,7 +61,7 @@
+     <ExternalsDir>$(EXTERNALS_DIR)</ExternalsDir>
+     <ExternalsDir Condition="$(ExternalsDir) == ''">$([System.IO.Path]::GetFullPath(`$(PySourcePath)externals`))</ExternalsDir>
+     <ExternalsDir Condition="!HasTrailingSlash($(ExternalsDir))">$(ExternalsDir)\</ExternalsDir>
+-    <sqlite3Dir>$(ExternalsDir)sqlite-3.38.4.0\</sqlite3Dir>
++    <sqlite3Dir>$(SQLITE3_DIR)\</sqlite3Dir>
+     <bz2Dir>$(ExternalsDir)bzip2-1.0.8\</bz2Dir>
+     <lzmaDir>$(ExternalsDir)xz-5.2.5\</lzmaDir>
+     <libffiDir>$(ExternalsDir)libffi-3.4.2\</libffiDir>
 diff --git a/PCbuild/sqlite3.vcxproj b/PCbuild/sqlite3.vcxproj
-index e39e2d9c22..63d1c27fbc 100644
---- a/PCbuild/sqlite3.vcxproj	2022-03-21 13:56:25.291367619 +0300
-+++ b/PCbuild/sqlite3.vcxproj	2022-03-21 13:58:47.497702152 +0300
+index c502d51833..c1ff0c9a08 100644
+--- a/PCbuild/sqlite3.vcxproj
++++ b/PCbuild/sqlite3.vcxproj
 @@ -88,12 +88,12 @@
    <PropertyGroup Label="UserMacros" />
    <PropertyGroup>
@@ -82,3 +88,6 @@ index e39e2d9c22..63d1c27fbc 100644
    </PropertyGroup>
    <ItemDefinitionGroup>
      <ClCompile>
+-- 
+2.32.1 (Apple Git-133)
+

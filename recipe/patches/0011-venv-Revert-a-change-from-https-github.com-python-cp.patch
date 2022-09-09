@@ -1,7 +1,7 @@
-From 321741f8a203529b5fc972d76b69f221926c00d6 Mon Sep 17 00:00:00 2001
+From a846dcfc747c4af4816969b6f84da2ad1e2887bc Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 2 Jan 2019 21:38:48 +0000
-Subject: [PATCH 12/25] venv: Revert a change from
+Subject: [PATCH 11/25] venv: Revert a change from
  https://github.com/python/cpython/commit/1c3de541e64f75046b20cdd27bada1557e550bcd
  https://bugs.python.org/issue35644
 
@@ -13,10 +13,10 @@ Also, on Anaconda Distribution, python.exe lives in sys.prefix.
  1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/Lib/venv/__init__.py b/Lib/venv/__init__.py
-index 8009deb3ea..e4fd6db818 100644
---- a/Lib/venv/__init__.py	2022-03-21 14:00:41.567550701 +0300
-+++ b/Lib/venv/__init__.py	2022-03-21 14:00:47.923653171 +0300
-@@ -234,7 +234,12 @@
+index 6032f3648e..4aaacd639e 100644
+--- a/Lib/venv/__init__.py
++++ b/Lib/venv/__init__.py
+@@ -264,7 +264,12 @@ def symlink_or_copy(self, src, dst, relative_symlinks_ok=False):
                      basename = 'venvwlauncher'
                  src = os.path.join(os.path.dirname(src), basename + ext)
              else:
@@ -30,7 +30,7 @@ index 8009deb3ea..e4fd6db818 100644
              if not os.path.exists(src):
                  if not bad_src:
                      logger.warning('Unable to copy %r', src)
-@@ -252,9 +257,9 @@
+@@ -282,9 +287,9 @@ def setup_python(self, context):
          binpath = context.bin_path
          path = context.env_exe
          copier = self.symlink_or_copy
@@ -41,3 +41,6 @@ index 8009deb3ea..e4fd6db818 100644
              if not os.path.islink(path):
                  os.chmod(path, 0o755)
              for suffix in ('python', 'python3', f'python3.{sys.version_info[1]}'):
+-- 
+2.32.1 (Apple Git-133)
+

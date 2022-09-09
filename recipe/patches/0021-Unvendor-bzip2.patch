@@ -1,7 +1,7 @@
-From 3901842711d3c9a36692bc356f3a090a26a1a4d9 Mon Sep 17 00:00:00 2001
+From 685f9c88958d31866a2f2896b245b4c304f3b77b Mon Sep 17 00:00:00 2001
 From: Isuru Fernando <isuruf@gmail.com>
 Date: Mon, 16 Aug 2021 02:56:27 -0700
-Subject: [PATCH 22/25] Unvendor bzip2
+Subject: [PATCH 21/25] Unvendor bzip2
 
 ---
  PCbuild/_bz2.vcxproj         | 15 +++++----------
@@ -87,11 +87,11 @@ index 7c0b516253..c1f960608c 100644
      </ClInclude>
    </ItemGroup>
 diff --git a/PCbuild/python.props b/PCbuild/python.props
-index 7b99766d21..83d537e110 100644
+index 1d94c59915..3cd708d6d9 100644
 --- a/PCbuild/python.props
 +++ b/PCbuild/python.props
-@@ -55,6 +55,7 @@
-     
+@@ -59,6 +59,7 @@
+ 
      <!-- Directories of external projects. tcltk is handled in tcltk.props -->
      <ExternalsDir>$(EXTERNALS_DIR)</ExternalsDir>
 +    <condaDir>$(LIBRARY_PREFIX)\</condaDir>
@@ -99,5 +99,5 @@ index 7b99766d21..83d537e110 100644
      <ExternalsDir Condition="!HasTrailingSlash($(ExternalsDir))">$(ExternalsDir)\</ExternalsDir>
      <sqlite3Dir>$(SQLITE3_DIR)\</sqlite3Dir>
 -- 
-2.30.2
+2.32.1 (Apple Git-133)
 
