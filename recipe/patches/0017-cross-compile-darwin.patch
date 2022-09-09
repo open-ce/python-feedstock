@@ -88,7 +88,7 @@ index 1bb48591c6..79dae21c6d 100644
  AIX = (HOST_PLATFORM.startswith('aix'))
  VXWORKS = ('vxworks' in HOST_PLATFORM)
  EMSCRIPTEN = HOST_PLATFORM == 'emscripten-wasm32'
-@@ -1064,11 +1064,11 @@ def detect_readline_curses(self):
+@@ -1046,11 +1046,11 @@ def detect_readline_curses(self):
                  readline_lib = 'readline'
              do_readline = self.compiler.find_library_file(self.lib_dirs,
                  readline_lib)
