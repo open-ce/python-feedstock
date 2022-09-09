@@ -34,7 +34,9 @@ index 22c9550e2c..40ddb08d2b 100644
 -  <Target Name="_CleanLIBFFIDLL" BeforeTargets="Clean">
 -    <Delete Files="@(_LIBFFIDLL->'$(OutDir)%(Filename)%(Extension)')" TreatErrorsAsWarnings="true" />
 -  </Target>
-</Project>
+-</Project>
+\ No newline at end of file
++</Project>
 -- 
 2.32.1 (Apple Git-133)
 
