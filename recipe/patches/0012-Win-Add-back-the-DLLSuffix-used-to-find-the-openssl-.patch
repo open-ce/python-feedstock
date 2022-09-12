@@ -5,21 +5,14 @@ Subject: [PATCH 12/25] Win: Add back the DLLSuffix used to find the openssl
  dlls and debug files
 
 ---
- PCbuild/openssl.props | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ PCbuild/openssl.props | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/PCbuild/openssl.props b/PCbuild/openssl.props
 index 1e43d7b9b7..bfccb57330 100644
 --- a/PCbuild/openssl.props
 +++ b/PCbuild/openssl.props
-@@ -5,12 +5,13 @@
-       <AdditionalIncludeDirectories>$(opensslIncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-     </ClCompile>
-     <Link>
--      <AdditionalLibraryDirectories>$(opensslDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-+      <AdditionalLibraryDirectories>$(opensslOutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-       <AdditionalDependencies>ws2_32.lib;libcrypto.lib;libssl.lib;%(AdditionalDependencies)</AdditionalDependencies>
-     </Link>
+@@ -11,6 +11,7 @@
    </ItemDefinitionGroup>
    <PropertyGroup>
      <_DLLSuffix>-1_1</_DLLSuffix>
