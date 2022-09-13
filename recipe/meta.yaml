@@ -312,6 +312,7 @@ outputs:
         - {{ compiler('c') }}
         # Tried to use enable_language(C) to avoid needing this. It does not work.
         - {{ compiler('cxx') }}
+        - ripgrep
 
       commands:
         - pushd tests                 # [unix]
@@ -322,6 +323,8 @@ outputs:
         - bash build-and-test.sh      # [unix]
         - popd    # [unix]
         - popd    # [unix]
+        # windows tests
+        - if not exist %LIBRARY_LIB%\\python%PKG_VERSION%.lib exit 1  # [win]
 {% endif %}
 
 about:
