@@ -261,7 +261,7 @@ outputs:
         - if not exist %PREFIX%\\Scripts\\idle.exe exit 1  # [win]
         - if not exist %PREFIX%\\Scripts\\2to3.exe exit 1  # [win]
         - if not exist %PREFIX%\\Scripts\\pydoc.exe exit 1  # [win]
-        - if not exist %LIBRARY_LIB%\\python{{ ver2nd }}.lib exit 1  # [win]
+        - if not exist %PREFIX%\\libs\\python{{ ver2nd }}.lib exit 1  # [win]
         - pushd tests
         - pushd distutils
         - python setup.py install -v -v
