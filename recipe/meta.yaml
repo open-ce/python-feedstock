@@ -1,4 +1,4 @@
-{% set version = "3.10.4" %}
+{% set version = "3.10.6" %}
 {% set dev = "" %}
 {% set dev_ = "" %}
 {% set ver2 = '.'.join(version.split('.')[0:2]) %}
@@ -48,7 +48,7 @@ source:
 {% else %}
   - url: https://www.python.org/ftp/python/{{ version }}/Python-{{ version }}{{ dev }}.tar.xz
     # md5 from: https://www.python.org/downloads/release/python-{{ ver3nd }}/
-    sha256: 80bf925f571da436b35210886cf79f6eb5fa5d6c571316b73568343451f77a19
+    sha256: f795ff87d11d4b0c7c33bc8851b0c28648d8a4583aa2100a98c22b4326b6d3f3
 {% endif %}
     patches:
       - patches/0001-Win32-Change-FD_SETSIZE-from-512-to-2048.patch
@@ -61,30 +61,30 @@ source:
       - patches/0006-Win32-Do-not-download-externals.patch
       - patches/0007-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch
       # https://github.com/python/cpython/pull/28397
+      - patches/0008-bpo-22699-Allow-compiling-on-debian-ubuntu-with-a-di.patch
       # Patch doesn't apply, but is Debian-specific anyway.
       # - patches/0008-bpo-22699-Allow-compiling-on-debian-ubuntu-with-a-di.patch
       - patches/0009-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
       - patches/0010-Unvendor-openssl.patch
       - patches/0011-Unvendor-sqlite3.patch
-      - patches/0012-venv-Revert-a-change-from-https-github.com-python-cp.patch
-      - patches/0013-Win-Add-back-the-DLLSuffix-used-to-find-the-openssl-.patch
       # https://github.com/pypa/distutils/pull/53
-      - patches/0014-Use-ranlib-from-env-if-env-variable-is-set.patch
-      - patches/0015-Add-CondaEcosystemModifyDllSearchPath.patch
-      - patches/0016-Add-d1trimfile-SRC_DIR-to-make-pdbs-more-relocatable.patch
-      - patches/0017-Doing-d1trimfile.patch
+      - patches/0012-Use-ranlib-from-env-if-env-variable-is-set.patch
+      - patches/0013-Add-CondaEcosystemModifyDllSearchPath.patch
+      - patches/0014-Add-d1trimfile-SRC_DIR-to-make-pdbs-more-relocatable.patch
+      - patches/0015-Doing-d1trimfile.patch
       # https://github.com/python/cpython/pull/23523
-      - patches/0018-cross-compile-darwin.patch
-      - patches/0019-Fix-TZPATH-on-windows.patch
+      - patches/0016-cross-compile-darwin.patch
+      - patches/0017-Fix-TZPATH-on-windows.patch
       # https://github.com/python/cpython/pull/24324
-      - patches/0020-Make-dyld-search-work-with-SYSTEM_VERSION_COMPAT-1.patch
+      - patches/0018-Make-dyld-search-work-with-SYSTEM_VERSION_COMPAT-1.patch
       # https://github.com/pypa/distutils/pull/53
-      - patches/0021-Fix-LDSHARED-when-CC-is-overriden-on-Linux-too.patch
-      - patches/0022-Unvendor-bzip2.patch
-      - patches/0023-Unvendor-libffi.patch
-      - patches/0024-Unvendor-tcltk.patch
-      - patches/0025-unvendor-xz.patch
-      - patches/0026-unvendor-zlib.patch
+      - patches/0019-Fix-LDSHARED-when-CC-is-overriden-on-Linux-too.patch
+      - patches/0020-Unvendor-bzip2.patch
+      - patches/0021-Unvendor-libffi.patch
+      - patches/0022-Unvendor-tcltk.patch
+      - patches/0023-unvendor-xz.patch
+      - patches/0024-unvendor-zlib.patch
+      - patches/0025-Do-not-pass-g-to-GCC-when-not-Py_DEBUG.patch
 
 build:
   number: {{ build_number }}
@@ -193,10 +193,10 @@ outputs:
         - tk
         - ncurses  # [unix]
         - libffi
-        - ld_impl_{{ target_platform }}  # [linux]
+        - ld_impl_{{ target_platform }} >=2.36.1  # [linux]
         - libuuid  # [linux]
       run:
-        - ld_impl_{{ target_platform }}  # [linux]
+        - ld_impl_{{ target_platform }} >=2.36.1  # [linux]
         - tzdata
 {% if 'conda-forge' in channel_targets %}
         - ncurses  # [unix]
@@ -276,6 +276,8 @@ outputs:
         # Test workaround for https://github.com/conda/conda/issues/10969
         - test -d "$PREFIX/lib/python3.1/site-packages"  # [unix]
         - python3.1 --version  # [unix]
+        # Test for segfault on osx-64 with libffi=3.4, see https://bugs.python.org/issue44556
+        - python -c "from ctypes import CFUNCTYPE; CFUNCTYPE(None)(id)"
 
 {% if target_platform != "linux-aarch64" %}
   - name: libpython-static
@@ -323,8 +325,7 @@ outputs:
 
 about:
   home: https://www.python.org/
-  license: PSF-2.0
-  license_family: PSF
+  license: Python-2.0
   license_file: LICENSE
   summary: General purpose programming language
   description: |
@@ -350,3 +351,4 @@ extra:
     - ocefpaf
     - scopatz
     - katietz
+    - xhochy
