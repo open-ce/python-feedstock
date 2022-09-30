@@ -82,17 +82,17 @@ source:
 {% endif %}
 
   # TODO :: Depend on our own packages for these:
-  - url: https://github.com/python/cpython-source-deps/archive/xz-5.2.2.zip          # [win]
-    folder: externals/xz-5.2.2                                                       # [win]
-    sha256: 02b6d6f1e0369940e7e1f0d324992e069d09f5f3d32d86e2d22cd8b82ac3fb3f         # [win]
+  - url: https://github.com/python/cpython-source-deps/archive/xz-5.2.5.zip          # [win]
+    folder: externals/xz-5.2.5                                                       # [win]
+    sha256: 6a4389cc05143beb2679b1299cecee71b02baa55e70f68a88b44dc01ad495424         # [win]
   # Not used as of 3.7b3 (tcltk from cpython-bin- is), but kept for archival and license reasons.
-  - url: https://github.com/python/cpython-source-deps/archive/tcl-core-8.6.9.0.zip  # [win]
-    folder: externals/tcl-core-8.6.9.0                                               # [win]
-    sha256: ea9e724536ec13b476ebbd47948303b92fdd90a33aa94f30fcc2f5c3a899f69e         # [win]
+  - url: https://github.com/python/cpython-source-deps/archive/tcl-core-8.6.12.0.zip  # [win]
+    folder: externals/tcl-core-8.6.12.0                                               # [win]
+    sha256: 0682e059dd2ec77b16384a98a65b93e5e719958863506b37235a3a26e9f47773         # [win]
   # Not used as of 3.7b3 (tcltk from cpython-bin- is), but kept for archival and license reasons.
-  - url: https://github.com/python/cpython-source-deps/archive/tk-8.6.9.0.zip        # [win]
-    folder: externals/tk-8.6.9.0                                                     # [win]
-    sha256: f3112b6bbc3bd163c877030187e73ce9a113ce03eff559ec5b9df697e3a08fad         # [win]
+  - url: https://github.com/python/cpython-source-deps/archive/tk-8.6.12.0.zip        # [win]
+    folder: externals/tk-8.6.12.0                                                     # [win]
+    sha256: 7d61434b941b395526b09f65273212df86681afc835b36494ca7c5bd9d8d3d50         # [win]
   - url: https://github.com/python/cpython-bin-deps/archive/tcltk-8.6.12.0.zip       # [win]
     folder: externals/tcltk-8.6.12.0                                                 # [win]
     sha256: 3a55e9e9fcb754b5a484a22d54841153f7624dd30f7b0c81b1cb05f38e2b5216         # [win]
@@ -102,9 +102,9 @@ source:
   - url: https://github.com/python/cpython-source-deps/archive/bzip2-1.0.8.zip       # [win]
     folder: externals/bzip2-1.0.8                                                    # [win]
     sha256: 12c17d15f99e27235529574a722fb484a4e8fdf2427cef53b1b68bdf07e404a9         # [win]
-  - url: https://github.com/python/cpython-source-deps/archive/zlib-1.2.11.zip       # [win]
-    folder: externals/zlib-1.2.11                                                    # [win]
-    sha256: debb1952945fa6c25817a40abe90641b572c83171f244937b70b9fe156f5a63a         # [win]
+  - url: https://github.com/python/cpython-source-deps/archive/zlib-1.2.12.zip       # [win]
+    folder: externals/zlib-1.2.12                                                    # [win]
+    sha256: 92197502951ac8414ece9f2d9fa2cc010c51d610e6b2ed9833ba4a35d65f222b         # [win]
   - url: https://github.com/python/cpython-bin-deps/archive/nasm-2.11.06.zip         # [win]
     folder: externals/nasm-2.11.06                                                   # [win]
     sha256: de3c87b26a80e789986d8e6950c6304175d3829afe9c6c7211eb7257266ab0ac         # [win]
@@ -198,14 +198,14 @@ outputs:
         # I have no idea why this is not in C:\Windows\System32\downlevel
         - '**/api-ms-win-core-path-l1-1-0.dll'  # [win]
           # -=- libs that come from the sysroot.
-        - '$RPATH/libc.so.6'        # [linux64]
-        - '$RPATH/libcrypt.so.1'    # [linux64]
-        - '$RPATH/libdl.so.2'       # [linux64]
-        - '$RPATH/libm.so.6'        # [linux64]
-        - '$RPATH/libnsl.so.1'      # [linux64]
-        - '$RPATH/libpthread.so.0'  # [linux64]
-        - '$RPATH/librt.so.1'       # [linux64]
-        - '$RPATH/libutil.so.1'     # [linux64]
+        - '$RPATH/libc.so.6'        # [linux64 or ppc64le]
+        - '$RPATH/libcrypt.so.1'    # [linux64 or ppc64le]
+        - '$RPATH/libdl.so.2'       # [linux64 or ppc64le]
+        - '$RPATH/libm.so.6'        # [linux64 or ppc64le]
+        - '$RPATH/libnsl.so.1'      # [linux64 or ppc64le]
+        - '$RPATH/libpthread.so.0'  # [linux64 or ppc64le]
+        - '$RPATH/librt.so.1'       # [linux64 or ppc64le]
+        - '$RPATH/libutil.so.1'     # [linux64 or ppc64le]
     requirements:
       build:
         - {{ compiler('c') }}
