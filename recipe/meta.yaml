@@ -180,6 +180,8 @@ outputs:
         # configure script looks for llvm-ar for lto
         - llvm-tools  # [osx]
         - ld_impl_{{ target_platform }}  # [linux]
+        # called in build_base.sh
+        - ripgrep # [linux]
 {% if 'conda-forge' in channel_targets %}
         - binutils_impl_{{ target_platform }}  # [linux]
 {% endif %}
