@@ -61,7 +61,6 @@ source:
       - patches/0006-Win32-Do-not-download-externals.patch
       - patches/0007-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch
       # https://github.com/python/cpython/pull/28397
-      - patches/0008-bpo-22699-Allow-compiling-on-debian-ubuntu-with-a-di.patch
       # Patch doesn't apply, but is Debian-specific anyway.
       # - patches/0008-bpo-22699-Allow-compiling-on-debian-ubuntu-with-a-di.patch
       - patches/0009-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
