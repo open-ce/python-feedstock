@@ -330,7 +330,7 @@ outputs:
 
 about:
   home: https://www.python.org/
-  license: Python-2.0
+  license: PSF-2.0
   license_family: PSF
   license_url: https://docs.python.org/3/license.html
   license_file: LICENSE
