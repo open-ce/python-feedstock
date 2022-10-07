@@ -50,7 +50,7 @@ source:
       - patches/0020-venv-Revert-a-change-from-https-github.com-python-cp.patch
       - patches/0021-Add-CondaEcosystemModifyDllSearchPath.patch
       - patches/0022-Use-ranlib-from-env-if-env-variable-is-set.patch
-      - patches/0024-CVE-2015-20107
+      - patches/0024-CVE-2015-20107.patch
 
   # TODO :: Depend on our own packages for these:
   - url: https://github.com/python/cpython-source-deps/archive/xz-5.2.2.zip          # [win]
