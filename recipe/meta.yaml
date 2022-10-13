@@ -93,6 +93,7 @@ build:
     - libcxx  # [osx]
     - libcxxabi  # [osx]
     - libstdcxx-ng  # [linux]
+    - tk # [not (win or (linux and ppc64le))]
   detect_binary_files_with_prefix: False
   binary_has_prefix_files:
     - lib/libpython{{ ver2 }}.*.1.0
