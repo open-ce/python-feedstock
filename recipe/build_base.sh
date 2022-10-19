@@ -46,8 +46,11 @@ fi
 if [[ ${target_platform} == linux-aarch64 ]]; then
   _OPTIMIZED=no
 fi
+
 if [[ ${target_platform} == linux-ppc64le ]]; then
   _OPTIMIZED=no
+  # ppc64le cdt need to be rebuilt with files in powerpc64le-conda-linux-gnu instead of powerpc64le-conda_cos7-linux-gnu. In the mean time:
+  cp --force --archive --update --link $BUILD_PREFIX/powerpc64le-conda_cos7-linux-gnu/. $BUILD_PREFIX/powerpc64le-conda-linux-gnu
 fi
 
 declare -a _dbg_opts
