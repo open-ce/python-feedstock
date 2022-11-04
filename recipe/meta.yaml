@@ -264,6 +264,7 @@ about:
   license: PSF-2.0
   license_family: PSF
   license_file: LICENSE
+  license_url: https://docs.python.org/3.8/license.html
   summary: General purpose programming language
   description: |
     Python is a widely used high-level, general-purpose, interpreted, dynamic
