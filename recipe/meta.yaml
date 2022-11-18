@@ -80,7 +80,7 @@ source:
       - patches/0034-have-pyunicode-decodeunicodeescape.patch
       - patches/0035-py39-mailcap-CVE-2015-20107.patch
 {% if 'conda-forge' not in channel_targets %}
-      - patches/9999-Add-Anaconda-Distribution-version-logic.patch
+      - patches/9999-Add-Anaconda-Distribution-version-logic.patch  # [not win]
 {% endif %}
 
   # TODO :: Depend on our own packages for these:
