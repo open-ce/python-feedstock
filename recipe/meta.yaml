@@ -68,7 +68,7 @@ source:
       - patches/0017-venv-Revert-a-change-from-https-github.com-python-cp.patch
       - patches/0018-Win-Add-back-the-DLLSuffix-used-to-find-the-openssl-.patch
       - patches/0019-Use-ranlib-from-env-if-env-variable-is-set.patch
-      - patches/0020-Add-CondaEcosystemModifyDllSearchPath.patch
+      - patches/0020-Add-CondaEcosystemModifyDllSearchPath.patch  # [not win]
       - patches/0021-Add-d1trimfile-SRC_DIR-to-make-pdbs-more-relocatable.patch
       - patches/0022-Doing-d1trimfile.patch
       # May be causing PGO to fail?
