@@ -116,7 +116,6 @@ source:
 
 build:
   number: {{ build_number }}
-  skip: True  # [not win]
 
 requirements:
   build:
