@@ -33,6 +33,7 @@ source:
       - patches/0011-Win32-Do-not-download-externals.patch
       - patches/0012-Add-support-for-_CONDA_PYTHON_SYSCONFIGDATA_NAME-if-.patch
       - patches/0013-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch
+      - patches/0013-Add-CondaEcosystemModifyDllSearchPath.patch  # [win]
       - patches/0014-Disable-new-dtags-in-unixccompiler.py.patch
       - patches/0015-Fix-cross-compilation-on-Debian-based-distros.patch
       - patches/0016-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
