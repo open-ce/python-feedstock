@@ -73,7 +73,7 @@ source:
       - patches/0022-Doing-d1trimfile.patch
       # May be causing PGO to fail?
       - patches/0023-egg-debugging-with-Windows-debug-builds.patch
-      - patches/0024-Add-CONDA_DLL_SEARCH_MODIFICATION_KEEP_GIL-to-aid-de.patch
+      # - patches/0024-Add-CONDA_DLL_SEARCH_MODIFICATION_KEEP_GIL-to-aid-de.patch
       - patches/0025-cross-compile-darwin.patch
       - patches/0032-Fix-TZPATH-on-windows.patch
       - patches/0033-gh24324.patch
