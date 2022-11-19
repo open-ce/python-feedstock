@@ -237,9 +237,10 @@ outputs:
         - readline  # [not win]
         - tk  # [not win]
         - ncurses  # [unix]
-        - libffi   # [not win]
+        - libffi 3.3   # [not win]
         - ld_impl_{{ target_platform }}  # [linux]
       run:
+        - libffi >=3.3,<4   # [not win]
         - ld_impl_{{ target_platform }}  # [linux]
         - tzdata
 {% if 'conda-forge' in channel_targets %}
