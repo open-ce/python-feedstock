@@ -167,10 +167,12 @@ outputs:
         - readline  # [not win]
         - tk  # [not win]
         - ncurses  # [unix]
-        - libffi  # [not win]
+        - libffi 3.3  # [not win]
         - ld_impl_{{ target_platform }}  # [linux]
       run:
         - ld_impl_{{ target_platform }}  # [linux]
+        # that is ok, as we assume backward-compatibility
+        - libffi >=3.3,<4
     test:
       requires:
         - ripgrep
