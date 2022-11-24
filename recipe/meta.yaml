@@ -33,6 +33,7 @@ source:
       - patches/0011-Win32-Do-not-download-externals.patch
       - patches/0012-Add-support-for-_CONDA_PYTHON_SYSCONFIGDATA_NAME-if-.patch
       - patches/0013-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch
+      - patches/0013-Add-CondaEcosystemModifyDllSearchPath.patch  # [win]
       - patches/0014-Disable-new-dtags-in-unixccompiler.py.patch
       - patches/0015-Fix-cross-compilation-on-Debian-based-distros.patch
       - patches/0016-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
@@ -43,8 +44,8 @@ source:
       - patches/0020-Win-Add-back-the-DLLSuffix-used-to-find-the-openssl-.patch
       - patches/0021-Use-ranlib-from-env-if-env-variable-is-set.patch
       # Python 3.8 is pretty broken without this.
-      - patches/0022-Add-CondaEcosystemModifyDllSearchPath.patch
-      - patches/0023-Revert-part-of-https-bugs.python.org-issue33895-http.patch
+      - patches/0022-Add-CondaEcosystemModifyDllSearchPath.patch  # [not win]
+      - patches/0023-Revert-part-of-https-bugs.python.org-issue33895-http.patch  # [not win]
       - patches/0024-cross-compile-darwin.patch.patch
       - patches/0032-ctypes-link-to-coreFoundation.patch
       - patches/0033-py38-mailcap-CVE-2015-20107.patch
@@ -81,7 +82,7 @@ source:
     sha256: 69e3f7235108a75033cb9325a0a3535ba271d144ec66fccefe134eda27d7bcfe         # [win]
 
 build:
-  number: 0
+  number: 2
   script_env:
     - PY_INTERP_LINKAGE_NATURE
     - PY_INTERP_DEBUG
@@ -166,10 +167,12 @@ outputs:
         - readline  # [not win]
         - tk  # [not win]
         - ncurses  # [unix]
-        - libffi  # [not win]
+        - libffi 3.4  # [not win]
         - ld_impl_{{ target_platform }}  # [linux]
       run:
         - ld_impl_{{ target_platform }}  # [linux]
+        # that is ok, as we assume backward-compatibility
+        - libffi >=3.4,<3.5
     test:
       requires:
         - ripgrep
