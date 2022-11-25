@@ -54,7 +54,7 @@ source:
 
 
 build:
-  number: 2
+  number: 3
   no_link:
     - bin/python2.7     # [unix]
     - DLLs/_ctypes.pyd  # [win]
@@ -87,9 +87,10 @@ requirements:
     - readline                           # [unix]
     - tk                                 # [unix]
     - ncurses                            # [unix]
-    - libffi                             # [unix]
+    - libffi 3.4                         # [unix]
   run:
     - ca-certificates
+    - libffi >=3.4,<3.5                  # [unix]
 
 test:
   # Because we need to use xvfb-run on linux, from a CDT package.
