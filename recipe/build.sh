@@ -48,6 +48,12 @@ if [[ ${HOST} =~ .*darwin.* ]] && [[ -n ${CONDA_BUILD_SYSROOT} ]]; then
   CPPFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${CPPFLAGS}
 fi
 
+if [[ ${target_platform} == linux-ppc64le ]]; then
+  _OPTIMIZED=no
+  # ppc64le cdt need to be rebuilt with files in powerpc64le-conda-linux-gnu instead of powerpc64le-conda_cos7-linux-gnu. In the mean time:
+  cp --force --archive --update --link $BUILD_PREFIX/powerpc64le-conda_cos7-linux-gnu/. $BUILD_PREFIX/powerpc64le-conda-linux-gnu
+fi
+
 # Debian uses -O3 then resets it at the end to -O2 in _sysconfigdata.py
 export CFLAGS=$(echo "${CFLAGS}" | sed "s/-O2/-O3/g")
 export CXXFLAGS=$(echo "${CXXFLAGS}" | sed "s/-O2/-O3/g")
