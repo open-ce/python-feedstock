@@ -67,7 +67,7 @@ build:
     - libcxx            # [osx]
     - libstdcxx-ng      # [linux]
     - openssl
-  skip: True            # [win and vc != 9]
+  skip: True            # [(win and vc != 9) or (osx and arm64) or (linux and aarch64) or (linux and s390x)]
 
 requirements:
   build:
