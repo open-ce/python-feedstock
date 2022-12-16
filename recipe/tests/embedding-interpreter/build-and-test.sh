@@ -1,6 +1,29 @@
 #!/usr/bin/env bash
 
+set -ex
 PYVER=$(${CONDA_PREFIX}/bin/python -c 'import sys; sys.stdout.write("{}.{}".format(sys.version_info[0], sys.version_info[1]))')
+
+if [[ $ppc_arch == "p10" ]]
+then
+    if [[ -z "${GCC_11_HOME}" ]];
+    then
+        echo "Please set GCC_11_HOME to the install path of gcc-toolset-11"
+        exit 1
+    else
+        CC=${GCC_11_HOME}/bin/gcc
+        CXX=${GCC_11_HOME}/bin/g++
+        GCC=$CC
+        AR=${GCC_11_HOME}/bin/ar
+        LD=${GCC_11_HOME}/bin/ld
+        NM=${GCC_11_HOME}/bin/nm
+        OBJCOPY=${GCC_11_HOME}/bin/objcopy
+        OBJDUMP=${GCC_11_HOME}/bin/objdump
+        RANLIB=${GCC_11_HOME}/bin/ranlib
+        STRIP=${GCC_11_HOME}/bin/strip
+	READELF=${GCC_11_HOME}/bin/readelf
+#        export PATH=$GCC_11_HOME/bin:$PATH
+    fi
+fi
 
 if [[ $(uname) == Darwin ]]; then
   # The macOS linker does not work like this. If you want a single archive to get linked in then you need to
@@ -73,8 +96,8 @@ for NATURE in "${NATURES[@]}"; do
     else
       TRUE_NATURE=static
     fi
-  elif [[ -n ${OTOOL} ]]; then
-    ${OTOOL} -l ${CONDA_PREFIX}/bin/embedded-python-${NATURE} | rg libpython
+  elif [[ -n ${ORTOOL} ]]; then
+    ${ORTOOL} -l ${CONDA_PREFIX}/bin/embedded-python-${NATURE} | rg libpython
     if [[ $? == 0 ]]; then
       TRUE_NATURE=shared
     else

@@ -17,6 +17,32 @@ TCLTK_VER=${tk}
 # Disables some PGO/LTO but not optimizations.
 QUICK_BUILD=no
 
+if [[ $ppc_arch == "p10" ]]
+then
+    if [[ -z "${GCC_11_HOME}" ]];
+    then
+        echo "Please set GCC_11_HOME to the install path of gcc-toolset-11"
+        exit 1
+    else
+        CC=${GCC_11_HOME}/bin/gcc
+        CXX=${GCC_11_HOME}/bin/g++
+        GCC=$CC
+        AR=${GCC_11_HOME}/bin/ar
+        LD=${GCC_11_HOME}/bin/ld
+        NM=${GCC_11_HOME}/bin/nm
+        OBJCOPY=${GCC_11_HOME}/bin/objcopy
+        OBJDUMP=${GCC_11_HOME}/bin/objdump
+        RANLIB=${GCC_11_HOME}/bin/ranlib
+        STRIP=${GCC_11_HOME}/bin/strip
+        HOST=powerpc64le-conda-linux-gnu
+        CONDA_BUILD_CROSS_COMPILATION=1
+        #export PATH=$GCC_11_HOME/bin:$PATH
+        CC_FOR_BUILD=$CC
+	CXX_FOR_BUILD=$CXX
+    fi
+fi
+
+
 _buildd_static=build-static
 _buildd_shared=build-shared
 _ENABLE_SHARED=--enable-shared
@@ -51,7 +77,7 @@ if [[ ${CONDA_FORGE} == yes ]]; then
     _OPTIMIZED=no
   fi
   if [[ ${target_platform} == linux-ppc64le ]]; then
-    _OPTIMIZED=no
+    _OPTIMIZED=yes
   fi
 fi
 
@@ -291,7 +317,9 @@ _comoon_configure_args+=(CC_FOR_BUIL="${CC}")
 # Add more optimization flags for the static Python interpreter:
 declare -a PROFILE_TASK=()
 if [[ ${_OPTIMIZED} == yes ]]; then
+  # Open-CE: Building with LTO and optimizations for Power10
   _common_configure_args+=(--with-lto)
+  _common_configure_args+=(--enable-optimizations)
   if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]]; then
     _common_configure_args+=(--enable-optimizations)
     _MAKE_TARGET=profile-opt

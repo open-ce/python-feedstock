@@ -10,6 +10,7 @@ else
 fi
 VER=${PKG_VERSION%.*}
 VERABI=${VER}${DBG}
+HOST=powerpc64le-conda-linux-gnu
 
 case "$target_platform" in
   linux-64)

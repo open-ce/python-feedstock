@@ -114,6 +114,8 @@ source:
 
 build:
   number: {{ build_number }}
+  script_env:                 # [ppc_arch == "p10"]
+    - GCC_11_HOME             # [ppc_arch == "p10"]
 
 requirements:
   build:
@@ -132,6 +134,9 @@ outputs:
     script: build_base.bat  # [win]
     build:
       number: {{ build_number }}
+      script_env:                 # [ppc_arch == "p10"]
+        - GCC_11_HOME             # [ppc_arch == "p10"]
+
       activate_in_script: true
       # Windows has issues updating python if conda is using files itself.
       # Copy rather than link.
@@ -149,7 +154,7 @@ outputs:
         - clangxx_osx-aarch64  # [osxaarch64]
         - gxx_linux-64  # [linux64]
         - gxx_linux-aarch64  # [linux and aarch64]
-        - gxx_linux-ppc64le  # [linuxppc64le]
+        - gxx_linux-ppc64le  # [linuxppc64le and ppc_arch != 'p10']
         - gxx_linux-s390x    # [linuxs390x]
         - libstdcxx-ng       # [linux and aarch64]
       # Disabled until verified to work correctly
@@ -180,6 +185,7 @@ outputs:
           - python_abi {{ ver2 }}.* *_cp{{ ver2nd }}
 {% endif %}
       script_env:
+        - GCC_11_HOME
         - PY_INTERP_LINKAGE_NATURE={{ linkage_nature_env }}
         - PY_INTERP_DEBUG={{ py_interp_debug }}
         # Putting these here means they get emitted to build_env_setup.{sh,bat} meaning we can launch IDEs
@@ -208,8 +214,8 @@ outputs:
         - '$RPATH/libutil.so.1'     # [linux64 or ppc64le]
     requirements:
       build:
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
+        - {{ compiler('c') }}     # [ppc_arch != "p10"]
+        - {{ compiler('cxx') }}   # [ppc_arch != "p10"]
         - {{ ccache('native') }}  # [unix]
         - ripgrep
         - sed  # [unix]
@@ -237,9 +243,11 @@ outputs:
         - ncurses  # [unix]
         - libffi   # [not win]
         - ld_impl_{{ target_platform }}  # [linux]
+        - libnsl
       run:
         - ld_impl_{{ target_platform }}  # [linux]
         - tzdata
+        - libnsl
 {% if 'conda-forge' in channel_targets %}
         - ncurses  # [unix]
       run_constrained:
@@ -253,10 +261,11 @@ outputs:
         - ripgrep
         - cmake  # [not (linux and ppc64le)]
         - make  # [unix]
+        - libnsl
         - ninja
-        - {{ compiler('c') }}
+        - {{ compiler('c') }}     # [ppc_arch != "p10"]
         # Tried to use enable_language(C) to avoid needing this. It does not work.
-        - {{ compiler('cxx') }}
+        - {{ compiler('cxx') }}   # [ppc_arch != "p10"]
       files:
         - tests/distutils/*
         - tests/cmake/*
@@ -341,10 +350,13 @@ outputs:
 {% else %}
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ linkage_nature }}{{ debug }}
 {% endif %}
+      script_env:                 # [ppc_arch == "p10"]
+        - GCC_11_HOME             # [ppc_arch == "p10"]
+
     requirements:
       build:
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
+        - {{ compiler('c') }}     # [ppc_arch != "p10"]
+        - {{ compiler('cxx') }}   # [ppc_arch != "p10"]
 {% if from_source_control == 'yes' %}
         - git
 {% endif %}
@@ -353,6 +365,7 @@ outputs:
         - {{ pin_subpackage('python', exact=True) }}
       run:
         - {{ pin_subpackage('python', exact=True) }}
+        - libnsl
     test:
       files:
         - tests/embedding-interpreter/*
@@ -360,9 +373,9 @@ outputs:
         - ripgrep
         - cmake  # [not (linux and ppc64le)]
         - make  # [unix]
-        - {{ compiler('c') }}
+        - {{ compiler('c') }}   # [ppc_arch != "p10"]
         # Tried to use enable_language(C) to avoid needing this. It does not work.
-        - {{ compiler('cxx') }}
+        - {{ compiler('cxx') }}   # [ppc_arch != "p10"]
       commands:
         - test -f ${PREFIX}/lib/libpython${PKG_VERSION%.*}.a  # [unix]
         - test -f ${PREFIX}/lib/libpython${PKG_VERSION%.*}.nolto.a  # [unix]
