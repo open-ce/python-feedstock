@@ -39,6 +39,9 @@ then
         #export PATH=$GCC_11_HOME/bin:$PATH
         CC_FOR_BUILD=$CC
 	CXX_FOR_BUILD=$CXX
+        export CFLAGS="$CFLAGS -mcpu=power9 -mtune=power10"
+        export CXXFLAGS="$CXXFLAGS -mcpu=power9 -mtune=power10"
+        export CPPFLAGS="$CPPFLAGS -mcpu=power9 -mtune=power10"
     fi
 fi
 
@@ -69,7 +72,7 @@ if [ "$(uname -m)" = "ppc64le" ]; then
   cp --force --archive --update --link $BUILD_PREFIX/powerpc64le-conda_cos7-linux-gnu/. $BUILD_PREFIX/powerpc64le-conda-linux-gnu
 fi
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-}:${PREFIX}/lib/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/lib64/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/share/pkgconfig
-##
+
 
 # Since these take very long to build in our emulated ci, disable for now
 if [[ ${CONDA_FORGE} == yes ]]; then
@@ -185,11 +188,11 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION}" == "1" ]]; then
   BUILD_PYTHON_PREFIX=${PWD}/build-python-install
   mkdir build-python-build
   pushd build-python-build
-    (unset CPPFLAGS LDFLAGS;
+    (echo "Removed unset CPPFLAGS";
      export CC=${CC_FOR_BUILD} \
             CXX=${CXX_FOR_BUILD} \
             CPP="${CC_FOR_BUILD} -E" \
-            CFLAGS="-O2" \
+            CFLAGS="-O2 -mcpu=power9 -mtune=power10" \
             AR="$(${CC_FOR_BUILD} --print-prog-name=ar)" \
             RANLIB="$(${CC_FOR_BUILD} --print-prog-name=ranlib)" \
             LD="$(${CC_FOR_BUILD} --print-prog-name=ld)" && \
@@ -265,6 +268,7 @@ elif [[ ${target_platform} == linux-* ]]; then
   export MACHDEP=linux
   export ac_sys_system=Linux
   export ac_sys_release=
+  export CFLAGS="$CFLAGS -mcpu=power9 -mtune=power10"
 fi
 
 # Not used at present but we should run 'make test' and finish up TESTOPTS (see debians rules).
@@ -306,9 +310,9 @@ fi
 
 _common_configure_args+=(PKG_CONFIG_LIBDIR="${PREFIX}/lib")
 _common_configure_args+=(PKG_CONFIG_PATH="${PREFIX}/lib")
-_common_configure_args+=(CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include")
-_common_configure_args+=(CXXFLAGS="${CXXFLAGS} -I${PREFIX}/include")
-_common_configure_args+=(CFLAGS="${CFLAGS} -I${PREFIX}/include")
+_common_configure_args+=(CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include -mcpu=power9 -mtune=power10")
+_common_configure_args+=(CXXFLAGS="${CXXFLAGS} -I${PREFIX}/include -mcpu=power9 -mtune=power10")
+_common_configure_args+=(CFLAGS="${CFLAGS} -I${PREFIX}/include -mcpu=power9 -mtune=power10")
 _common_configure_args+=(LDFLAGS="${LDFLAGS} -L${PREFIX}/lib")
 _common_configure_args+=(CC="${CC}")
 _common_configure_args+=(CXX="${CXX}")
@@ -341,7 +345,7 @@ if [[ ${_OPTIMIZED} == yes ]]; then
     # -flto must come after -flto-partition due to the replacement code
     # TODO :: Replace the replacement code using conda-build's in-build regex replacement.
     LTO_CFLAGS+=(-flto-partition=none)
-    LTO_CFLAGS+=(-flto)
+    LTO_CFLAGS+=(-flto -mcpu=power9 -mtune=power10)
   else
     # TODO :: Check if -flto=thin gives better results. It is about faster
     #         compilation rather than faster execution so probably not:
@@ -359,6 +363,10 @@ if [[ ${_OPTIMIZED} == yes ]]; then
 else
   _MAKE_TARGET=
 fi
+
+export CFLAGS="$CFLAGS -mcpu=power9 -mtune=power10"
+export CXXFLAGS="$CXXFLAGS -mcpu=power9 -mtune=power10"
+export CPPFLAGS="$CPPFLAGS -mcpu=power9 -mtune=power10"
 
 mkdir -p ${_buildd_shared}
 pushd ${_buildd_shared}

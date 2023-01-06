@@ -185,7 +185,7 @@ outputs:
           - python_abi {{ ver2 }}.* *_cp{{ ver2nd }}
 {% endif %}
       script_env:
-        - GCC_11_HOME
+        - GCC_11_HOME      #[ppc_arch == 'p10']
         - PY_INTERP_LINKAGE_NATURE={{ linkage_nature_env }}
         - PY_INTERP_DEBUG={{ py_interp_debug }}
         # Putting these here means they get emitted to build_env_setup.{sh,bat} meaning we can launch IDEs
