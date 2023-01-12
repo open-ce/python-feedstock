@@ -88,6 +88,8 @@ source:
 
 build:
   number: {{ build_number }}
+  script_env:                 # [ppc_arch == "p10"]
+    - GCC_11_HOME             # [ppc_arch == "p10"]
 
 requirements:
   build:
@@ -105,6 +107,8 @@ outputs:
     script: build_base.bat  # [win]
     build:
       number: {{ build_number }}
+      script_env:                 # [ppc_arch == "p10"]
+        - GCC_11_HOME             # [ppc_arch == "p10"]
       activate_in_script: true
       # Windows has issues updating python if conda is using files itself.
       # Copy rather than link.
@@ -112,7 +116,7 @@ outputs:
         - DLLs/_ctypes.pyd  # [win]
       ignore_run_exports_from:   # [unix]
         # C++ only installed so CXX is defined for distutils/sysconfig.
-        - {{ compiler('cxx') }}  # [unix]
+        - {{ compiler('cxx') }}  # [unix and ppc_arch != 'p10']
       # Disabled until verified to work correctly
       detect_binary_files_with_prefix: true
       # detect_binary_files_with_prefix: False
@@ -140,6 +144,7 @@ outputs:
           - python_abi {{ ver2 }}.* *_cp{{ ver2nd }}
 {% endif %}
       script_env:
+        - GCC_11_HOME      #[ppc_arch == 'p10']
         - PY_INTERP_LINKAGE_NATURE={{ linkage_nature_env }}
         - PY_INTERP_DEBUG={{ py_interp_debug }}
         # Putting these here means they get emitted to build_env_setup.{sh,bat} meaning we can launch IDEs
@@ -169,8 +174,10 @@ outputs:
 
     requirements:
       build:
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
+        - {{ compiler('c') }}     # [ppc_arch != "p10"]
+        - {{ compiler('cxx') }}   # [ppc_arch != "p10"]
+        - libffi
+        - libnsl
         - sed  # [unix]
         - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
         - {{ cdt('libx11-devel') }}  # [linux]
@@ -195,11 +202,13 @@ outputs:
         - tk
         - ncurses  # [unix]
         - libffi
+        - libnsl
         - ld_impl_{{ target_platform }} >=2.36.1  # [linux]
         - libuuid  # [linux]
       run:
         - ld_impl_{{ target_platform }} >=2.36.1  # [linux]
         - tzdata
+        - libnsl
 {% if 'conda-forge' in channel_targets %}
         - ncurses  # [unix]
       run_constrained:
@@ -216,9 +225,9 @@ outputs:
         - cmake
         - make  # [unix]
         - ninja
-        - {{ compiler('c') }}
+        - {{ compiler('c') }}    # [ppc_arch != "p10"]
         # Tried to use enable_language(C) to avoid needing this. It does not work.
-        - {{ compiler('cxx') }}
+        - {{ compiler('cxx') }}   # [ppc_arch != "p10"]
       files:
         - tests/distutils/*
         - tests/cmake/*
@@ -289,6 +298,8 @@ outputs:
     script: build_static.bat  # [win]
     build:
       number: {{ build_number }}
+      script_env:                 # [ppc_arch == "p10"]
+        - GCC_11_HOME             # [ppc_arch == "p10"]
       activate_in_script: true
 {% if 'conda-forge' in channel_targets %}
       ignore_run_exports:
@@ -299,8 +310,8 @@ outputs:
 {% endif %}
     requirements:
       build:
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
+        - {{ compiler('c') }}    # [ppc_arch != "p10"]
+        - {{ compiler('cxx') }}  # [ppc_arch != "p10"]
 {% if from_source_control == 'yes' %}
         - git
 {% endif %}
@@ -312,9 +323,9 @@ outputs:
       files:
         - tests/prefix-replacement/*
       requires:
-        - {{ compiler('c') }}
+        - {{ compiler('c') }}   # [ppc_arch != "p10"]
         # Tried to use enable_language(C) to avoid needing this. It does not work.
-        - {{ compiler('cxx') }}
+        - {{ compiler('cxx') }}  # [ppc_arch != "p10"]
 
       commands:
         - pushd tests                 # [unix]
