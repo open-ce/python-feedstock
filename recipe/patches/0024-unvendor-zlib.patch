@@ -1,7 +1,7 @@
-From a28ceb5075fb996975641c2fc1db86a0850b45e6 Mon Sep 17 00:00:00 2001
+From 7752b6b98f2d8a9f88e8c32b032877654dadf28a Mon Sep 17 00:00:00 2001
 From: Isuru Fernando <isuruf@gmail.com>
 Date: Wed, 29 Sep 2021 15:21:55 -0700
-Subject: [PATCH 24/25] unvendor zlib
+Subject: [PATCH 25/25] unvendor zlib
 
 ---
  PCbuild/pythoncore.vcxproj         | 33 ++-------------
@@ -9,7 +9,7 @@ Subject: [PATCH 24/25] unvendor zlib
  2 files changed, 4 insertions(+), 95 deletions(-)
 
 diff --git a/PCbuild/pythoncore.vcxproj b/PCbuild/pythoncore.vcxproj
-index 5d15834900..16ccc8a349 100644
+index c4cb39c821..2161449eab 100644
 --- a/PCbuild/pythoncore.vcxproj
 +++ b/PCbuild/pythoncore.vcxproj
 @@ -82,7 +82,7 @@
@@ -31,15 +31,15 @@ index 5d15834900..16ccc8a349 100644
        <PreprocessorDefinitions Condition="$(IncludeExternals)">_Py_HAVE_ZLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
      </ClCompile>
      <Link>
--      <AdditionalDependencies>version.lib;ws2_32.lib;pathcch.lib;%(AdditionalDependencies)</AdditionalDependencies>
-+      <AdditionalDependencies>version.lib;ws2_32.lib;pathcch.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+-      <AdditionalDependencies>version.lib;ws2_32.lib;pathcch.lib;bcrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>version.lib;ws2_32.lib;pathcch.lib;bcrypt.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
 +      <AdditionalLibraryDirectories>$(condaDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
      </Link>
    </ItemDefinitionGroup>
    <ItemGroup>
-@@ -301,19 +302,6 @@
+@@ -330,19 +331,6 @@
+     <ClInclude Include="..\Python\stdlib_module_names.h" />
      <ClInclude Include="..\Python\thread_nt.h" />
-     <ClInclude Include="..\Python\wordcode_helpers.h" />
    </ItemGroup>
 -  <ItemGroup Condition="$(IncludeExternals)">
 -    <ClInclude Include="$(zlibDir)\crc32.h" />
@@ -57,7 +57,7 @@ index 5d15834900..16ccc8a349 100644
    <ItemGroup>
      <ClCompile Include="..\Modules\_abc.c" />
      <ClCompile Include="..\Modules\_bisectmodule.c" />
-@@ -496,19 +484,6 @@
+@@ -542,19 +530,6 @@
    </ItemGroup>
    <ItemGroup Condition="$(IncludeExternals)">
      <ClCompile Include="..\Modules\zlibmodule.c" />
@@ -78,10 +78,10 @@ index 5d15834900..16ccc8a349 100644
    <ItemGroup>
      <ClCompile Include="..\PC\dl_nt.c" />
 diff --git a/PCbuild/pythoncore.vcxproj.filters b/PCbuild/pythoncore.vcxproj.filters
-index 55b57ef29d..2fc1a57161 100644
+index e3fe9271dd..334cb226e2 100644
 --- a/PCbuild/pythoncore.vcxproj.filters
 +++ b/PCbuild/pythoncore.vcxproj.filters
-@@ -606,39 +606,6 @@
+@@ -651,39 +651,6 @@
      <ClInclude Include="..\Include\internal\pycore_unionobject.h">
        <Filter>Include\internal</Filter>
      </ClInclude>
@@ -118,10 +118,10 @@ index 55b57ef29d..2fc1a57161 100644
 -    <ClInclude Include="$(zlibDir)\zutil.h">
 -      <Filter>Modules\zlib</Filter>
 -    </ClInclude>
-   </ItemGroup>
-   <ItemGroup>
-     <ClCompile Include="..\Modules\_abc.c">
-@@ -1151,39 +1118,6 @@
+     <ClInclude Include="..\Include\internal\pycore_structseq.h">
+       <Filter>Include\internal</Filter>
+     </ClInclude>
+@@ -1208,39 +1175,6 @@
      <ClCompile Include="..\Modules\_contextvarsmodule.c">
        <Filter>Modules</Filter>
      </ClCompile>

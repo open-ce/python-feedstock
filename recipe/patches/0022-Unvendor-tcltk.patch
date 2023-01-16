@@ -1,17 +1,17 @@
-From 4966a9e99c4ad67ce3b14b37761932e26ea816d0 Mon Sep 17 00:00:00 2001
+From a18bab6405f24e209fa6f75cd8f13aad455064f8 Mon Sep 17 00:00:00 2001
 From: Isuru Fernando <isuruf@gmail.com>
 Date: Fri, 20 Aug 2021 10:23:51 -0700
-Subject: [PATCH 22/25] Unvendor tcltk
+Subject: [PATCH 23/25] Unvendor tcltk
 
 ---
- PCbuild/tcltk.props | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ PCbuild/tcltk.props | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/PCbuild/tcltk.props b/PCbuild/tcltk.props
-index 16dc35d45e..f0ae3372f3 100644
+index 7fd43e8279..5d7f07567d 100644
 --- a/PCbuild/tcltk.props
 +++ b/PCbuild/tcltk.props
-@@ -14,10 +14,10 @@
+@@ -14,13 +14,11 @@
      <TixMinorVersion>4</TixMinorVersion>
      <TixPatchLevel>3</TixPatchLevel>
      <TixRevision>6</TixRevision>
@@ -19,10 +19,14 @@ index 16dc35d45e..f0ae3372f3 100644
 -    <tkDir>$(ExternalsDir)tk-$(TkMajorVersion).$(TkMinorVersion).$(TkPatchLevel).$(TkRevision)\</tkDir>
 -    <tixDir>$(ExternalsDir)tix-$(TixMajorVersion).$(TixMinorVersion).$(TixPatchLevel).$(TixRevision)\</tixDir>
 -    <tcltkDir>$(ExternalsDir)tcltk-$(TclMajorVersion).$(TclMinorVersion).$(TclPatchLevel).$(TclRevision)\$(ArchName)\</tcltkDir>
+-    <tclWin32Exe Condition="$(Platform) == 'Win32'">$(tcltkDir)\bin\tclsh$(TclMajorVersion)$(TclMinorVersion)t.exe</tclWin32Exe>
+-    <tclWin32Exe Condition="$(Platform) != 'Win32'">$(tcltkDir)\..\win32\bin\tclsh$(TclMajorVersion)$(TclMinorVersion)t.exe</tclWin32Exe>
+-
 +    <tclDir>$(condaDir)</tclDir>
 +    <tkDir>$(condaDir)</tkDir>
 +    <tixDir>$(condaDir)</tixDir>
 +    <tcltkDir>$(condaDir)</tcltkDir>
++    <tclWin32Exe>$(condaDir)\bin\tclsh$(TclMajorVersion)$(TclMinorVersion)t.exe</tclWin32Exe>
      <!--<TclDebugExt Condition="'$(Configuration)' == 'Debug'">g</TclDebugExt>-->
      <tclDLLName>tcl$(TclMajorVersion)$(TclMinorVersion)t$(TclDebugExt).dll</tclDLLName>
      <tclLibName>tcl$(TclMajorVersion)$(TclMinorVersion)t$(TclDebugExt).lib</tclLibName>

@@ -1,7 +1,7 @@
-From edf60960821da692372bef7afcdc6e1e23c3594e Mon Sep 17 00:00:00 2001
+From 5e8e82052a141f24c89acc56c275ade16ce21a4c Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Thu, 5 Oct 2017 02:00:41 +0100
-Subject: [PATCH 05/25] runtime_library_dir_option: Use 1st word of CC as
+Subject: [PATCH 04/25] runtime_library_dir_option: Use 1st word of CC as
  compiler
 
 Previous, 'CC' got passed to os.path.basename, so any paths in it after

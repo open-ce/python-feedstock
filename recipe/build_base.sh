@@ -133,6 +133,8 @@ fi
 
 export CPPFLAGS CFLAGS CXXFLAGS LDFLAGS
 
+declare -a _common_configure_args
+
 if [[ ${target_platform} == osx-* ]]; then
   sed -i -e "s/@OSX_ARCH@/$ARCH/g" Lib/distutils/unixccompiler.py
 fi
@@ -177,6 +179,7 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION}" == "1" ]]; then
   export CONFIG_SITE=${PWD}/config.site
   # This is needed for libffi:
   export PKG_CONFIG_PATH=${PREFIX}/lib/pkgconfig
+  _common_configure_args+=(--with-build-python=${BUILD_PYTHON_PREFIX}/bin/python)
 fi
 
 # This causes setup.py to query the sysroot directories from the compiler, something which
@@ -238,7 +241,6 @@ if [[ ${CC} =~ .*-arm.* ]]; then
   TEST_EXCLUDES+=(test_compiler)
 fi
 
-declare -a _common_configure_args
 _common_configure_args+=(--prefix=${PREFIX})
 _common_configure_args+=(--build=${BUILD})
 _common_configure_args+=(--host=${HOST})
@@ -313,7 +315,7 @@ pushd ${_buildd_static}
                        ${_DISABLE_SHARED} "${_PROFILE_TASK[@]}"
 popd
 
-if [[ ${target_platform} == linux-ppc64le ]]; then
+if [[ "${CI}" == "travis" ]]; then
   # Travis has issues with long logs
   make -j${CPU_COUNT} -C ${_buildd_static} \
        EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
@@ -328,7 +330,7 @@ if rg "Failed to build these modules" make-static.log; then
   exit 1
 fi
 
-if [[ ${target_platform} == linux-ppc64le ]]; then
+if [[ "${CI}" == "travis" ]]; then
   # Travis has issues with long logs
   make -j${CPU_COUNT} -C ${_buildd_shared} \
           EXTRA_CFLAGS="${EXTRA_CFLAGS}" 2>&1 >make-shared.log
@@ -394,7 +396,7 @@ fi
 ln -s ${PREFIX}/bin/python${VER} ${PREFIX}/bin/python
 ln -s ${PREFIX}/bin/pydoc${VER} ${PREFIX}/bin/pydoc
 # Workaround for https://github.com/conda/conda/issues/10969
-ln -s ${PREFIX}/bin/python3.10 ${PREFIX}/bin/python3.1
+ln -s ${PREFIX}/bin/python3.11 ${PREFIX}/bin/python3.1
 
 # Remove test data to save space
 # Though keep `support` as some things use that.
@@ -516,4 +518,4 @@ fi
 
 # Workaround for old conda versions which fail to install noarch packages for Python 3.10+
 # https://github.com/conda/conda/issues/10969
-ln -s "${PREFIX}/lib/python3.10" "${PREFIX}/lib/python3.1"
+ln -s "${PREFIX}/lib/python3.11" "${PREFIX}/lib/python3.1"
