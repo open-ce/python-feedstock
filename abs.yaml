@@ -1,5 +1,5 @@
 channels:
-  cbouss: 311_test 
+  cbouss: temp 
 # the conda-build parameters to use for disabling --skip-existing
 build_parameters:
   - "--suppress-variables"
