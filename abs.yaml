@@ -1,8 +1,13 @@
+# upload to a temp channel for testing
 # channels:
-#   py311_bs: release 
+#   cbouss: temp 
+
 # the conda-build parameters to use for disabling --skip-existing
 build_parameters:
   - "--suppress-variables"
   #- "--skip-existing"
   - "--error-overlinking"
   - "--error-overdepending"
+
+# TODO : remove once s390x container is fixed.
+pkg_build_image_tag: "2023.03.24"
