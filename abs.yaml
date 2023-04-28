@@ -1,10 +1,6 @@
-# upload to a temp channel for testing
-# channels:
-#   cbouss: temp 
-
-# the conda-build parameters to use for disabling --skip-existing
+channels:
+  staging_openssl3: openssl3
 build_parameters:
   - "--suppress-variables"
   #- "--skip-existing"
   - "--error-overlinking"
-  - "--error-overdepending"
