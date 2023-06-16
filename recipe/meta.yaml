@@ -212,9 +212,9 @@ outputs:
 {% endif %}
       requires:
         - ripgrep
-        - cmake-no-system
+        - cmake-no-system # changed from cmake to support OpenSSL 3 bootstrap build CHANGE BACK next build!
         - make  # [unix]
-        - ninja-base
+        - ninja-base # changed from ninja to support OpenSSL 3 bootstrap build CHANGE BACK!
         - {{ compiler('c') }}
         # Tried to use enable_language(C) to avoid needing this. It does not work.
         - {{ compiler('cxx') }}
