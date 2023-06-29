@@ -2,7 +2,7 @@ name: Open-CE Feedstock PR Tests
 
 on:
   pull_request:
-    branches: [main-3.11]
+    branches: [main]
 
 jobs:
   required_tests:
