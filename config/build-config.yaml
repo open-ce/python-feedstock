@@ -1,0 +1,16 @@
+recipes:
+{% if python is string %}
+{% if python == "3.10" %}
+
+  - name : python-3.10
+    path : python-3.10
+
+{% endif %}
+
+{% if python == "3.11" %}
+
+  - name : python-3.11
+    path : python-3.11
+
+{% endif %}
+{% endif %}
