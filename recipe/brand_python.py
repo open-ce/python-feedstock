@@ -35,7 +35,7 @@ def patch_get_version(msg):
 
 msg = os.environ.get('python_branding', '<undefined>')
 if msg == '<undefined>':
-    msg = "| packaged by Anaconda, Inc. |" 
+    msg = "| packaged by IBM. |" 
 
 patch_platform(msg)
 patch_get_version(msg)
