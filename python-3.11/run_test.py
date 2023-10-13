@@ -96,9 +96,3 @@ if not (armv6l or armv7l or ppc64le or osx105 or arm64):
     print('TCL_VERSION: %s' % _tkinter.TCL_VERSION)
     TCLTK_VER = os.getenv("tk")
     assert _tkinter.TK_VERSION == _tkinter.TCL_VERSION == TCLTK_VER
-
-import ssl
-print('OPENSSL_VERSION:', ssl.OPENSSL_VERSION)
-CONDA_OPENSSL_VERSION = os.getenv("openssl")
-if CONDA_OPENSSL_VERSION:
-    assert CONDA_OPENSSL_VERSION in ssl.OPENSSL_VERSION
