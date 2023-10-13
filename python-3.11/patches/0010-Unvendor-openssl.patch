@@ -7,12 +7,12 @@ Co-authored-by: Isuru Fernando <isuruf@gmail.com>
 ---
  PCbuild/_ssl.vcxproj         |  3 --
  PCbuild/_ssl.vcxproj.filters |  3 --
- PCbuild/openssl.props        | 16 ++---------
+ PCbuild/openssl.props        | 14 ++-------
  PCbuild/openssl.vcxproj      | 56 ------------------------------------
- PCbuild/python.props         |  1 +
+ PCbuild/python.props         | 21 +++++++-------
  PCbuild/python.vcxproj       |  3 ++
  PCbuild/pythonw.vcxproj      |  3 ++
- 7 files changed, 10 insertions(+), 75 deletions(-)
+ 7 files changed, 19 insertions(+), 84 deletions(-)
 
 diff --git a/PCbuild/_ssl.vcxproj b/PCbuild/_ssl.vcxproj
 index 4907f49b66..b2c23d5e8c 100644
@@ -145,7 +145,7 @@ index 0da6f67495..17eee400eb 100644
    <Target Name="CleanAll">
      <Delete Files="$(TargetPath);$(BuildPath)$(tclDLLName)" />
 diff --git a/PCbuild/python.props b/PCbuild/python.props
-index 57360e57ba..51b2d8cc0a 100644
+index d3586235c8..f77eded4be 100644
 --- a/PCbuild/python.props
 +++ b/PCbuild/python.props
 @@ -63,22 +63,23 @@
@@ -164,8 +164,8 @@ index 57360e57ba..51b2d8cc0a 100644
 -    <libffiDir Condition="$(libffiDir) == ''">$(ExternalsDir)libffi-3.4.4\</libffiDir>
 -    <libffiOutDir Condition="$(libffiOutDir) == ''">$(libffiDir)$(ArchName)\</libffiOutDir>
 -    <libffiIncludeDir Condition="$(libffiIncludeDir) == ''">$(libffiOutDir)include</libffiIncludeDir>
--    <opensslDir Condition="$(opensslDir) == ''">$(ExternalsDir)openssl-3.0.11\</opensslDir>
--    <opensslOutDir Condition="$(opensslOutDir) == ''">$(ExternalsDir)openssl-bin-3.0.11\$(ArchName)\</opensslOutDir>
+-    <opensslDir Condition="$(opensslDir) == ''">$(ExternalsDir)openssl-3.0.9\</opensslDir>
+-    <opensslOutDir Condition="$(opensslOutDir) == ''">$(ExternalsDir)openssl-bin-3.0.9\$(ArchName)\</opensslOutDir>
 -    <opensslIncludeDir Condition="$(opensslIncludeDir) == ''">$(opensslOutDir)include</opensslIncludeDir>
 +    <!-- <sqlite3Dir Condition="$(sqlite3Dir) == ''">$(ExternalsDir)sqlite-3.42.0.0\</sqlite3Dir> -->
 +    <!-- <bz2Dir Condition="$(bz2Dir) == ''">$(ExternalsDir)bzip2-1.0.8\</bz2Dir> -->
@@ -173,8 +173,8 @@ index 57360e57ba..51b2d8cc0a 100644
 +    <!-- <libffiDir Condition="$(libffiDir) == ''">$(ExternalsDir)libffi-3.4.4\</libffiDir> -->
 +    <!-- <libffiOutDir Condition="$(libffiOutDir) == ''">$(libffiDir)$(ArchName)\</libffiOutDir> -->
 +    <!-- <libffiIncludeDir Condition="$(libffiIncludeDir) == ''">$(libffiOutDir)include</libffiIncludeDir> -->
-+    <!-- <opensslDir Condition="$(opensslDir) == ''">$(ExternalsDir)openssl-3.0.11\</opensslDir> -->
-+    <!-- <opensslOutDir Condition="$(opensslOutDir) == ''">$(ExternalsDir)openssl-bin-3.0.11\$(ArchName)\</opensslOutDir> -->
++    <!-- <opensslDir Condition="$(opensslDir) == ''">$(ExternalsDir)openssl-3.0.9\</opensslDir> -->
++    <!-- <opensslOutDir Condition="$(opensslOutDir) == ''">$(ExternalsDir)openssl-bin-3.0.9\$(ArchName)\</opensslOutDir> -->
 +    <!-- <opensslIncludeDir Condition="$(opensslIncludeDir) == ''">$(opensslOutDir)include</opensslIncludeDir> -->
      <nasmDir Condition="$(nasmDir) == ''">$(ExternalsDir)\nasm-2.11.06\</nasmDir>
 -    <zlibDir Condition="$(zlibDir) == ''">$(ExternalsDir)\zlib-1.2.13\</zlibDir>
@@ -183,7 +183,7 @@ index 57360e57ba..51b2d8cc0a 100644
  
    <PropertyGroup>
 diff --git a/PCbuild/python.vcxproj b/PCbuild/python.vcxproj
-index d07db3a681..5f2356cb36 100644
+index f4640454a7..c1810c7db2 100644
 --- a/PCbuild/python.vcxproj
 +++ b/PCbuild/python.vcxproj
 @@ -106,6 +106,9 @@
@@ -197,10 +197,10 @@ index d07db3a681..5f2356cb36 100644
    <ItemGroup>
      <ProjectReference Include="pythoncore.vcxproj">
 diff --git a/PCbuild/pythonw.vcxproj b/PCbuild/pythonw.vcxproj
-index e7216dec3a..247ea10d5c 100644
+index e23635e5ea..525295c76f 100644
 --- a/PCbuild/pythonw.vcxproj
 +++ b/PCbuild/pythonw.vcxproj
-@@ -97,6 +97,9 @@
+@@ -98,6 +98,9 @@
    </ItemGroup>
    <ItemGroup>
      <ClCompile Include="..\PC\WinMain.c" />
@@ -211,5 +211,5 @@ index e7216dec3a..247ea10d5c 100644
    <ItemGroup>
      <ProjectReference Include="pythoncore.vcxproj">
 -- 
-2.30.2
+2.32.1 (Apple Git-133)
 
