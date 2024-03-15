@@ -1,4 +1,4 @@
-{% set version = "3.11.5" %}
+{% set version = "3.11.8" %}
 {% set dev = "" %}
 {% set dev_ = "" %}
 {% set ver2 = '.'.join(version.split('.')[0:2]) %}
@@ -50,7 +50,7 @@ source:
 {% else %}
   - url: https://www.python.org/ftp/python/{{ version }}/Python-{{ version }}{{ dev }}.tar.xz
     # md5 from: https://www.python.org/downloads/release/python-{{ ver3nd }}/
-    sha256: 85cd12e9cf1d6d5a45f17f7afe1cebe7ee628d3282281c492e86adf636defa3f 
+    sha256: 9e06008c8901924395bc1da303eac567a729ae012baa182ab39269f650383bb3
 {% endif %}
     patches:
       - patches/0001-Win32-Change-FD_SETSIZE-from-512-to-2048.patch
@@ -92,7 +92,7 @@ source:
 build:
   number: {{ build_number }}
   script_env:                 # [ppc_arch == "p10"]
-    - GCC_11_HOME             # [ppc_arch == "p10"]
+    - GCC_HOME             # [ppc_arch == "p10"]
 
 requirements:
   build:
@@ -111,7 +111,7 @@ outputs:
     build:
       number: {{ build_number }}
       script_env:                 # [ppc_arch == "p10"]
-        - GCC_11_HOME             # [ppc_arch == "p10"]
+        - GCC_HOME             # [ppc_arch == "p10"]
       activate_in_script: true
       # Windows has issues updating python if conda is using files itself.
       # Copy rather than link.
@@ -149,7 +149,7 @@ outputs:
       script_env:
         - PY_INTERP_LINKAGE_NATURE={{ linkage_nature_env }}
         - PY_INTERP_DEBUG={{ py_interp_debug }}
-        - GCC_11_HOME      #[ppc_arch == 'p10']
+        - GCC_HOME      #[ppc_arch == 'p10']
         # Putting these here means they get emitted to build_env_setup.{sh,bat} meaning we can launch IDEs
         # after sourcing or calling that script without examine the contents of conda_build.{sh,bat} for
         # important env. vars.
@@ -300,7 +300,7 @@ outputs:
     build:
       number: {{ build_number }}
       script_env:                 # [ppc_arch == "p10"]
-        - GCC_11_HOME             # [ppc_arch == "p10"]
+        - GCC_HOME             # [ppc_arch == "p10"]
       activate_in_script: true
 {% if 'conda-forge' in channel_targets %}
       ignore_run_exports:

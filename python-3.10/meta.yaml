@@ -88,7 +88,7 @@ source:
 build:
   number: {{ build_number }}
   script_env:                 # [ppc_arch == "p10"]
-    - GCC_11_HOME             # [ppc_arch == "p10"]
+    - GCC_HOME             # [ppc_arch == "p10"]
 
 requirements:
   build:
@@ -107,7 +107,7 @@ outputs:
     build:
       number: {{ build_number }}
       script_env:                 # [ppc_arch == "p10"]
-        - GCC_11_HOME             # [ppc_arch == "p10"]
+        - GCC_HOME             # [ppc_arch == "p10"]
       activate_in_script: true
       # Windows has issues updating python if conda is using files itself.
       # Copy rather than link.
@@ -145,7 +145,7 @@ outputs:
       script_env:
         - PY_INTERP_LINKAGE_NATURE={{ linkage_nature_env }}
         - PY_INTERP_DEBUG={{ py_interp_debug }}
-        - GCC_11_HOME      #[ppc_arch == 'p10']
+        - GCC_HOME      #[ppc_arch == 'p10']
         # Putting these here means they get emitted to build_env_setup.{sh,bat} meaning we can launch IDEs
         # after sourcing or calling that script without examine the contents of conda_build.{sh,bat} for
         # important env. vars.
@@ -296,7 +296,7 @@ outputs:
     build:
       number: {{ build_number }}
       script_env:                 # [ppc_arch == "p10"]
-        - GCC_11_HOME             # [ppc_arch == "p10"]
+        - GCC_HOME             # [ppc_arch == "p10"]
       activate_in_script: true
 {% if 'conda-forge' in channel_targets %}
       ignore_run_exports:

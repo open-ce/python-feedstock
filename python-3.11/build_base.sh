@@ -21,22 +21,22 @@ QUICK_BUILD=no
 
 if [[ $ppc_arch == "p10" ]]
 then
-    if [[ -z "${GCC_11_HOME}" ]];
+    if [[ -z "${GCC_HOME}" ]];
     then
-        echo "Please set GCC_11_HOME to the install path of gcc-toolset-11"
+        echo "Please set GCC_HOME to the install path of gcc-toolset-11"
         exit 1
     else
-        CC=${GCC_11_HOME}/bin/gcc
-        CXX=${GCC_11_HOME}/bin/g++
+        CC=${GCC_HOME}/bin/gcc
+        CXX=${GCC_HOME}/bin/g++
         GCC=$CC
-        AR=${GCC_11_HOME}/bin/ar
-        LD=${GCC_11_HOME}/bin/ld
-        NM=${GCC_11_HOME}/bin/nm
-        OBJCOPY=${GCC_11_HOME}/bin/objcopy
-        OBJDUMP=${GCC_11_HOME}/bin/objdump
-        RANLIB=${GCC_11_HOME}/bin/ranlib
-        STRIP=${GCC_11_HOME}/bin/strip
-        READELF=${GCC_11_HOME}/bin/readelf
+        AR=${GCC_HOME}/bin/ar
+        LD=${GCC_HOME}/bin/ld
+        NM=${GCC_HOME}/bin/nm
+        OBJCOPY=${GCC_HOME}/bin/objcopy
+        OBJDUMP=${GCC_HOME}/bin/objdump
+        RANLIB=${GCC_HOME}/bin/ranlib
+        STRIP=${GCC_HOME}/bin/strip
+        READELF=${GCC_HOME}/bin/readelf
         HOST=powerpc64le-conda_cos7-linux-gnu
         CONDA_BUILD_CROSS_COMPILATION=1
         CC_FOR_BUILD=$CC

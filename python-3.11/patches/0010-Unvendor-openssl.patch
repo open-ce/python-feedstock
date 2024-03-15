@@ -14,10 +14,10 @@ Co-authored-by: Isuru Fernando <isuruf@gmail.com>
  PCbuild/pythonw.vcxproj      |  3 ++
  7 files changed, 19 insertions(+), 84 deletions(-)
 
-diff --git a/PCbuild/_ssl.vcxproj b/PCbuild/_ssl.vcxproj
-index 4907f49b66..b2c23d5e8c 100644
---- a/PCbuild/_ssl.vcxproj
-+++ b/PCbuild/_ssl.vcxproj
+Index: CPython/PCbuild/_ssl.vcxproj
+===================================================================
+--- CPython.orig/PCbuild/_ssl.vcxproj	2023-12-14 17:40:12.222521230 -0600
++++ CPython/PCbuild/_ssl.vcxproj	2023-12-14 17:40:20.047423623 -0600
 @@ -99,9 +99,6 @@
    </ItemDefinitionGroup>
    <ItemGroup>
@@ -28,10 +28,10 @@ index 4907f49b66..b2c23d5e8c 100644
    </ItemGroup>
    <ItemGroup>
      <ResourceCompile Include="..\PC\python_nt.rc" />
-diff --git a/PCbuild/_ssl.vcxproj.filters b/PCbuild/_ssl.vcxproj.filters
-index 716a69a41a..8aef9e03fc 100644
---- a/PCbuild/_ssl.vcxproj.filters
-+++ b/PCbuild/_ssl.vcxproj.filters
+Index: CPython/PCbuild/_ssl.vcxproj.filters
+===================================================================
+--- CPython.orig/PCbuild/_ssl.vcxproj.filters	2023-12-14 17:35:21.991951190 -0600
++++ CPython/PCbuild/_ssl.vcxproj.filters	2023-12-14 17:40:20.047676583 -0600
 @@ -12,9 +12,6 @@
      <ClCompile Include="..\Modules\_ssl.c">
        <Filter>Source Files</Filter>
@@ -42,10 +42,10 @@ index 716a69a41a..8aef9e03fc 100644
    </ItemGroup>
    <ItemGroup>
      <ResourceCompile Include="..\PC\python_nt.rc">
-diff --git a/PCbuild/openssl.props b/PCbuild/openssl.props
-index a4186f01da..fc39a0105a 100644
---- a/PCbuild/openssl.props
-+++ b/PCbuild/openssl.props
+Index: CPython/PCbuild/openssl.props
+===================================================================
+--- CPython.orig/PCbuild/openssl.props	2023-12-14 17:40:12.223644781 -0600
++++ CPython/PCbuild/openssl.props	2023-12-14 17:40:20.047843251 -0600
 @@ -2,10 +2,10 @@
  <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
    <ItemDefinitionGroup>
@@ -75,10 +75,10 @@ index a4186f01da..fc39a0105a 100644
 -  </Target>
  </Project>
 \ No newline at end of file
-diff --git a/PCbuild/openssl.vcxproj b/PCbuild/openssl.vcxproj
-index 0da6f67495..17eee400eb 100644
---- a/PCbuild/openssl.vcxproj
-+++ b/PCbuild/openssl.vcxproj
+Index: CPython/PCbuild/openssl.vcxproj
+===================================================================
+--- CPython.orig/PCbuild/openssl.vcxproj	2023-12-14 17:40:12.224467080 -0600
++++ CPython/PCbuild/openssl.vcxproj	2023-12-14 17:40:20.048039336 -0600
 @@ -60,64 +60,8 @@
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
    <Import Project="pyproject.props" />
@@ -144,10 +144,10 @@ index 0da6f67495..17eee400eb 100644
    <Target Name="Clean" />
    <Target Name="CleanAll">
      <Delete Files="$(TargetPath);$(BuildPath)$(tclDLLName)" />
-diff --git a/PCbuild/python.props b/PCbuild/python.props
-index d3586235c8..f77eded4be 100644
---- a/PCbuild/python.props
-+++ b/PCbuild/python.props
+Index: CPython/PCbuild/python.props
+===================================================================
+--- CPython.orig/PCbuild/python.props	2023-12-14 17:40:20.048323797 -0600
++++ CPython/PCbuild/python.props	2023-12-14 17:44:29.935690032 -0600
 @@ -63,22 +63,23 @@
      <ExternalsDir Condition="$(ExternalsDir) == ''">$(EXTERNALS_DIR)</ExternalsDir>
      <ExternalsDir Condition="$(ExternalsDir) == ''">$([System.IO.Path]::GetFullPath(`$(PySourcePath)externals`))</ExternalsDir>
@@ -158,34 +158,34 @@ index d3586235c8..f77eded4be 100644
    <Import Project="$(ExternalProps)" Condition="$(ExternalProps) != '' and Exists('$(ExternalProps)')" />
  
    <PropertyGroup>
--    <sqlite3Dir Condition="$(sqlite3Dir) == ''">$(ExternalsDir)sqlite-3.42.0.0\</sqlite3Dir>
+-    <sqlite3Dir Condition="$(sqlite3Dir) == ''">$(ExternalsDir)sqlite-3.43.1.0\</sqlite3Dir>
 -    <bz2Dir Condition="$(bz2Dir) == ''">$(ExternalsDir)bzip2-1.0.8\</bz2Dir>
 -    <lzmaDir Condition="$(lzmaDir) == ''">$(ExternalsDir)xz-5.2.5\</lzmaDir>
 -    <libffiDir Condition="$(libffiDir) == ''">$(ExternalsDir)libffi-3.4.4\</libffiDir>
 -    <libffiOutDir Condition="$(libffiOutDir) == ''">$(libffiDir)$(ArchName)\</libffiOutDir>
 -    <libffiIncludeDir Condition="$(libffiIncludeDir) == ''">$(libffiOutDir)include</libffiIncludeDir>
--    <opensslDir Condition="$(opensslDir) == ''">$(ExternalsDir)openssl-3.0.9\</opensslDir>
--    <opensslOutDir Condition="$(opensslOutDir) == ''">$(ExternalsDir)openssl-bin-3.0.9\$(ArchName)\</opensslOutDir>
+-    <opensslDir Condition="$(opensslDir) == ''">$(ExternalsDir)openssl-3.0.13\</opensslDir>
+-    <opensslOutDir Condition="$(opensslOutDir) == ''">$(ExternalsDir)openssl-bin-3.0.13\$(ArchName)\</opensslOutDir>
 -    <opensslIncludeDir Condition="$(opensslIncludeDir) == ''">$(opensslOutDir)include</opensslIncludeDir>
-+    <!-- <sqlite3Dir Condition="$(sqlite3Dir) == ''">$(ExternalsDir)sqlite-3.42.0.0\</sqlite3Dir> -->
-+    <!-- <bz2Dir Condition="$(bz2Dir) == ''">$(ExternalsDir)bzip2-1.0.8\</bz2Dir> -->
-+    <!-- <lzmaDir Condition="$(lzmaDir) == ''">$(ExternalsDir)xz-5.2.5\</lzmaDir> -->
-+    <!-- <libffiDir Condition="$(libffiDir) == ''">$(ExternalsDir)libffi-3.4.4\</libffiDir> -->
-+    <!-- <libffiOutDir Condition="$(libffiOutDir) == ''">$(libffiDir)$(ArchName)\</libffiOutDir> -->
-+    <!-- <libffiIncludeDir Condition="$(libffiIncludeDir) == ''">$(libffiOutDir)include</libffiIncludeDir> -->
-+    <!-- <opensslDir Condition="$(opensslDir) == ''">$(ExternalsDir)openssl-3.0.9\</opensslDir> -->
-+    <!-- <opensslOutDir Condition="$(opensslOutDir) == ''">$(ExternalsDir)openssl-bin-3.0.9\$(ArchName)\</opensslOutDir> -->
-+    <!-- <opensslIncludeDir Condition="$(opensslIncludeDir) == ''">$(opensslOutDir)include</opensslIncludeDir> -->
++    <!-- sqlite3Dir Condition="$(sqlite3Dir) == ''">$(ExternalsDir)sqlite-3.43.1.0\</sqlite3Dir> -->
++    <!-- bz2Dir Condition="$(bz2Dir) == ''">$(ExternalsDir)bzip2-1.0.8\</bz2Dir> -->
++    <!-- lzmaDir Condition="$(lzmaDir) == ''">$(ExternalsDir)xz-5.2.5\</lzmaDir> -->
++    <!-- libffiDir Condition="$(libffiDir) == ''">$(ExternalsDir)libffi-3.4.4\</libffiDir> -->
++    <!-- libffiOutDir Condition="$(libffiOutDir) == ''">$(libffiDir)$(ArchName)\</libffiOutDir> -->
++    <!-- libffiIncludeDir Condition="$(libffiIncludeDir) == ''">$(libffiOutDir)include</libffiIncludeDir> -->
++    <!-- opensslDir Condition="$(opensslDir) == ''">$(ExternalsDir)openssl-3.0.13\</opensslDir> -->
++    <!-- opensslOutDir Condition="$(opensslOutDir) == ''">$(ExternalsDir)openssl-bin-3.0.13\$(ArchName)\</opensslOutDir> -->
++    <!-- opensslIncludeDir Condition="$(opensslIncludeDir) == ''">$(opensslOutDir)include</opensslIncludeDir> -->
      <nasmDir Condition="$(nasmDir) == ''">$(ExternalsDir)\nasm-2.11.06\</nasmDir>
--    <zlibDir Condition="$(zlibDir) == ''">$(ExternalsDir)\zlib-1.2.13\</zlibDir>
-+    <!-- <zlibDir Condition="$(zlibDir) == ''">$(ExternalsDir)\zlib-1.2.13\</zlibDir> -->
+-    <zlibDir Condition="$(zlibDir) == ''">$(ExternalsDir)\zlib-1.3.1\</zlibDir>
++    <!-- <zlibDir Condition="$(zlibDir) == ''">$(ExternalsDir)\zlib-1.3.1\</zlibDir> -->
    </PropertyGroup>
  
    <PropertyGroup>
-diff --git a/PCbuild/python.vcxproj b/PCbuild/python.vcxproj
-index f4640454a7..c1810c7db2 100644
---- a/PCbuild/python.vcxproj
-+++ b/PCbuild/python.vcxproj
+Index: CPython/PCbuild/python.vcxproj
+===================================================================
+--- CPython.orig/PCbuild/python.vcxproj	2023-12-14 17:40:12.226076385 -0600
++++ CPython/PCbuild/python.vcxproj	2023-12-14 17:40:20.048838759 -0600
 @@ -106,6 +106,9 @@
    </ItemGroup>
    <ItemGroup>
@@ -196,10 +196,10 @@ index f4640454a7..c1810c7db2 100644
    </ItemGroup>
    <ItemGroup>
      <ProjectReference Include="pythoncore.vcxproj">
-diff --git a/PCbuild/pythonw.vcxproj b/PCbuild/pythonw.vcxproj
-index e23635e5ea..525295c76f 100644
---- a/PCbuild/pythonw.vcxproj
-+++ b/PCbuild/pythonw.vcxproj
+Index: CPython/PCbuild/pythonw.vcxproj
+===================================================================
+--- CPython.orig/PCbuild/pythonw.vcxproj	2023-12-14 17:40:12.226674890 -0600
++++ CPython/PCbuild/pythonw.vcxproj	2023-12-14 17:40:20.049048886 -0600
 @@ -98,6 +98,9 @@
    </ItemGroup>
    <ItemGroup>
@@ -210,6 +210,3 @@ index e23635e5ea..525295c76f 100644
    </ItemGroup>
    <ItemGroup>
      <ProjectReference Include="pythoncore.vcxproj">
--- 
-2.32.1 (Apple Git-133)
-
